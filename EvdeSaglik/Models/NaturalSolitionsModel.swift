@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import FirebaseFirestore
 
 struct NaturalSolitionsModel: Identifiable, Codable {
     @DocumentID var id: String?

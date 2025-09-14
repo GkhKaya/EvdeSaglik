@@ -5,3 +5,15 @@
   Created by gkhkaya on 14.09.2025.
   
 */
+
+"Auth.Error.RegistrationFailed" = "Registration failed: %@";
+"Auth.Error.LoginFailed" = "Login failed: %@";
+"Auth.Error.PasswordResetFailed" = "Password reset failed: %@";
+"Auth.Error.EmailUpdateFailed" = "Email update failed: %@";
+"Auth.Error.Unknown" = "An unknown authentication error occurred.";
+
+"Firestore.Error.ReadFailed" = "Data read failed: %@";
+"Firestore.Error.WriteFailed" = "Data write failed: %@";
+"Firestore.Error.DocumentNotFound" = "Document not found: %@";
+"Firestore.Error.NetworkError" = "Network error occurred: %@";
+"Firestore.Error.Unknown" = "An unknown Firestore error occurred.";

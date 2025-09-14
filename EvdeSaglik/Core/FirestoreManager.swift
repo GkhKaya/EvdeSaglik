@@ -38,13 +38,17 @@ final class FirestoreManager: ObservableObject {
      }
      ```
      */
-    func addDocument<T: Codable>(to collection: String, object: T, completion: ((Error?) -> Void)? = nil) {
+    func addDocument<T: Codable>(to collection: String, object: T, completion: ((AppError?) -> Void)? = nil) {
         do {
             _ = try db.collection(collection).addDocument(from: object, encoder: Firestore.Encoder()) { error in
-                completion?(error)
+                if let firestoreError = error as NSError? {
+                    completion?(.firestoreError(.writeFailed(firestoreError.localizedDescription)))
+                } else {
+                    completion?(nil)
+                }
             }
-        } catch {
-            completion?(error)
+        } catch let encodeError as NSError {
+            completion?(.firestoreError(.writeFailed(encodeError.localizedDescription)))
         }
     }
     
@@ -59,13 +63,17 @@ final class FirestoreManager: ObservableObject {
         - object: Codable object containing updated data.
         - completion: Optional completion handler returning an Error if any.
      */
-    func updateDocument<T: Codable>(collection: String, documentId: String, object: T, completion: ((Error?) -> Void)? = nil) {
+    func updateDocument<T: Codable>(collection: String, documentId: String, object: T, completion: ((AppError?) -> Void)? = nil) {
         do {
             try db.collection(collection).document(documentId).setData(from: object, merge: true) { error in
-                completion?(error)
+                if let firestoreError = error as NSError? {
+                    completion?(.firestoreError(.writeFailed(firestoreError.localizedDescription)))
+                } else {
+                    completion?(nil)
+                }
             }
-        } catch {
-            completion?(error)
+        } catch let encodeError as NSError {
+            completion?(.firestoreError(.writeFailed(encodeError.localizedDescription)))
         }
     }
     
@@ -79,9 +87,13 @@ final class FirestoreManager: ObservableObject {
         - documentId: ID of the document to delete.
         - completion: Optional completion handler returning an Error if any.
      */
-    func deleteDocument(collection: String, documentId: String, completion: ((Error?) -> Void)? = nil) {
+    func deleteDocument(collection: String, documentId: String, completion: ((AppError?) -> Void)? = nil) {
         db.collection(collection).document(documentId).delete { error in
-            completion?(error)
+            if error != nil {
+                completion?(.firestoreError(.unknown))
+            } else {
+                completion?(nil)
+            }
         }
     }
     
@@ -95,18 +107,26 @@ final class FirestoreManager: ObservableObject {
         - documentId: ID of the document to fetch.
         - completion: Completion handler returning the decoded object or nil.
      */
-    func fetchDocument<T: Codable>(collection: String, documentId: String, completion: @escaping (T?) -> Void) {
+    func fetchDocument<T: Codable>(collection: String, documentId: String, completion: @escaping (Result<T?, AppError>) -> Void) {
         db.collection(collection).document(documentId).getDocument { snapshot, error in
-            guard let snapshot = snapshot, snapshot.exists, error == nil else {
-                completion(nil)
+            if let firestoreError = error as NSError? {
+                completion(.failure(.firestoreError(.readFailed(firestoreError.localizedDescription))))
+                return
+            }
+            guard let snapshot = snapshot else {
+                completion(.failure(.firestoreError(.unknown)))
+                return
+            }
+            guard snapshot.exists else {
+                completion(.failure(.firestoreError(.documentNotFound("Document with ID \(documentId) not found."))))
                 return
             }
             do {
                 let object = try snapshot.data(as: T.self)
-                completion(object)
-            } catch {
-                print("Firestore decode error: \(error)")
-                completion(nil)
+                completion(.success(object))
+            } catch let decodeError as NSError {
+                print("Firestore decode error: \(decodeError)")
+                completion(.failure(.firestoreError(.readFailed(decodeError.localizedDescription))))
             }
         }
     }
@@ -120,16 +140,20 @@ final class FirestoreManager: ObservableObject {
         - collection: Name of the Firestore collection.
         - completion: Completion handler returning an array of decoded objects.
      */
-    func fetchAllDocuments<T: Codable>(collection: String, completion: @escaping ([T]) -> Void) {
+    func fetchAllDocuments<T: Codable>(collection: String, completion: @escaping (Result<[T], AppError>) -> Void) {
         db.collection(collection).getDocuments { snapshot, error in
-            guard let documents = snapshot?.documents, error == nil else {
-                completion([])
+            if let firestoreError = error as NSError? {
+                completion(.failure(.firestoreError(.readFailed(firestoreError.localizedDescription))))
+                return
+            }
+            guard let documents = snapshot?.documents else {
+                completion(.failure(.firestoreError(.unknown)))
                 return
             }
             let objects: [T] = documents.compactMap { doc in
                 try? doc.data(as: T.self)
             }
-            completion(objects)
+            completion(.success(objects))
         }
     }
     
@@ -151,16 +175,20 @@ final class FirestoreManager: ObservableObject {
      }
      ```
      */
-    func queryDocuments<T: Codable>(collection: String, field: String, isEqualTo value: Any, completion: @escaping ([T]) -> Void) {
+    func queryDocuments<T: Codable>(collection: String, field: String, isEqualTo value: Any, completion: @escaping (Result<[T], AppError>) -> Void) {
         db.collection(collection).whereField(field, isEqualTo: value).getDocuments { snapshot, error in
-            guard let documents = snapshot?.documents, error == nil else {
-                completion([])
+            if let firestoreError = error as NSError? {
+                completion(.failure(.firestoreError(.readFailed(firestoreError.localizedDescription))))
+                return
+            }
+            guard let documents = snapshot?.documents else {
+                completion(.failure(.firestoreError(.unknown)))
                 return
             }
             let objects: [T] = documents.compactMap { doc in
                 try? doc.data(as: T.self)
             }
-            completion(objects)
+            completion(.success(objects))
         }
     }
     
@@ -180,16 +208,20 @@ final class FirestoreManager: ObservableObject {
      }
      ```
      */
-    func listenToCollection<T: Codable>(collection: String, completion: @escaping ([T]) -> Void) -> ListenerRegistration {
+    func listenToCollection<T: Codable>(collection: String, completion: @escaping (Result<[T], AppError>) -> Void) -> ListenerRegistration {
         let listener = db.collection(collection).addSnapshotListener { snapshot, error in
-            guard let documents = snapshot?.documents, error == nil else {
-                completion([])
+            if let firestoreError = error as NSError? {
+                completion(.failure(.firestoreError(.networkError(firestoreError.localizedDescription))))
+                return
+            }
+            guard let documents = snapshot?.documents else {
+                completion(.failure(.firestoreError(.unknown)))
                 return
             }
             let objects: [T] = documents.compactMap { doc in
                 try? doc.data(as: T.self)
             }
-            completion(objects)
+            completion(.success(objects))
         }
         return listener
     }

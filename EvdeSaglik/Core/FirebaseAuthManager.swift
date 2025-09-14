@@ -29,12 +29,16 @@ final class FirebaseAuthManager: ObservableObject {
         - password: User password.
         - completion: Completion handler with optional error.
      */
-    func register(email: String, password: String, completion: @escaping (Error?) -> Void) {
+    func register(email: String, password: String, completion: @escaping (AppError?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let user = result?.user {
                 self?.currentUser = user
             }
-            completion(error)
+            if let firebaseError = error as NSError? {
+                completion(.authError(.registrationFailed(firebaseError.localizedDescription)))
+            } else {
+                completion(nil)
+            }
         }
     }
     
@@ -47,12 +51,16 @@ final class FirebaseAuthManager: ObservableObject {
         - password: User password.
         - completion: Completion handler with optional error.
      */
-    func login(email: String, password: String, completion: @escaping (Error?) -> Void) {
+    func login(email: String, password: String, completion: @escaping (AppError?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             if let user = result?.user {
                 self?.currentUser = user
             }
-            completion(error)
+            if let firebaseError = error as NSError? {
+                completion(.authError(.loginFailed(firebaseError.localizedDescription)))
+            } else {
+                completion(nil)
+            }
         }
     }
     
@@ -62,13 +70,13 @@ final class FirebaseAuthManager: ObservableObject {
      
      - Parameter completion: Completion handler with optional error.
      */
-    func signOut(completion: @escaping (Error?) -> Void) {
+    func signOut(completion: @escaping (AppError?) -> Void) {
         do {
             try Auth.auth().signOut()
             currentUser = nil
             completion(nil)
-        } catch let signOutError {
-            completion(signOutError)
+        } catch _ as NSError {
+            completion(.authError(.unknown))
         }
     }
     
@@ -80,9 +88,13 @@ final class FirebaseAuthManager: ObservableObject {
         - email: Email of the user to reset password.
         - completion: Completion handler with optional error.
      */
-    func resetPassword(email: String, completion: @escaping (Error?) -> Void) {
+    func resetPassword(email: String, completion: @escaping (AppError?) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
-            completion(error)
+            if let firebaseError = error as NSError? {
+                completion(.authError(.passwordResetFailed(firebaseError.localizedDescription)))
+            } else {
+                completion(nil)
+            }
         }
     }
     
@@ -94,16 +106,19 @@ final class FirebaseAuthManager: ObservableObject {
         - newEmail: The new email address.
         - completion: Completion handler with optional error.
      */
-    func updateEmail(newEmail: String, completion: @escaping (Error?) -> Void) {
+    func updateEmail(newEmail: String, completion: @escaping (AppError?) -> Void) {
         guard let user = Auth.auth().currentUser else {
-            completion(NSError(domain: "AuthManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "No logged-in user"]))
+            completion(.authError(.unknown))
             return
         }
-        user.updateEmail(to: newEmail) { error in
-            if error == nil {
-                self.currentUser = Auth.auth().currentUser
+        user.sendEmailVerification(beforeUpdatingEmail: newEmail) { error in
+            if let firebaseError = error as NSError? {
+                completion(.authError(.emailUpdateFailed(firebaseError.localizedDescription)))
+            } else {
+                // E-posta doğrulama linki başarıyla gönderildi.
+                // Kullanıcıya bu konuda bilgi verilmeli ve e-postasını kontrol etmesi istenmeli.
+                completion(nil)
             }
-            completion(error)
         }
     }
     
@@ -115,13 +130,17 @@ final class FirebaseAuthManager: ObservableObject {
         - newPassword: The new password.
         - completion: Completion handler with optional error.
      */
-    func updatePassword(newPassword: String, completion: @escaping (Error?) -> Void) {
+    func updatePassword(newPassword: String, completion: @escaping (AppError?) -> Void) {
         guard let user = Auth.auth().currentUser else {
-            completion(NSError(domain: "AuthManager", code: 0, userInfo: [NSLocalizedDescriptionKey: "No logged-in user"]))
+            completion(.authError(.unknown))
             return
         }
         user.updatePassword(to: newPassword) { error in
-            completion(error)
+            if error != nil {
+                completion(.authError(.unknown))
+            } else {
+                completion(nil)
+            }
         }
     }
     

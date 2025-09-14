@@ -5,3 +5,15 @@
   Created by gkhkaya on 14.09.2025.
   
 */
+
+"Auth.Error.RegistrationFailed" = "Kayıt işlemi başarısız oldu: %@";
+"Auth.Error.LoginFailed" = "Giriş işlemi başarısız oldu: %@";
+"Auth.Error.PasswordResetFailed" = "Şifre sıfırlama işlemi başarısız oldu: %@";
+"Auth.Error.EmailUpdateFailed" = "E-posta güncelleme işlemi başarısız oldu: %@";
+"Auth.Error.Unknown" = "Bilinmeyen bir kimlik doğrulama hatası oluştu.";
+
+"Firestore.Error.ReadFailed" = "Veri okuma başarısız oldu: %@";
+"Firestore.Error.WriteFailed" = "Veri yazma başarısız oldu: %@";
+"Firestore.Error.DocumentNotFound" = "Doküman bulunamadı: %@";
+"Firestore.Error.NetworkError" = "Ağ hatası oluştu: %@";
+"Firestore.Error.Unknown" = "Bilinmeyen bir Firestore hatası oluştu.";
