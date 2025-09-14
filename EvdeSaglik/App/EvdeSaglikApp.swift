@@ -7,7 +7,6 @@
 
 import SwiftUI
 import FirebaseCore
-@main
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -18,6 +17,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 
+@main
 struct EvdeSaglikApp: App {
     
     @StateObject var firestoreManager = FirestoreManager()
@@ -27,7 +27,7 @@ struct EvdeSaglikApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LoginView()
         }
     }
 }

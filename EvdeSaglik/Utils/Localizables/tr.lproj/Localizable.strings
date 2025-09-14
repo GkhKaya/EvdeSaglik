@@ -17,3 +17,25 @@
 "Firestore.Error.DocumentNotFound" = "Doküman bulunamadı: %@";
 "Firestore.Error.NetworkError" = "Ağ hatası oluştu: %@";
 "Firestore.Error.Unknown" = "Bilinmeyen bir Firestore hatası oluştu.";
+
+// MARK: - Login
+"Login.AppName" = "Evde Sağlık";
+"Login.Title" = "Sağlığınızı Evinizden Yönetin";
+"Login.Subtitle" = "AI destekli kişisel sağlık asistanınıza hoş geldiniz";
+"Login.Email.Label" = "E-posta";
+"Login.Email.Placeholder" = "sağlık@email.com";
+"Login.Password.Label" = "Şifre";
+"Login.Password.Placeholder" = "Güvenli şifreniz";
+"Login.ForgotPassword" = "Şifremi unuttum";
+"Login.SignIn" = "Giriş Yap";
+"Login.SignUp.Title" = "Hesabınız yok mu?";
+"Login.SignUp.Action" = "Hemen kayıt olun";
+"Login.Validation.Invalid" = "Lütfen geçerli bir e‑posta ve şifre giriniz.";
+"Login.Or" = "veya";
+"Login.Continue.Apple" = "Apple ile devam et";
+"Login.Continue.Google" = "Google ile devam et";
+"Login.Benefits.Title" = "Neden Evde Sağlık?";
+"Login.Benefits.AI" = "AI destekli hastalık tahmini";
+"Login.Benefits.Home" = "Evde uygulanabilir çözümler";
+"Login.Benefits.Lab" = "Tahlil sonuçları analizi";
+"Login.RememberMe" = "Beni hatırla";

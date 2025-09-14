@@ -17,3 +17,25 @@
 "Firestore.Error.DocumentNotFound" = "Document not found: %@";
 "Firestore.Error.NetworkError" = "Network error occurred: %@";
 "Firestore.Error.Unknown" = "An unknown Firestore error occurred.";
+
+// MARK: - Login
+"Login.AppName" = "Evde Sağlık";
+"Login.Title" = "Manage Your Health from Home";
+"Login.Subtitle" = "Welcome to your AI-powered personal health assistant";
+"Login.Email.Label" = "Email";
+"Login.Email.Placeholder" = "health@email.com";
+"Login.Password.Label" = "Password";
+"Login.Password.Placeholder" = "Your secure password";
+"Login.ForgotPassword" = "Forgot password";
+"Login.SignIn" = "Sign In";
+"Login.SignUp.Title" = "Don't have an account?";
+"Login.SignUp.Action" = "Sign up now";
+"Login.Validation.Invalid" = "Please enter a valid email and password.";
+"Login.Or" = "or";
+"Login.Continue.Apple" = "Continue with Apple";
+"Login.Continue.Google" = "Continue with Google";
+"Login.Benefits.Title" = "Why Evde Sağlık?";
+"Login.Benefits.AI" = "AI-powered disease prediction";
+"Login.Benefits.Home" = "Home-applicable solutions";
+"Login.Benefits.Lab" = "Lab result analysis";
+"Login.RememberMe" = "Remember me";

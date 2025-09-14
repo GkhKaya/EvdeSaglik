@@ -1,3 +1,10 @@
+//
+//  AppError.swift
+//  EvdeSaglik
+//
+//  Created by gkhkaya on 14.09.2025.
+//
+
 import Foundation
 
 enum AppError: LocalizedError {
@@ -63,25 +70,3 @@ enum FirestoreError: LocalizedError {
     }
 }
 
-/*
-// Örnek AI/Backend Hata Enum'u (isteğe bağlı)
-enum AIBackendError: LocalizedError {
-    case predictionFailed(String)
-    case serverError(String)
-    case invalidInput(String)
-    case unknown
-
-    var errorDescription: String? {
-        switch self {
-        case .predictionFailed(let message):
-            return NSLocalizedString("AIBackend.Error.PredictionFailed", comment: message)
-        case .serverError(let message):
-            return NSLocalizedString("AIBackend.Error.ServerError", comment: message)
-        case .invalidInput(let message):
-            return NSLocalizedString("AIBackend.Error.InvalidInput", comment: message)
-        case .unknown:
-            return NSLocalizedString("AIBackend.Error.Unknown", comment: "Bilinmeyen bir AI/Backend hatası oluştu.")
-        }
-    }
-}
-*/

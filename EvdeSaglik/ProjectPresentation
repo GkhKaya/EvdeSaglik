@@ -1,0 +1,48 @@
+Evde Sağlık – Yapay Zeka Destekli Sağlık Asistanı
+
+Evde Sağlık, kullanıcıların sağlık durumlarını yönetmelerine yardımcı olan AI destekli bir mobil uygulamadır. Uygulamanın temel amacı, özellikle Türkiye’deki yoğun hastane ortamında gereksiz doktora gitmeleri azaltmak, kullanıcıların sağlık verilerini güvenli ve kişiselleştirilmiş bir şekilde takip etmek ve evde uygulanabilecek çözüm yolları sunmaktır.
+
+⸻
+
+Temel Özellikler
+	1.	Hangi Alana Gitmeliyim?
+Kullanıcının belirtilen semptomlarına göre, hangi tıp alanına başvurması gerektiğini AI tahmini ile önerir.
+	2.	Hastalığım Ne Olabilir?
+Semptomlar analiz edilerek olası hastalıklar listelenir. Kullanıcının geçmiş sağlık verileri ile tahminler kişiselleştirilir.
+	3.	Evde Ne Yapabilirim?
+Kullanıcının semptomlarına göre, evde uygulanabilecek adımlar önerilir. Örnek: Tansiyon düştüğünde basit önlemler.
+	4.	Kan Tahlili Sonuçları
+Kullanıcının kan tahlili verileri analiz edilerek ilaç veya doğal yöntem önerileri sunulur.
+	5.	Doğal Çözüm Önerileri
+Kullanıcı ilaç kullanmak istemediğinde, AI doğal çözümler önerir. Örnek: Baş ağrısı için bol su, hafif egzersiz, chia tohumu gibi yöntemler.
+	6.	Cilt Problemleri Analizi
+Kullanıcı cilt görüntüsünü yükler, AI (Core ML) modeli analizi yapar ve olası cilt rahatsızlıklarını listeler.
+	7.	Kullanıcı Profili ve Kişiselleştirme
+Yaş, cinsiyet, hastalık geçmişi gibi bilgiler ile AI önerileri kişiselleştirilir. Kullanıcı geçmiş semptomları ve önerileri kaydedebilir.
+
+⸻
+
+Teknoloji ve AI Kullanımı
+	•	Frontend: SwiftUI ile modern ve responsive UI
+	•	Backend: Firebase Authentication & Firestore
+	•	AI Modelleri:
+	•	DeepSeek v3: Semptom analizi, hastalık tahmini ve evde çözüm önerileri
+	•	GPT-4o-mini: Doğal çözüm önerileri
+	•	Cilt Analizi: Core ML modeli ile görsel tabanlı tespit
+	•	Responsive Tasarım: ProjectPadding & ProjectRadius ile cihaz boyutuna göre uyumlu
+
+⸻
+
+Tasarım Yaklaşımı
+	•	Minimalist UI: Ana sayfa, kullanıcı sorusuna hızlı cevap vermeye odaklı
+	•	Renkler: Düz siyah veya beyaz arka plan, Apple native renkler (buton ve metin)
+	•	Utilsteki tasarim normalleri
+	•	Animasyonlar: Buton tap, textfield focus ve alert/slide-in animasyonları
+	•	Kullanıcı Dostu: Light/dark mode uyumlu, tüm ekranlar responsive
+
+⸻
+
+Hedef
+	•	Hastane yoğunluğunu azaltmak
+	•	Kullanıcılara güvenilir ve hızlı sağlık bilgisi sunmak
+	•	AI destekli kişiselleştirilmiş önerilerle evde sağlık yönetimini güçlendirmek
