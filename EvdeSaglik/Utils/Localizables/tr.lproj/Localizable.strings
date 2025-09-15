@@ -38,6 +38,20 @@
 "Register.Error.WeakPassword" = "Şifre en az 6 karakter olmalıdır.";
 "Register.Error.Generic" = "Hesap oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.";
 
+// MARK: - Register Validation Hints
+"Register.EmailHint.Invalid" = "Lütfen geçerli bir e-posta adresi giriniz.";
+"Register.PasswordHint.MinLength" = "En az 8 karakter";
+"Register.PasswordHint.Uppercase" = "Büyük harf";
+"Register.PasswordHint.Lowercase" = "Küçük harf";
+"Register.PasswordHint.Number" = "Sayı";
+"Register.PasswordHint.SpecialCharacter" = "Özel karakter";
+
+// MARK: - Password Strength
+"Password.Strength.Weak" = "Zayıf";
+"Password.Strength.Medium" = "Orta";
+"Password.Strength.Strong" = "Güçlü";
+"Password.Strength.VeryStrong" = "Çok Güçlü";
+
 // MARK: - Login
 "Login.AppName" = "Evde Sağlık";
 "Login.Title" = "Sağlığınızı Evinizden Yönetin";

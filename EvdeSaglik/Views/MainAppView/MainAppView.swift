@@ -61,7 +61,7 @@ struct MainAppView: View {
                         )
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.HomeRemedies", comment: "What can I do at home?"),
-                            icon: "house.medical",
+                            icon: "house", // Changed from "house.medical" to "house"
                             action: {}
                         )
                         MainFeatureCard(

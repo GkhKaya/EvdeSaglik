@@ -38,6 +38,20 @@
 "Register.Error.WeakPassword" = "Password must be at least 6 characters.";
 "Register.Error.Generic" = "An error occurred while creating your account. Please try again.";
 
+// MARK: - Register Validation Hints
+"Register.EmailHint.Invalid" = "Please enter a valid email address.";
+"Register.PasswordHint.MinLength" = "Min 8 characters";
+"Register.PasswordHint.Uppercase" = "Uppercase letter";
+"Register.PasswordHint.Lowercase" = "Lowercase letter";
+"Register.PasswordHint.Number" = "A number";
+"Register.PasswordHint.SpecialCharacter" = "A special character";
+
+// MARK: - Password Strength
+"Password.Strength.Weak" = "Weak";
+"Password.Strength.Medium" = "Medium";
+"Password.Strength.Strong" = "Strong";
+"Password.Strength.VeryStrong" = "Very Strong";
+
 // MARK: - Login
 "Login.AppName" = "Evde Sağlık";
 "Login.Title" = "Manage Your Health from Home";

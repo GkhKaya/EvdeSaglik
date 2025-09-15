@@ -13,55 +13,51 @@ struct RootView: View {
     @EnvironmentObject var appStateHolder: AppStateHolder
     
     @State private var showRegisterView = false
-    @State private var showOnboardingView = false
+    // Removed @State private var showOnboardingView = false as it's no longer needed for fullScreenCover
     
     var body: some View {
         Group { // Use a Group as the top-level container for all content and modifiers
-            switch appStateHolder.appState {
-            case .unauthenticated:
-                // Unauthenticated state: Login flow within its own NavigationView
-                NavigationView {
-                    LoginView(onShowRegister: { self.showRegisterView = true })
-                        .environmentObject(authManager)
-                }
-                // Sheet for RegisterView is applied here, as it's part of the unauthenticated flow
-                .sheet(isPresented: $showRegisterView) {
-                    RegisterView()
+            if appStateHolder.isInitializing {
+                // Display a loading indicator while the app state is being determined
+                ProgressView(NSLocalizedString("Loading.Initializing", comment: "Initializing app"))
+                    .progressViewStyle(CircularProgressViewStyle())
+            } else {
+                switch appStateHolder.appState {
+                case .unauthenticated:
+                    // Unauthenticated state: Login flow within its own NavigationView
+                    NavigationView {
+                        LoginView(onShowRegister: { self.showRegisterView = true })
+                            .environmentObject(authManager)
+                    }
+                    // Sheet for RegisterView is applied here, as it's part of the unauthenticated flow
+                    .sheet(isPresented: $showRegisterView) {
+                        RegisterView()
+                            .environmentObject(authManager)
+                            .environmentObject(firestoreManager)
+                    }
+                
+                case .onboardingRequired:
+                    // Onboarding state: InteractiveIntroductionView presented directly.
+                    InteractiveIntroductionView(firestoreManager: firestoreManager, authManager: authManager, onOnboardingComplete: {
+                        self.appStateHolder.appState = .mainApp // Signal completion to AppStateHolder
+                        self.authManager.didJustRegister = false // Reset after onboarding
+                    })
                         .environmentObject(authManager)
                         .environmentObject(firestoreManager)
+                        .environmentObject(appStateHolder)
+                
+                case .mainApp:
+                    // Main app state: Main content within its own NavigationView
+                    MainAppView() // Present the new MainAppView
+                        .environmentObject(authManager)
+                        .environmentObject(firestoreManager)
+                        .environmentObject(appStateHolder)
                 }
-            
-            case .onboardingRequired:
-                // Onboarding state: InteractiveIntroductionView presented as a fullScreenCover.
-                // The base view can be an EmptyView or a loading indicator.
-                EmptyView()
-            
-            case .mainApp:
-                // Main app state: Main content within its own NavigationView
-                MainAppView() // Present the new MainAppView
-                    .environmentObject(authManager)
-                    .environmentObject(firestoreManager)
-                    .environmentObject(appStateHolder)
             }
         }
-        // fullScreenCover for InteractiveIntroductionView, controlled by showOnboardingView
-        .fullScreenCover(isPresented: $showOnboardingView) {
-            InteractiveIntroductionView(onOnboardingComplete: {
-                self.appStateHolder.appState = .mainApp // Signal completion to AppStateHolder
-                self.authManager.didJustRegister = false // Reset after onboarding
-                self.showOnboardingView = false // Dismiss onboarding after completion
-            })
-                .environmentObject(authManager)
-                .environmentObject(firestoreManager)
-                .environmentObject(appStateHolder)
-        }
-        .onReceive(appStateHolder.$appState) { newState in
-            // When appState transitions to onboardingRequired, explicitly show the fullScreenCover
-            if newState == .onboardingRequired && !self.showOnboardingView {
-                self.showOnboardingView = true
-            } else if newState == .unauthenticated {
-                self.showOnboardingView = false // Dismiss onboarding if user logs out or is unauthenticated
-            }
+        .onAppear { // Move .onAppear here to apply to the Group
+            // Re-check authentication status every time RootView appears
+            appStateHolder.checkAuthenticationStatus()
         }
     }
 }
@@ -71,4 +67,5 @@ struct RootView: View {
         .environmentObject(FirebaseAuthManager())
         .environmentObject(FirestoreManager())
         .environmentObject(AppStateHolder())
+        .environmentObject(UserManager())
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import EvdeSaglik // Import the main module to access PasswordStrength
 
 struct RegisterView: View {
     // MARK: - Properties
@@ -88,24 +89,52 @@ private extension RegisterView {
     
     /// Email input field
     var emailField: some View {
-        CustomTextField(
-            title: NSLocalizedString("Register.Email.Label", comment: "Email label"),
-            placeholder: NSLocalizedString("Register.Email.Placeholder", comment: "Email placeholder"),
-            icon: "envelope",
-            text: $viewModel.email
-        )
+        VStack(alignment: .leading, spacing: ResponsivePadding.xSmall) {
+            CustomTextField(
+                title: NSLocalizedString("Register.Email.Label", comment: "Email label"),
+                placeholder: NSLocalizedString("Register.Email.Placeholder", comment: "Email placeholder"),
+                icon: "envelope",
+                text: $viewModel.email
+            )
+            if !viewModel.emailValidationMessage.isEmpty {
+                Text(viewModel.emailValidationMessage)
+                    .font(Font.captionResponsive) // Explicitly specify Font.captionResponsive
+                    .foregroundStyle(.red)
+            }
+        }
     }
     
     /// Password input field with toggle
     var passwordField: some View {
-        CustomTextField(
-            title: NSLocalizedString("Register.Password.Label", comment: "Password label"),
-            placeholder: NSLocalizedString("Register.Password.Placeholder", comment: "Password placeholder"),
-            icon: "lock",
-            text: $viewModel.password,
-            isSecure: true,
-            showPasswordToggle: true
-        )
+        VStack(alignment: .leading, spacing: ResponsivePadding.xSmall) {
+            CustomTextField(
+                title: NSLocalizedString("Register.Password.Label", comment: "Password label"),
+                placeholder: NSLocalizedString("Register.Password.Placeholder", comment: "Password placeholder"),
+                icon: "lock",
+                text: $viewModel.password,
+                isSecure: true,
+                showPasswordToggle: true
+            )
+            if !viewModel.passwordValidationMessage.isEmpty {
+                Text(viewModel.passwordValidationMessage)
+                    .font(Font.captionResponsive) // Explicitly specify Font.captionResponsive
+                    .foregroundStyle(.red)
+            }
+            
+            // Password Strength Indicator
+            if !viewModel.password.isEmpty {
+                HStack(spacing: ResponsivePadding.small) {
+                    ProgressView(value: Double(viewModel.passwordStrength.rawValue), total: 4.0) // Changed total to a direct Double value
+                        .progressViewStyle(LinearProgressViewStyle(tint: viewModel.passwordStrength.color))
+                        .frame(height: 8)
+                        .cornerRadius(ResponsiveRadius.small)
+                    Text(viewModel.passwordStrength.localizedString)
+                        .font(Font.captionResponsive)
+                        .foregroundStyle(viewModel.passwordStrength.color)
+                }
+                .padding(.horizontal, ResponsivePadding.small)
+            }
+        }
     }
     
     /// Confirm password input field with toggle

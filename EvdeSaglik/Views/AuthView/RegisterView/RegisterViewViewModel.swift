@@ -7,6 +7,10 @@
 
 import Foundation
 import Combine
+import SwiftUI // Added for Color
+import EvdeSaglik // Import the main module to access PasswordStrength
+
+// Removed PasswordStrength enum - moved to its own file
 
 final class RegisterViewViewModel: ObservableObject {
     // MARK: - Published Properties
@@ -17,6 +21,7 @@ final class RegisterViewViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var shouldNavigateToLogin: Bool = false
     @Published var didRegisterSuccessfully: Bool = false // New property
+    @Published var passwordStrength: PasswordStrength = .none // Password strength indicator
     
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
@@ -26,12 +31,51 @@ final class RegisterViewViewModel: ObservableObject {
         return isEmailValid && isPasswordValid && isConfirmPasswordValid
     }
     
+    var emailValidationMessage: String {
+        if email.isEmpty { return "" }
+        return isEmailValid ? "" : NSLocalizedString("Register.EmailHint.Invalid", comment: "Invalid Email Format")
+    }
+    
+    var passwordValidationMessage: String {
+        if password.isEmpty { return "" }
+        var messages: [String] = []
+        if password.count < 8 {
+            messages.append(NSLocalizedString("Register.PasswordHint.MinLength", comment: "Min 8 characters"))
+        }
+        if password.range(of: "[A-Z]", options: .regularExpression) == nil {
+            messages.append(NSLocalizedString("Register.PasswordHint.Uppercase", comment: "Uppercase letter"))
+        }
+        if password.range(of: "[a-z]", options: .regularExpression) == nil {
+            messages.append(NSLocalizedString("Register.PasswordHint.Lowercase", comment: "Lowercase letter"))
+        }
+        if password.range(of: "[0-9]", options: .regularExpression) == nil {
+            messages.append(NSLocalizedString("Register.PasswordHint.Number", comment: "A number"))
+        }
+        if password.range(of: "[^a-zA-Z0-9]", options: .regularExpression) == nil {
+            messages.append(NSLocalizedString("Register.PasswordHint.SpecialCharacter", comment: "A special character"))
+        }
+        return messages.joined(separator: ", ")
+    }
+    
     private var isEmailValid: Bool {
-        return email.contains("@") && email.contains(".")
+        do {
+            let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+            let regex = try NSRegularExpression(pattern: emailRegex, options: .caseInsensitive)
+            return regex.firstMatch(in: email, options: [], range: NSRange(location: 0, length: email.utf16.count)) != nil
+        } catch {
+            print("Regex error: \(error.localizedDescription)")
+            return false
+        }
     }
     
     private var isPasswordValid: Bool {
-        return password.count >= 6
+        let minLength = password.count >= 8
+        let hasUppercase = password.range(of: "[A-Z]", options: .regularExpression) != nil
+        let hasLowercase = password.range(of: "[a-z]", options: .regularExpression) != nil
+        let hasNumber = password.range(of: "[0-9]", options: .regularExpression) != nil
+        let hasSpecialCharacter = password.range(of: "[^a-zA-Z0-9]", options: .regularExpression) != nil
+        
+        return minLength && hasUppercase && hasLowercase && hasNumber && hasSpecialCharacter
     }
     
     private var isConfirmPasswordValid: Bool {
@@ -75,10 +119,30 @@ final class RegisterViewViewModel: ObservableObject {
     private func setupValidation() {
         // Clear error message when user starts typing
         Publishers.CombineLatest3($email, $password, $confirmPassword)
-            .sink { [weak self] _, _, _ in
+            .sink { [weak self] _, password, _ in
                 self?.errorMessage = ""
+                self?.calculatePasswordStrength(password: password)
             }
             .store(in: &cancellables)
+    }
+    
+    private func calculatePasswordStrength(password: String) {
+        var strengthScore = 0
+        
+        if password.count >= 8 { strengthScore += 1 }
+        if password.range(of: "[A-Z]", options: .regularExpression) != nil { strengthScore += 1 }
+        if password.range(of: "[a-z]", options: .regularExpression) != nil { strengthScore += 1 }
+        if password.range(of: "[0-9]", options: .regularExpression) != nil { strengthScore += 1 }
+        if password.range(of: "[^a-zA-Z0-9]", options: .regularExpression) != nil { strengthScore += 1 }
+        
+        switch strengthScore {
+        case 0: self.passwordStrength = .none
+        case 1...2: self.passwordStrength = .weak
+        case 3: self.passwordStrength = .medium
+        case 4: self.passwordStrength = .strong
+        case 5: self.passwordStrength = .veryStrong
+        default: self.passwordStrength = .none
+        }
     }
     
     private func handleAuthError(_ error: AppError) {

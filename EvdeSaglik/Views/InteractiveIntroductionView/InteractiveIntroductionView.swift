@@ -15,9 +15,9 @@ struct InteractiveIntroductionView: View {
     
     let onOnboardingComplete: (() -> Void)?
     
-    init(onOnboardingComplete: (() -> Void)? = nil) {
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager, onOnboardingComplete: (() -> Void)? = nil) {
         self.onOnboardingComplete = onOnboardingComplete
-        _viewModel = ObservedObject(wrappedValue: InteractiveIntroductionViewModel(firestoreManager: FirestoreManager(), authManager: FirebaseAuthManager()))
+        _viewModel = ObservedObject(wrappedValue: InteractiveIntroductionViewModel(firestoreManager: firestoreManager, authManager: authManager))
     }
     
     // MARK: - Body
@@ -508,9 +508,3 @@ struct SummaryCard: View {
     }
 }
 
-// MARK: - Preview
-#Preview {
-    InteractiveIntroductionView()
-        .environmentObject(FirestoreManager())
-        .environmentObject(FirebaseAuthManager())
-}

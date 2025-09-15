@@ -163,4 +163,7 @@ private extension LoginView {
 #Preview {
     LoginView()
         .environmentObject(FirebaseAuthManager())
+        .environmentObject(FirestoreManager())
+        .environmentObject(AppStateHolder())
+        .environmentObject(UserManager())
 }

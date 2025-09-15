@@ -33,14 +33,16 @@ final class FirebaseAuthManager: ObservableObject {
      */
     func register(email: String, password: String, completion: @escaping (AppError?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
-            if let user = result?.user {
-                self?.currentUser = user
-                self?.didJustRegister = true
-            }
-            if let firebaseError = error as NSError? {
-                completion(.authError(.registrationFailed(firebaseError.localizedDescription)))
-            } else {
-                completion(nil)
+            DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                if let user = result?.user {
+                    self?.currentUser = user
+                    self?.didJustRegister = true
+                }
+                if let firebaseError = error as NSError? {
+                    completion(.authError(.registrationFailed(firebaseError.localizedDescription)))
+                } else {
+                    completion(nil)
+                }
             }
         }
     }
@@ -52,17 +54,21 @@ final class FirebaseAuthManager: ObservableObject {
      - Parameters:
         - email: User email.
         - password: User password.
+        - rememberMe: Boolean indicating if user wants to be remembered.
         - completion: Completion handler with optional error.
      */
-    func login(email: String, password: String, completion: @escaping (AppError?) -> Void) {
+    func login(email: String, password: String, rememberMe: Bool, completion: @escaping (AppError?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
-            if let user = result?.user {
-                self?.currentUser = user
-            }
-            if let firebaseError = error as NSError? {
-                completion(.authError(.loginFailed(firebaseError.localizedDescription)))
-            } else {
-                completion(nil)
+            DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                if let user = result?.user {
+                    self?.currentUser = user
+                    self?.setRememberMe(value: rememberMe)
+                }
+                if let firebaseError = error as NSError? {
+                    completion(.authError(.loginFailed(firebaseError.localizedDescription)))
+                } else {
+                    completion(nil)
+                }
             }
         }
     }
@@ -76,10 +82,15 @@ final class FirebaseAuthManager: ObservableObject {
     func signOut(completion: @escaping (AppError?) -> Void) {
         do {
             try Auth.auth().signOut()
-            currentUser = nil
-            completion(nil)
+            DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                self.currentUser = nil
+                self.setRememberMe(value: false) // Clear remember me preference on sign out
+                completion(nil)
+            }
         } catch _ as NSError {
-            completion(.authError(.unknown))
+            DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                completion(.authError(.unknown))
+            }
         }
     }
     
@@ -156,4 +167,17 @@ final class FirebaseAuthManager: ObservableObject {
     func getCurrentUser() -> User? {
         return Auth.auth().currentUser
     }
+    
+    // MARK: - Remember Me Preference
+    private let rememberMeKey = "rememberMeUserDefaultKey"
+    
+    func setRememberMe(value: Bool) {
+        UserDefaults.standard.set(value, forKey: rememberMeKey)
+    }
+    
+    func getRememberMe() -> Bool {
+        return UserDefaults.standard.bool(forKey: rememberMeKey)
+    }
+    
+    // Removed checkAndSignOutIfRememberMeFalse() as per user request to simplify startup flow.
 }

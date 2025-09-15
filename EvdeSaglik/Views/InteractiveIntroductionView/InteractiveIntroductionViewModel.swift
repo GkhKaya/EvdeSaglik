@@ -105,6 +105,8 @@ final class InteractiveIntroductionViewModel: ObservableObject {
                 
                 if error == nil {
                     self?.shouldNavigateToMain = true
+                    // Reset didJustRegister flag after successful onboarding
+                    self?.authManager.didJustRegister = false
                 }
             }
         }

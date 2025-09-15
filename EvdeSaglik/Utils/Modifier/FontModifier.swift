@@ -41,6 +41,10 @@ extension Font {
         .custom("SFProText-Regular", size: UIFont.preferredFont(forTextStyle: .footnote).pointSize * fontScaleFactor)
     }
 
+    static var captionResponsive: Font { // Added this new property
+        .custom("SFProText-Regular", size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * fontScaleFactor)
+    }
+
     static var caption1Responsive: Font {
         .custom("SFProText-Regular", size: UIFont.preferredFont(forTextStyle: .caption1).pointSize * fontScaleFactor)
     }

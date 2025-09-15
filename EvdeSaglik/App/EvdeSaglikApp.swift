@@ -19,76 +19,126 @@ enum AppState {
 // A simple ObservableObject to hold and manage the AppState
 class AppStateHolder: ObservableObject {
     @Published var appState: AppState = .unauthenticated
+    @Published var isInitializing: Bool = true // New property to indicate initial state determination
     
     // Dependencies will be injected via environmentObjects or directly
     var authManager: FirebaseAuthManager? // Will be set by EvdeSaglikApp
     var firestoreManager: FirestoreManager? // Will be set by EvdeSaglikApp
+    var userManager: UserManager? // Will be set by EvdeSaglikApp
     
     private var cancellables = Set<AnyCancellable>()
     
     init() {
-        // Setup observers here once managers are set, or use a setup function
+        // Initialize appState directly here to ensure unauthenticated state from the start.
+        self.appState = .unauthenticated
     }
     
-    func setupObservers(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager) {
+    // MARK: - Setup and Initialization
+    func setupObservers(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager, userManager: UserManager) {
         self.authManager = authManager
         self.firestoreManager = firestoreManager
+        self.userManager = userManager
         
-        // Call initial status check here, after managers are set
-        checkAuthenticationStatus()
-        
+        // Observe changes in currentUser from AuthManager
         authManager.$currentUser
             .sink { [weak self] user in
                 self?.handleAuthChange(user: user)
             }
             .store(in: &cancellables)
-        
+            
+        // Observe didJustRegister flag from AuthManager
         authManager.$didJustRegister
-            .sink { [weak self] didRegister in
-                // Only trigger onboarding if a new registration just occurred and user is authenticated
-                // and onboarding is not yet complete.
-                if didRegister && self?.appState == .unauthenticated || self?.appState == .onboardingRequired {
-                    // If just registered and not yet onboarded, force onboarding
-                    self?.appState = .onboardingRequired
-                    // `didJustRegister` will be reset by InteractiveIntroductionView on completion
+            .sink { [weak self] didJustRegister in
+                if didJustRegister && self?.authManager?.currentUser != nil {
+                    DispatchQueue.main.async { // Ensure UI updates are on the main thread
+                        self?.appState = .onboardingRequired
+                    }
                 }
             }
             .store(in: &cancellables)
+            
+        // Removed immediate checkAuthenticationStatus() here, it will be called by setupInitialAppState()
+    }
+    
+    func setupInitialAppState() {
+        isInitializing = true
         
+        // Use a lightweight async mechanism to wait for Firebase Auth to settle
+        // or ensure it's checked after a slight delay.
+        // For a simple app, checking currentUser directly might be sufficient, but
+        // for robustness, we can use a small delay or a more advanced Combine/Async method.
+        
+        // For now, let's re-use checkAuthenticationStatus, but ensure it's called after
+        // setupObservers, and consider its async nature.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in // Add a small delay
+            self?.checkAuthenticationStatus() // Call the existing logic
+            DispatchQueue.main.async {
+                self?.isInitializing = false
+            }
+        }
     }
     
     private func handleAuthChange(user: User?) {
         if let user = user {
-            // User is authenticated, check onboarding status
-            fetchOnboardingStatus(for: user.uid)
+            // User is signed in, check onboarding status
+            fetchOnboardingStatus(userID: user.uid) // Pass userID here
         } else {
-            // User is not authenticated
-            appState = .unauthenticated
-        }
-    }
-    
-    private func checkAuthenticationStatus() {
-        if let user = authManager?.getCurrentUser() {
-            handleAuthChange(user: user)
-        } else {
-            appState = .unauthenticated
-        }
-    }
-    
-    private func fetchOnboardingStatus(for userId: String) {
-        firestoreManager?.fetchDocument(collection: "users", documentId: userId) { [weak self] (result: Result<UserModel?, AppError>) in
-            switch result {
-            case .success(let userModel):
-                if userModel?.isOnboardingCompleted == true {
-                    self?.appState = .mainApp
-                } else {
-                    self?.appState = .onboardingRequired
-                }
-            case .failure(let error):
-                print("Error fetching user onboarding status: \(error.localizedDescription)")
-                self?.appState = .onboardingRequired // Assume onboarding needed on error
+            // User is signed out
+            DispatchQueue.main.async {
+                // Only set to unauthenticated if rememberMe is false
+                // If rememberMe is true, and currentUser is nil, it means user was logged out for other reasons, still show login
+                // This state will be handled by remember me logic during initial check or explicit logout.
+                self.appState = .unauthenticated
             }
         }
+    }
+    
+    func checkAuthenticationStatus() { // Changed from private to internal
+        // Check if user is already authenticated on app launch
+        if let user = Auth.auth().currentUser {
+            if authManager?.getRememberMe() == true {
+                // If remembered, fetch onboarding status
+                fetchOnboardingStatus(userID: user.uid)
+            } else {
+                // Not remembered, sign out and go to login
+                authManager?.signOut(completion: { [weak self] _ in
+                    DispatchQueue.main.async {
+                        self?.appState = .unauthenticated
+                    }
+                })
+            }
+        } else {
+            // No user is signed in, go to unauthenticated state
+            DispatchQueue.main.async {
+                self.appState = .unauthenticated
+            }
+        }
+    }
+    
+    private func fetchOnboardingStatus(userID: String) {
+        firestoreManager?.fetchDocument(collection: "users", documentId: userID, completion: { [weak self] (result: Result<UserModel?, AppError>) in // Add [weak self] here
+            DispatchQueue.main.async {
+                guard let self = self else { return } // Explicitly unwrap self
+                switch result {
+                case .success(let userModel):
+                    if let userModel = userModel {
+                        // If the user has a profile and has completed onboarding
+                        if userModel.isOnboardingCompleted && userModel.isInformationHas {
+                            self.appState = .mainApp // Use self.appState
+                        } else {
+                            self.appState = .onboardingRequired // Use self.appState
+                        }
+                    } else {
+                        // User exists in Firebase Auth but no profile in Firestore
+                        self.appState = .onboardingRequired // Use self.appState
+                    }
+                case .failure(let error):
+                    print("Error fetching user profile: \(error.localizedDescription)")
+                    // If there's an error (e.g., document not found), assume onboarding is required.
+                    self.appState = .onboardingRequired // Use self.appState
+                }
+            }
+        })
     }
 }
 
@@ -100,7 +150,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
   }
 }
 
-
 @main
 struct EvdeSaglikApp: App {
     
@@ -111,17 +160,21 @@ struct EvdeSaglikApp: App {
     
     // The init() method causing issues is now correctly removed.
     
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate // Uncomment this line
     var body: some Scene {
         WindowGroup {
-            RootView()
+            RootView() // Set RootView as the root view directly
                 .environmentObject(authManager)
                 .environmentObject(firestoreManager)
                 .environmentObject(appStateHolder) // Inject AppStateHolder
                 .environmentObject(userManager) // Inject UserManager
-                .onAppear { // Setup observers after environment objects are available
-                    appStateHolder.setupObservers(authManager: authManager, firestoreManager: firestoreManager)
-                    userManager.setup(firestoreManager: firestoreManager, authManager: authManager) // Setup UserManager with actual managers
+                .onAppear {
+                    // Configure UserManager with its dependencies
+                    userManager.setup(firestoreManager: firestoreManager, authManager: authManager)
+                    // Setup AppStateHolder observers
+                    appStateHolder.setupObservers(authManager: authManager, firestoreManager: firestoreManager, userManager: userManager)
+                    // Call the new initial setup function
+                    appStateHolder.setupInitialAppState()
                 }
         }
     }

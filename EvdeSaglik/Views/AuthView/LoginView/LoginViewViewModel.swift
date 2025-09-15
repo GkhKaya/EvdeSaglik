@@ -54,7 +54,7 @@ final class LoginViewViewModel: ObservableObject {
         clearError()
         isLoading = true
         
-        authManager.login(email: email, password: password) { [weak self] error in
+        authManager.login(email: email, password: password, rememberMe: rememberMe) { [weak self] error in
             DispatchQueue.main.async {
                 self?.isLoading = false
                 
