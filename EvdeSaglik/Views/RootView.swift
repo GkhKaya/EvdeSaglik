@@ -1,3 +1,10 @@
+//
+//  RootView.swift
+//  EvdeSaglik
+//
+//  Created by gkhkaya on 15.09.2025.
+//
+
 import SwiftUI
 
 struct RootView: View {
@@ -31,29 +38,10 @@ struct RootView: View {
             
             case .mainApp:
                 // Main app state: Main content within its own NavigationView
-                NavigationView {
-                    VStack {
-                        Text(NSLocalizedString("MainApp.Title", comment: "Main App View Title")) // Placeholder for MainAppView
-                            .font(.title)
-                            .foregroundStyle(.primary)
-                        
-                        Button(NSLocalizedString("MainApp.LogoutButton", comment: "Logout button")) {
-                            authManager.signOut { error in
-                                if let error = error {
-                                    print("Error signing out: \(error.localizedDescription)")
-                                    // Optionally, show an alert to the user
-                                } else {
-                                    // Sign-out successful, appStateHolder will automatically change to .unauthenticated
-                                    print("User signed out successfully.")
-                                }
-                            }
-                        }
-                        .padding()
-                        .background(Color.red)
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: ResponsiveRadius.medium))
-                    }
-                }
+                MainAppView() // Present the new MainAppView
+                    .environmentObject(authManager)
+                    .environmentObject(firestoreManager)
+                    .environmentObject(appStateHolder)
             }
         }
         // fullScreenCover for InteractiveIntroductionView, controlled by showOnboardingView

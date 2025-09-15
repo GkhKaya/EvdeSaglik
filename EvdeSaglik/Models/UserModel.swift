@@ -23,6 +23,7 @@ struct UserModel: Identifiable, Codable {
     var nutritionHabits: String    // Nutrition habits (Poor/Average/Good)
     var profileImageUrl: String?   // Profile picture URL
     var isOnboardingCompleted: Bool // Whether user completed onboarding
+    var isInformationHas: Bool = false // New flag: Has user provided detailed info?
     var createdAt: Date            // Account creation timestamp
     
     init(
@@ -37,7 +38,8 @@ struct UserModel: Identifiable, Codable {
         physicalActivity: String = "",
         nutritionHabits: String = "",
         profileImageUrl: String? = nil,
-        isOnboardingCompleted: Bool = false
+        isOnboardingCompleted: Bool = false,
+        isInformationHas: Bool = false // Initialize the new flag
     ) {
         self.fullName = fullName
         self.email = email
@@ -51,6 +53,7 @@ struct UserModel: Identifiable, Codable {
         self.nutritionHabits = nutritionHabits
         self.profileImageUrl = profileImageUrl
         self.isOnboardingCompleted = isOnboardingCompleted
+        self.isInformationHas = isInformationHas // Assign the new flag
         self.createdAt = Date()
     }
 }

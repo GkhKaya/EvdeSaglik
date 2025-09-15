@@ -107,7 +107,9 @@ struct EvdeSaglikApp: App {
     @StateObject var firestoreManager = FirestoreManager()
     @StateObject var authManager = FirebaseAuthManager()
     @StateObject var appStateHolder = AppStateHolder()
+    @StateObject var userManager = UserManager() // Initialize without parameters
     
+    // The init() method causing issues is now correctly removed.
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
@@ -116,8 +118,10 @@ struct EvdeSaglikApp: App {
                 .environmentObject(authManager)
                 .environmentObject(firestoreManager)
                 .environmentObject(appStateHolder) // Inject AppStateHolder
+                .environmentObject(userManager) // Inject UserManager
                 .onAppear { // Setup observers after environment objects are available
                     appStateHolder.setupObservers(authManager: authManager, firestoreManager: firestoreManager)
+                    userManager.setup(firestoreManager: firestoreManager, authManager: authManager) // Setup UserManager with actual managers
                 }
         }
     }

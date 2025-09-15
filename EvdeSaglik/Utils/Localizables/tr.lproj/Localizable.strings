@@ -176,3 +176,28 @@
 // MARK: - Main App
 "MainApp.Title" = "Ana Uygulamaya Hoş Geldiniz!";
 "MainApp.LogoutButton" = "Çıkış Yap";
+
+// MARK: - MainApp View
+"MainApp.SearchBar.Title" = "Size nasıl yardımcı olabiliriz?";
+"MainApp.SearchBar.Placeholder" = "Sağlıkla ilgili bir soru sorun...";
+"MainApp.PersonalizeButton" = "Kişiselleştir";
+"MainApp.PersonalizeSheet.Title" = "Kişiselleştirme Ayarları";
+
+"MainApp.Card.Doctor" = "Hangi doktora gitmeliyim?";
+"MainApp.Card.Disease" = "Hastalığım ne olabilir?";
+"MainApp.Card.HomeRemedies" = "Evde ne yapabilirim?";
+"MainApp.Card.LabResults" = "Kan tahlili sonuçları";
+"MainApp.Card.NaturalSolutions" = "Doğal çözümler";
+"MainApp.Card.SkinProblems" = "Cilt problemleri";
+
+// MARK: - UserManager Prompts
+"UserManager.NoUserInformation" = "Kişiselleştirme için kullanıcı bilgisi mevcut değil.";
+"UserManager.Prompt.FullName" = "Kullanıcının tam adı: %@";
+"UserManager.Prompt.Age" = "Yaş: %d";
+"UserManager.Prompt.Gender" = "Cinsiyet: %@";
+"UserManager.Prompt.ChronicDiseases" = "Kronik hastalıklar: %@";
+"UserManager.Prompt.Allergies" = "Alerjiler: %@";
+"UserManager.Prompt.Medications" = "Düzenli kullanılan ilaçlar: %@";
+"UserManager.Prompt.SleepPattern" = "Uyku düzeni: %@";
+"UserManager.Prompt.PhysicalActivity" = "Fiziksel aktivite: %@";
+"UserManager.Prompt.NutritionHabits" = "Beslenme alışkanlıkları: %@";

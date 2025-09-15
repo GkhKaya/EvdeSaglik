@@ -176,3 +176,28 @@
 // MARK: - Main App
 "MainApp.Title" = "Welcome to Main App!";
 "MainApp.LogoutButton" = "Log Out";
+
+// MARK: - MainApp View
+"MainApp.SearchBar.Title" = "How can we help you?";
+"MainApp.SearchBar.Placeholder" = "Ask a health question...";
+"MainApp.PersonalizeButton" = "Personalize";
+"MainApp.PersonalizeSheet.Title" = "Personalization Settings";
+
+"MainApp.Card.Doctor" = "Which doctor should I go to?";
+"MainApp.Card.Disease" = "What could be my disease?";
+"MainApp.Card.HomeRemedies" = "What can I do at home?";
+"MainApp.Card.LabResults" = "Lab test results";
+"MainApp.Card.NaturalSolutions" = "Natural solutions";
+"MainApp.Card.SkinProblems" = "Skin problems";
+
+// MARK: - UserManager Prompts
+"UserManager.NoUserInformation" = "No user information available for personalization.";
+"UserManager.Prompt.FullName" = "User's full name: %@";
+"UserManager.Prompt.Age" = "Age: %d";
+"UserManager.Prompt.Gender" = "Gender: %@";
+"UserManager.Prompt.ChronicDiseases" = "Chronic diseases: %@";
+"UserManager.Prompt.Allergies" = "Allergies: %@";
+"UserManager.Prompt.Medications" = "Regular medications: %@";
+"UserManager.Prompt.SleepPattern" = "Sleep pattern: %@";
+"UserManager.Prompt.PhysicalActivity" = "Physical activity: %@";
+"UserManager.Prompt.NutritionHabits" = "Nutrition habits: %@";

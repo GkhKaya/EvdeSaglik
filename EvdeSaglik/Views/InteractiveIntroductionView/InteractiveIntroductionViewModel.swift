@@ -85,6 +85,7 @@ final class InteractiveIntroductionViewModel: ObservableObject {
     func finishOnboarding(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
         updateUserModel()
         userModel.isOnboardingCompleted = true
+        userModel.isInformationHas = true // Set the new flag here
         
         isLoading = true
         
