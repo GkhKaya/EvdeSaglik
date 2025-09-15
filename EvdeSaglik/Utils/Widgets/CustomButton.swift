@@ -13,6 +13,7 @@ struct CustomButton: View {
     var isEnabled: Bool = true
     var isLoading: Bool = false
     var style: ButtonStyle = .primary
+    var innerPadding: CGFloat = ResponsivePadding.medium // New parameter for internal padding
     
     enum ButtonStyle {
         case primary
@@ -32,7 +33,7 @@ struct CustomButton: View {
                     .fontWeight(.medium)
             }
             .frame(maxWidth: .infinity)
-            .padding(ResponsivePadding.medium)
+            .padding(innerPadding) // Use the new innerPadding
             .background(
                 RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
                     .fill(backgroundColor)
@@ -72,7 +73,8 @@ struct CustomButton: View {
         CustomButton(
             title: "Hesap Oluştur",
             action: { },
-            style: .secondary
+            style: .secondary,
+            innerPadding: ResponsivePadding.small // Example usage in preview
         )
         
         CustomButton(
@@ -83,3 +85,5 @@ struct CustomButton: View {
     }
     .padding()
 }
+
+

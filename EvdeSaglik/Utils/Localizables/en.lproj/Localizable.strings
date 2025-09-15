@@ -18,6 +18,26 @@
 "Firestore.Error.NetworkError" = "Network error occurred: %@";
 "Firestore.Error.Unknown" = "An unknown Firestore error occurred.";
 
+// MARK: - Register
+"Register.Title" = "Create Account";
+"Register.Subtitle" = "Create your account to start your healthy living journey.";
+"Register.Email.Label" = "Email Address";
+"Register.Email.Placeholder" = "example@email.com";
+"Register.Password.Label" = "Password";
+"Register.Password.Placeholder" = "Enter your password";
+"Register.ConfirmPassword.Label" = "Confirm Password";
+"Register.ConfirmPassword.Placeholder" = "Re-enter your password";
+"Register.Button" = "Create Account";
+"Register.Login.Prefix" = "Already have an account?";
+"Register.Login.Link" = "Sign in";
+
+// MARK: - Register Errors
+"Register.Error.InvalidForm" = "Please fill in all fields correctly.";
+"Register.Error.EmailAlreadyInUse" = "This email address is already in use.";
+"Register.Error.InvalidEmail" = "Invalid email address.";
+"Register.Error.WeakPassword" = "Password must be at least 6 characters.";
+"Register.Error.Generic" = "An error occurred while creating your account. Please try again.";
+
 // MARK: - Login
 "Login.AppName" = "Evde Sağlık";
 "Login.Title" = "Manage Your Health from Home";
@@ -39,3 +59,120 @@
 "Login.Benefits.Home" = "Home-applicable solutions";
 "Login.Benefits.Lab" = "Lab result analysis";
 "Login.RememberMe" = "Remember me";
+"Login.ForgotPassword.InvalidEmail" = "Please enter a valid email address for password reset.";
+"Login.ForgotPassword.Success" = "Password reset link has been sent to your email address.";
+"Login.Error.Generic" = "An error occurred during login. Please try again.";
+
+// MARK: - Onboarding
+"Onboarding.Back" = "Back";
+"Onboarding.Next" = "Continue";
+"Onboarding.Skip" = "Skip";
+"Onboarding.Finish" = "Finish";
+
+// Step 1 - Introduction
+"Onboarding.Intro.Title" = "Personal Assistant for Your Health";
+"Onboarding.Intro.Description" = "This information will be used to provide you with personalized health recommendations. You can skip this step and complete it later if you prefer.";
+
+// Step 2 - Basic Info
+"Onboarding.BasicInfo.Title" = "Basic Information";
+"Onboarding.BasicInfo.Description" = "We'd like to know some basic information about you to serve you better.";
+"Onboarding.BasicInfo.Name" = "Full Name";
+"Onboarding.BasicInfo.NamePlaceholder" = "Your first and last name";
+"Onboarding.BasicInfo.Gender" = "Gender";
+"Onboarding.BasicInfo.Gender.Male" = "Male";
+"Onboarding.BasicInfo.Gender.Female" = "Female";
+"Onboarding.BasicInfo.Gender.Other" = "Other";
+"Onboarding.BasicInfo.Age" = "Age";
+"Onboarding.BasicInfo.AgeSelect" = "Select your age";
+
+// Step 3 - Health Info
+"Onboarding.HealthInfo.Title" = "Health Status";
+"Onboarding.HealthInfo.Description" = "Tell us about your current health status so we can provide the most suitable recommendations.";
+"Onboarding.HealthInfo.ChronicDiseases" = "Your Chronic Diseases";
+"Onboarding.HealthInfo.ChronicDiseases.Diabetes" = "Diabetes";
+"Onboarding.HealthInfo.ChronicDiseases.Hypertension" = "Hypertension";
+"Onboarding.HealthInfo.ChronicDiseases.Asthma" = "Asthma";
+"Onboarding.HealthInfo.ChronicDiseases.HeartDisease" = "Heart Disease";
+"Onboarding.HealthInfo.ChronicDiseases.KidneyDisease" = "Kidney Disease";
+"Onboarding.HealthInfo.ChronicDiseases.LiverDisease" = "Liver Disease";
+"Onboarding.HealthInfo.ChronicDiseases.Thyroid" = "Thyroid";
+"Onboarding.HealthInfo.ChronicDiseases.None" = "None";
+"Onboarding.HealthInfo.Allergies" = "Your Allergies";
+"Onboarding.HealthInfo.Allergies.Medication" = "Medication Allergy";
+"Onboarding.HealthInfo.Allergies.Food" = "Food Allergy";
+"Onboarding.HealthInfo.Allergies.Pollen" = "Pollen Allergy";
+"Onboarding.HealthInfo.Allergies.Animal" = "Animal Allergy";
+"Onboarding.HealthInfo.Allergies.Dust" = "Dust Allergy";
+"Onboarding.HealthInfo.Allergies.Other" = "Other";
+"Onboarding.HealthInfo.Allergies.Unknown" = "Unknown";
+"Onboarding.HealthInfo.Allergies.None" = "None";
+"Onboarding.HealthInfo.Medications" = "Medications You Use Regularly";
+"Onboarding.HealthInfo.Medications.BloodPressure" = "Blood Pressure Medication";
+"Onboarding.HealthInfo.Medications.Diabetes" = "Diabetes Medication";
+"Onboarding.HealthInfo.Medications.Heart" = "Heart Medication";
+"Onboarding.HealthInfo.Medications.Painkiller" = "Painkiller";
+"Onboarding.HealthInfo.Medications.Vitamin" = "Vitamin";
+"Onboarding.HealthInfo.Medications.Antidepressant" = "Antidepressant";
+"Onboarding.HealthInfo.Medications.Other" = "Other";
+"Onboarding.HealthInfo.Medications.None" = "None";
+
+// Step 4 - Lifestyle
+"Onboarding.Lifestyle.Title" = "Lifestyle";
+"Onboarding.Lifestyle.Description" = "Tell us about your lifestyle so we can provide appropriate recommendations.";
+"Onboarding.Lifestyle.Sleep" = "Your Sleep Pattern";
+"Onboarding.Lifestyle.SleepDescription" = "Evaluate your overall sleep quality and routine";
+"Onboarding.Lifestyle.Sleep.Good" = "Good";
+"Onboarding.Lifestyle.Sleep.GoodDescription" = "Regular sleep hours and quality sleep";
+"Onboarding.Lifestyle.Sleep.GoodExample" = "Example: I sleep 7-9 hours a day, go to bed at 11 PM and wake up at 7 AM";
+"Onboarding.Lifestyle.Sleep.Medium" = "Medium";
+"Onboarding.Lifestyle.Sleep.MediumDescription" = "Sometimes irregularities occur";
+"Onboarding.Lifestyle.Sleep.MediumExample" = "Example: I sleep 5-7 hours a day, my sleep hours vary";
+"Onboarding.Lifestyle.Sleep.Bad" = "Bad";
+"Onboarding.Lifestyle.Sleep.BadDescription" = "Irregular sleep and insufficient rest";
+"Onboarding.Lifestyle.Sleep.BadExample" = "Example: I sleep less than 5 hours a day, I am constantly sleepless";
+    
+"Onboarding.Lifestyle.Activity" = "Your Physical Activity Level";
+"Onboarding.Lifestyle.ActivityDescription" = "Specify your daily physical activity level";
+"Onboarding.Lifestyle.Activity.Low" = "Low";
+"Onboarding.Lifestyle.Activity.LowDescription" = "Sedentary lifestyle";
+"Onboarding.Lifestyle.Activity.LowExample" = "Example: I take light walks 1-2 days a week, mostly work at a desk";
+"Onboarding.Lifestyle.Activity.Medium" = "Medium";
+"Onboarding.Lifestyle.Activity.MediumDescription" = "Regular physical activity";
+"Onboarding.Lifestyle.Activity.MediumExample" = "Example: I walk or exercise for 30 minutes 3-4 days a week";
+"Onboarding.Lifestyle.Activity.High" = "High";
+"Onboarding.Lifestyle.Activity.HighDescription" = "Active lifestyle and regular exercise";
+"Onboarding.Lifestyle.Activity.HighExample" = "Example: I exercise 5+ days a week, take 10,000+ steps daily";
+    
+"Onboarding.Lifestyle.Nutrition" = "Your Nutrition Habits";
+"Onboarding.Lifestyle.NutritionDescription" = "Evaluate your eating habits and preferences";
+"Onboarding.Lifestyle.Nutrition.Bad" = "Bad";
+"Onboarding.Lifestyle.Nutrition.BadDescription" = "Irregular eating and unhealthy choices";
+"Onboarding.Lifestyle.Nutrition.BadExample" = "Example: Mostly fast food, sugary drinks, irregular meal times";
+"Onboarding.Lifestyle.Nutrition.Medium" = "Medium";
+"Onboarding.Lifestyle.Nutrition.MediumDescription" = "Mixed eating habits";
+"Onboarding.Lifestyle.Nutrition.MediumExample" = "Example: Sometimes home-cooked meals, sometimes out, vegetable/fruit consumption varies";
+"Onboarding.Lifestyle.Nutrition.Good" = "Good";
+"Onboarding.Lifestyle.Nutrition.GoodDescription" = "Balanced and healthy eating";
+"Onboarding.Lifestyle.Nutrition.GoodExample" = "Example: Regular meals, 5 servings of fruits/vegetables daily, drink plenty of water";
+
+// MARK: - Onboarding Custom Options
+"Onboarding.CustomOption" = "Other";
+"Onboarding.CustomOptionPlaceholder" = "Write your own...";
+"Onboarding.Add" = "Add";
+"Onboarding.Cancel" = "Cancel";
+
+// Step 5 - Summary
+"Onboarding.Summary.Title" = "Summary";
+"Onboarding.Summary.Description" = "Here's a summary of the information you provided. If everything looks correct, you can finish.";
+"Onboarding.Summary.BasicInfo" = "Basic Information";
+"Onboarding.Summary.HealthInfo" = "Health Information";
+"Onboarding.Summary.Lifestyle" = "Lifestyle";
+"Onboarding.Summary.ChronicDiseases" = "Chronic Diseases";
+"Onboarding.Summary.Allergies" = "Allergies";
+"Onboarding.Summary.Sleep" = "Sleep";
+"Onboarding.Summary.Activity" = "Activity";
+"Onboarding.Summary.Nutrition" = "Nutrition";
+
+// MARK: - Main App
+"MainApp.Title" = "Welcome to Main App!";
+"MainApp.LogoutButton" = "Log Out";

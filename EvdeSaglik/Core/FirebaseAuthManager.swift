@@ -17,6 +17,8 @@ final class FirebaseAuthManager: ObservableObject {
     // static let shared = AuthManager()
     
     @Published var currentUser: User? = Auth.auth().currentUser
+    /// Indicates that the last auth action was a successful registration
+    @Published var didJustRegister: Bool = false
     
     init() {}
     
@@ -33,6 +35,7 @@ final class FirebaseAuthManager: ObservableObject {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             if let user = result?.user {
                 self?.currentUser = user
+                self?.didJustRegister = true
             }
             if let firebaseError = error as NSError? {
                 completion(.authError(.registrationFailed(firebaseError.localizedDescription)))

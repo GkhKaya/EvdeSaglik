@@ -18,6 +18,26 @@
 "Firestore.Error.NetworkError" = "Ağ hatası oluştu: %@";
 "Firestore.Error.Unknown" = "Bilinmeyen bir Firestore hatası oluştu.";
 
+// MARK: - Register
+"Register.Title" = "Hesap Oluştur";
+"Register.Subtitle" = "Sağlıklı yaşam yolculuğunuza başlamak için hesabınızı oluşturun.";
+"Register.Email.Label" = "E-posta Adresi";
+"Register.Email.Placeholder" = "ornek@email.com";
+"Register.Password.Label" = "Şifre";
+"Register.Password.Placeholder" = "Şifrenizi girin";
+"Register.ConfirmPassword.Label" = "Şifre Tekrar";
+"Register.ConfirmPassword.Placeholder" = "Şifrenizi tekrar girin";
+"Register.Button" = "Hesap Oluştur";
+"Register.Login.Prefix" = "Zaten hesabınız var mı?";
+"Register.Login.Link" = "Giriş yapın";
+
+// MARK: - Register Errors
+"Register.Error.InvalidForm" = "Lütfen tüm alanları doğru şekilde doldurun.";
+"Register.Error.EmailAlreadyInUse" = "Bu e-posta adresi zaten kullanılıyor.";
+"Register.Error.InvalidEmail" = "Geçersiz e-posta adresi.";
+"Register.Error.WeakPassword" = "Şifre en az 6 karakter olmalıdır.";
+"Register.Error.Generic" = "Hesap oluşturulurken bir hata oluştu. Lütfen tekrar deneyin.";
+
 // MARK: - Login
 "Login.AppName" = "Evde Sağlık";
 "Login.Title" = "Sağlığınızı Evinizden Yönetin";
@@ -35,7 +55,124 @@
 "Login.Continue.Apple" = "Apple ile devam et";
 "Login.Continue.Google" = "Google ile devam et";
 "Login.Benefits.Title" = "Neden Evde Sağlık?";
-"Login.Benefits.AI" = "AI destekli hastalık tahmini";
-"Login.Benefits.Home" = "Evde uygulanabilir çözümler";
-"Login.Benefits.Lab" = "Tahlil sonuçları analizi";
+"Login.Benefits.AI" = "Yapay zeka destekli hastalık tahmini";
+"Login.Benefits.Home" = "Eve uygulanabilir çözümler";
+"Login.Benefits.Lab" = "Laboratuvar sonuç analizi";
 "Login.RememberMe" = "Beni hatırla";
+"Login.ForgotPassword.InvalidEmail" = "Şifre sıfırlama için lütfen geçerli bir e-posta adresi giriniz.";
+"Login.ForgotPassword.Success" = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
+"Login.Error.Generic" = "Giriş yaparken bir hata oluştu. Lütfen tekrar deneyin.";
+
+// MARK: - Onboarding
+"Onboarding.Back" = "Geri";
+"Onboarding.Next" = "Devam Et";
+"Onboarding.Skip" = "Atla";
+"Onboarding.Finish" = "Bitir";
+
+// Step 1 - Introduction
+"Onboarding.Intro.Title" = "Sağlığınız için Kişisel Asistan";
+"Onboarding.Intro.Description" = "Bu bilgiler size özel sağlık önerileri sunmak için kullanılacaktır. Dilerseniz bu adımı atlayıp daha sonra tamamlayabilirsiniz.";
+
+// Step 2 - Basic Info
+"Onboarding.BasicInfo.Title" = "Temel Bilgiler";
+"Onboarding.BasicInfo.Description" = "Size daha iyi hizmet verebilmek için hakkınızda bazı temel bilgiler edinmek istiyoruz.";
+"Onboarding.BasicInfo.Name" = "Ad Soyad";
+"Onboarding.BasicInfo.NamePlaceholder" = "Adınız ve Soyadınız";
+"Onboarding.BasicInfo.Gender" = "Cinsiyet";
+"Onboarding.BasicInfo.Gender.Male" = "Erkek";
+"Onboarding.BasicInfo.Gender.Female" = "Kadın";
+"Onboarding.BasicInfo.Gender.Other" = "Diğer";
+"Onboarding.BasicInfo.Age" = "Yaş";
+"Onboarding.BasicInfo.AgeSelect" = "Yaşınızı seçin";
+
+// Step 3 - Health Info
+"Onboarding.HealthInfo.Title" = "Sağlık Durumu";
+"Onboarding.HealthInfo.Description" = "Size en uygun önerileri sunabilmemiz için mevcut sağlık durumunuz hakkında bilgi verin.";
+"Onboarding.HealthInfo.ChronicDiseases" = "Kronik Hastalıklarınız";
+"Onboarding.HealthInfo.ChronicDiseases.Diabetes" = "Diyabet";
+"Onboarding.HealthInfo.ChronicDiseases.Hypertension" = "Hipertansiyon";
+"Onboarding.HealthInfo.ChronicDiseases.Asthma" = "Astım";
+"Onboarding.HealthInfo.ChronicDiseases.HeartDisease" = "Kalp Hastalığı";
+"Onboarding.HealthInfo.ChronicDiseases.KidneyDisease" = "Böbrek Hastalığı";
+"Onboarding.HealthInfo.ChronicDiseases.LiverDisease" = "Karaciğer Hastalığı";
+"Onboarding.HealthInfo.ChronicDiseases.Thyroid" = "Tiroid";
+"Onboarding.HealthInfo.ChronicDiseases.None" = "Yok";
+"Onboarding.HealthInfo.Allergies" = "Alerjileriniz";
+"Onboarding.HealthInfo.Allergies.Medication" = "İlaç Alerjisi";
+"Onboarding.HealthInfo.Allergies.Food" = "Besin Alerjisi";
+"Onboarding.HealthInfo.Allergies.Pollen" = "Polen Alerjisi";
+"Onboarding.HealthInfo.Allergies.Animal" = "Hayvan Alerjisi";
+"Onboarding.HealthInfo.Allergies.Dust" = "Toz Alerjisi";
+"Onboarding.HealthInfo.Allergies.Other" = "Diğer";
+"Onboarding.HealthInfo.Allergies.Unknown" = "Bilmiyorum";
+"Onboarding.HealthInfo.Allergies.None" = "Yok";
+"Onboarding.HealthInfo.Medications" = "Düzenli Kullandığınız İlaçlar";
+"Onboarding.HealthInfo.Medications.BloodPressure" = "Tansiyon İlacı";
+"Onboarding.HealthInfo.Medications.Diabetes" = "Diyabet İlacı";
+"Onboarding.HealthInfo.Medications.Heart" = "Kalp İlacı";
+"Onboarding.HealthInfo.Medications.Painkiller" = "Ağrı Kesici";
+"Onboarding.HealthInfo.Medications.Vitamin" = "Vitamin";
+"Onboarding.HealthInfo.Medications.Antidepressant" = "Antidepresan";
+"Onboarding.HealthInfo.Medications.Other" = "Diğer";
+"Onboarding.HealthInfo.Medications.None" = "Yok";
+
+// Step 4 - Lifestyle
+"Onboarding.Lifestyle.Title" = "Yaşam Tarzı";
+"Onboarding.Lifestyle.Description" = "Yaşam tarzın hakkında bilgi ver ki sana uygun öneriler sunabilelim.";
+"Onboarding.Lifestyle.Sleep" = "Uyku Düzeniniz";
+"Onboarding.Lifestyle.SleepDescription" = "Genel uyku kalitenizi ve düzeninizi değerlendirin";
+"Onboarding.Lifestyle.Sleep.Good" = "İyi";
+"Onboarding.Lifestyle.Sleep.GoodDescription" = "Düzenli uyku saatleri ve kaliteli uyku";
+"Onboarding.Lifestyle.Sleep.GoodExample" = "Örnek: Günde 7-9 saat uyuyorum, gece 23:00'da yatıp sabah 07:00'de kalkıyorum";
+"Onboarding.Lifestyle.Sleep.Medium" = "Orta";
+"Onboarding.Lifestyle.Sleep.MediumDescription" = "Bazen düzensizlik yaşanıyor";
+"Onboarding.Lifestyle.Sleep.MediumExample" = "Örnek: Günde 5-7 saat uyuyorum, uyku saatlerim değişken";
+"Onboarding.Lifestyle.Sleep.Bad" = "Kötü";
+"Onboarding.Lifestyle.Sleep.BadDescription" = "Düzensiz uyku ve yetersiz dinlenme";
+"Onboarding.Lifestyle.Sleep.BadExample" = "Örnek: Günde 5 saatten az uyuyorum, sürekli uykusuzum";
+    
+"Onboarding.Lifestyle.Activity" = "Fiziksel Aktivite Düzeyiniz";
+"Onboarding.Lifestyle.ActivityDescription" = "Günlük fiziksel aktivite seviyenizi belirtin";
+"Onboarding.Lifestyle.Activity.Low" = "Düşük";
+"Onboarding.Lifestyle.Activity.LowDescription" = "Hareketsiz yaşam tarzı";
+"Onboarding.Lifestyle.Activity.LowExample" = "Örnek: Haftada 1-2 gün hafif yürüyüş, çoğunlukla masa başında çalışıyorum";
+"Onboarding.Lifestyle.Activity.Medium" = "Orta";
+"Onboarding.Lifestyle.Activity.MediumDescription" = "Düzenli fiziksel aktivite";
+"Onboarding.Lifestyle.Activity.MediumExample" = "Örnek: Haftada 3-4 gün 30 dakika yürüyüş veya spor yapıyorum";
+"Onboarding.Lifestyle.Activity.High" = "Yüksek";
+"Onboarding.Lifestyle.Activity.HighDescription" = "Aktif yaşam tarzı ve düzenli spor";
+"Onboarding.Lifestyle.Activity.HighExample" = "Örnek: Haftada 5+ gün spor yapıyorum, günlük 10.000+ adım atıyorum";
+    
+"Onboarding.Lifestyle.Nutrition" = "Beslenme Alışkanlıklarınız";
+"Onboarding.Lifestyle.NutritionDescription" = "Beslenme düzeninizi ve tercihlerinizi değerlendirin";
+"Onboarding.Lifestyle.Nutrition.Bad" = "Kötü";
+"Onboarding.Lifestyle.Nutrition.BadDescription" = "Düzensiz beslenme ve sağlıksız tercihler";
+"Onboarding.Lifestyle.Nutrition.BadExample" = "Örnek: Çoğunlukla fast food, şekerli içecekler, düzensiz öğün saatleri";
+"Onboarding.Lifestyle.Nutrition.Medium" = "Orta";
+"Onboarding.Lifestyle.Nutrition.MediumDescription" = "Karma beslenme alışkanlıkları";
+"Onboarding.Lifestyle.Nutrition.MediumExample" = "Örnek: Bazen ev yemeği bazen dışarıda, sebze-meyve tüketimi değişken";
+"Onboarding.Lifestyle.Nutrition.Good" = "İyi";
+"Onboarding.Lifestyle.Nutrition.GoodDescription" = "Dengeli ve sağlıklı beslenme";
+"Onboarding.Lifestyle.Nutrition.GoodExample" = "Örnek: Düzenli öğünler, günde 5 porsiyon sebze-meyve, bol su içerim";
+
+// MARK: - Onboarding Custom Options
+"Onboarding.CustomOption" = "Diğer";
+"Onboarding.CustomOptionPlaceholder" = "Kendiniz yazın...";
+"Onboarding.Add" = "Ekle";
+"Onboarding.Cancel" = "İptal";
+
+// Step 5 - Summary
+"Onboarding.Summary.Title" = "Özet";
+"Onboarding.Summary.Description" = "Girdiğin bilgilerin özeti aşağıda. Her şey doğruysa bitirebilirsin.";
+"Onboarding.Summary.BasicInfo" = "Temel Bilgiler";
+"Onboarding.Summary.HealthInfo" = "Sağlık Bilgileri";
+"Onboarding.Summary.Lifestyle" = "Yaşam Tarzı";
+"Onboarding.Summary.ChronicDiseases" = "Kronik Hastalıklar";
+"Onboarding.Summary.Allergies" = "Alerjiler";
+"Onboarding.Summary.Sleep" = "Uyku";
+"Onboarding.Summary.Activity" = "Aktivite";
+"Onboarding.Summary.Nutrition" = "Beslenme";
+
+// MARK: - Main App
+"MainApp.Title" = "Ana Uygulamaya Hoş Geldiniz!";
+"MainApp.LogoutButton" = "Çıkış Yap";

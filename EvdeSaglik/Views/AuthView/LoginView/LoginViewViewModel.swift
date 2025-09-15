@@ -9,22 +9,28 @@ import Foundation
 import Combine
 
 
-final class LoginViewViewModel : ObservableObject {
-    // Inputs
+final class LoginViewViewModel: ObservableObject {
+    // MARK: - Published Properties
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var rememberMe: Bool = true
-    @Published var isPasswordHidden: Bool = true
-    
-    // UI State
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
+    @Published var shouldNavigateToRegister: Bool = false
     
-    // Validation
+    // MARK: - Computed Properties
     @Published private(set) var canSubmit: Bool = false
+    
+    // MARK: - Private Properties
     private var cancellables: Set<AnyCancellable> = []
     
+    // MARK: - Initialization
     init() {
+        setupValidation()
+    }
+    
+    // MARK: - Private Methods
+    private func setupValidation() {
         Publishers.CombineLatest($email, $password)
             .map { [weak self] email, password in
                 guard let self = self else { return false }
@@ -34,27 +40,64 @@ final class LoginViewViewModel : ObservableObject {
             .assign(to: &$canSubmit)
     }
     
-    // MARK: - Intent
-    func onLoginTapped() {
+    private func clearError() {
         errorMessage = nil
+    }
+    
+    // MARK: - Public Methods
+    func signIn(authManager: FirebaseAuthManager) {
         guard canSubmit else {
             errorMessage = NSLocalizedString("Login.Validation.Invalid", comment: "Invalid login input")
             return
         }
-        // UI-only: fake delay to show loading state
+        
+        clearError()
         isLoading = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { [weak self] in
-            self?.isLoading = false
-            // No Firebase call here; navigation will be handled by parent when integrated
+        
+        authManager.login(email: email, password: password) { [weak self] error in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                
+                if let error = error {
+                    self?.handleError(error)
+                }
+            }
         }
     }
     
-    func onRegisterTapped() {
-        // Hook for navigation to register screen
+    func forgotPassword(authManager: FirebaseAuthManager) {
+        guard isValidEmail(email) else {
+            errorMessage = NSLocalizedString("Login.ForgotPassword.InvalidEmail", comment: "Invalid email for reset")
+            return
+        }
+        
+        clearError()
+        
+        authManager.resetPassword(email: email) { [weak self] error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self?.handleError(error)
+                } else {
+                    self?.errorMessage = NSLocalizedString("Login.ForgotPassword.Success", comment: "Password reset email sent")
+                }
+            }
+        }
     }
     
-    func onForgotPasswordTapped() {
-        // Hook for navigation to forgot password screen
+    private func handleError(_ error: AppError) {
+        switch error {
+        case .authError(let authError):
+            switch authError {
+            case .loginFailed(let message):
+                errorMessage = message
+            case .passwordResetFailed(let message):
+                errorMessage = message
+            default:
+                errorMessage = NSLocalizedString("Login.Error.Generic", comment: "Generic login error")
+            }
+        default:
+            errorMessage = NSLocalizedString("Login.Error.Generic", comment: "Generic login error")
+        }
     }
     
     // MARK: - Validation Helpers

@@ -10,6 +10,12 @@ import SwiftUI
 struct LoginView: View {
     // MARK: - Properties
     @ObservedObject var viewModel = LoginViewViewModel()
+    @EnvironmentObject var authManager: FirebaseAuthManager
+    let onShowRegister: (() -> Void)?
+    
+    init(onShowRegister: (() -> Void)? = nil) {
+        self.onShowRegister = onShowRegister
+    }
     
     // MARK: - Body
     var body: some View {
@@ -27,6 +33,12 @@ struct LoginView: View {
                     footerSection
                 }
                 .padding(.horizontal, ResponsivePadding.large)
+            }
+        }
+        .onReceive(viewModel.$shouldNavigateToRegister) { shouldNavigate in
+            if shouldNavigate {
+                onShowRegister?()
+                viewModel.shouldNavigateToRegister = false
             }
         }
     }
@@ -95,7 +107,7 @@ private extension LoginView {
             
             Spacer()
             
-            Button(action: viewModel.onForgotPasswordTapped) {
+            Button(action: { viewModel.forgotPassword(authManager: authManager) }) {
                 Text(NSLocalizedString("Login.ForgotPassword", comment: "Forgot password"))
                     .font(.subheadlineResponsive)
                     .foregroundStyle(.blue)
@@ -120,7 +132,7 @@ private extension LoginView {
     var actionSection: some View {
         CustomButton(
             title: NSLocalizedString("Login.SignIn", comment: "Sign in button"),
-            action: viewModel.onLoginTapped,
+            action: { viewModel.signIn(authManager: authManager) },
             isEnabled: viewModel.canSubmit,
             isLoading: viewModel.isLoading
         )
@@ -134,7 +146,7 @@ private extension LoginView {
                 .font(.subheadlineResponsive)
                 .foregroundStyle(.secondary)
             
-            Button(action: viewModel.onRegisterTapped) {
+            Button(action: { viewModel.shouldNavigateToRegister = true }) {
                 Text(NSLocalizedString("Login.SignUp.Action", comment: "Sign up action"))
                     .font(.subheadlineResponsive)
                     .fontWeight(.medium)
@@ -150,4 +162,5 @@ private extension LoginView {
 // MARK: - Preview
 #Preview {
     LoginView()
+        .environmentObject(FirebaseAuthManager())
 }
