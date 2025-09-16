@@ -13,10 +13,11 @@ struct ChatbotView: View {
     @State private var hasAppeared: Bool = false // To ensure onAppear logic runs only once
     
     @FocusState private var isInputFocused: Bool // 👈 Klavye odak için
+    let initialMessage: String // Store initialMessage as a property
     
     init(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager, userManager: UserManager, initialMessage: String = "") {
         _viewModel = StateObject(wrappedValue: ChatbotViewModel(authManager: authManager, firestoreManager: firestoreManager, userManager: userManager))
-        _viewModel.wrappedValue.initialMessage = initialMessage
+        self.initialMessage = initialMessage // Assign to the new property
     }
 
     var body: some View {
@@ -79,7 +80,8 @@ struct ChatbotView: View {
             }
             .onAppear {
                 if !hasAppeared {
-                    viewModel.handleInitialMessage()
+                    // Pass the initialMessage to the ViewModel's new processing method
+                    viewModel.processInitialMessage(message: self.initialMessage)
                     hasAppeared = true
                 }
                 // 👇 Görünce klavye aç

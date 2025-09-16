@@ -59,11 +59,11 @@ class ChatbotViewModel: ObservableObject {
     /// Sends an initial message directly to the Deepseek API as a user message.
     private func _sendInitialMessage(message: String) {
         print("\n--- _sendInitialMessage called with message: \(message)")
-        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { 
+        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             print("_sendInitialMessage: message is empty or whitespace.")
-            return 
+            return
         }
-        
+
         let userMessageContent = message
         let newMessage = self.addMessage(role: "user", content: userMessageContent)
         isLoading = true
@@ -87,10 +87,25 @@ class ChatbotViewModel: ObservableObject {
             do {
                 // Optionally, include user context from UserManager
                 let userSummary = await userManager.generateUserSummaryPrompt()
-                let fullMessage = userSummary.isEmpty ? userMessageContent : "\(userSummary)\n\n\(userMessageContent)"
+
+                // Prepare messages for API, including user summary in the first message's content
+                var messagesForAPI: [DeepseekMessage] = []
+                if !userSummary.isEmpty {
+                    messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
+                }
+                // Filter out messages that are just placeholders for thinking state
+                // Use a snapshot to avoid race conditions
+                let currentMessages = self.messages
+                messagesForAPI.append(contentsOf: currentMessages.filter { !$0.isThinking }.map { DeepseekMessage(role: $0.role, content: $0.content) })
                 
-                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(message: fullMessage)
+                // Debug: Print the messages being sent to API
+                print("_sendInitialMessage: Sending \(messagesForAPI.count) messages to API:")
+                for (index, msg) in messagesForAPI.enumerated() {
+                    print("  [\(index)] \(msg.role): \(msg.content.prefix(50))...")
+                }
                 
+                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
+
                 // Update the thinking message with the actual AI response
                 if let id = self.thinkingMessageID {
                     print("_sendInitialMessage: Updating thinking message \(id.uuidString) with AI response.")
@@ -137,7 +152,7 @@ class ChatbotViewModel: ObservableObject {
         }
         return newMessage
     }
-    
+
     /// Updates an existing message in the chat history.
     private func updateMessage(id: UUID, newContent: String, isThinking: Bool = false) {
         DispatchQueue.main.async {
@@ -154,11 +169,11 @@ class ChatbotViewModel: ObservableObject {
     /// Sends the current message in `currentMessageText` to the Deepseek API.
     func sendMessage() {
         print("\n--- sendMessage called. currentMessageText: \(currentMessageText)")
-        guard !currentMessageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { 
+        guard !currentMessageText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             print("sendMessage: currentMessageText is empty or whitespace.")
-            return 
+            return
         }
-        
+
         let userMessageContent = currentMessageText
         let newMessage = self.addMessage(role: "user", content: userMessageContent)
         currentMessageText = ""
@@ -179,14 +194,29 @@ class ChatbotViewModel: ObservableObject {
                     self.thinkingMessageID = nil
                 }
             }
-            
+
             do {
                 // Optionally, include user context from UserManager
                 let userSummary = await userManager.generateUserSummaryPrompt()
-                let fullMessage = userSummary.isEmpty ? userMessageContent : "\(userSummary)\n\n\(userMessageContent)"
+
+                // Prepare messages for API, including user summary in the first message's content
+                var messagesForAPI: [DeepseekMessage] = []
+                if !userSummary.isEmpty {
+                    messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
+                }
+                // Filter out messages that are just placeholders for thinking state
+                // Use a snapshot to avoid race conditions
+                let currentMessages = self.messages
+                messagesForAPI.append(contentsOf: currentMessages.filter { !$0.isThinking }.map { DeepseekMessage(role: $0.role, content: $0.content) })
                 
-                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(message: fullMessage)
-                
+                // Debug: Print the messages being sent to API
+                print("_sendInitialMessage: Sending \(messagesForAPI.count) messages to API:")
+                for (index, msg) in messagesForAPI.enumerated() {
+                    print("  [\(index)] \(msg.role): \(msg.content.prefix(50))...")
+                }
+
+                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
+
                 // Update the thinking message with the actual AI response
                 if let id = self.thinkingMessageID {
                     print("sendMessage: Updating thinking message \(id.uuidString) with AI response.")
