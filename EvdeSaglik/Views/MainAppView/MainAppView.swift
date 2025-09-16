@@ -11,21 +11,29 @@ struct MainAppView: View {
     @EnvironmentObject var authManager: FirebaseAuthManager
     @EnvironmentObject var firestoreManager: FirestoreManager
     @EnvironmentObject var appStateHolder: AppStateHolder
+    @EnvironmentObject var userManager: UserManager // Inject UserManager
     
     @State private var searchQuery: String = ""
     @State private var showingPersonalizeSheet: Bool = false
+    @State private var showingChatbot: Bool = false // New state for chatbot
     
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: ResponsivePadding.medium) {
-                    // Search Bar
+                    // Search Bar (now triggers chatbot)
                     CustomTextField(
                         title: NSLocalizedString("MainApp.SearchBar.Title", comment: "Search bar title"),
                         placeholder: NSLocalizedString("MainApp.SearchBar.Placeholder", comment: "Search bar placeholder"),
                         icon: "magnifyingglass",
-                        text: $searchQuery
+                        text: $searchQuery,
+                        onIconTap: {
+                            showingChatbot = true
+                        }
                     )
+                    .onTapGesture {
+                        showingChatbot = true // textfield'a dokununca da aç
+                    }
                     .padding(.horizontal, ResponsivePadding.large)
                     
                     // Personalize Button
@@ -87,8 +95,15 @@ struct MainAppView: View {
             .navigationTitle(NSLocalizedString("MainApp.Title", comment: "Main App Title"))
             .navigationBarTitleDisplayMode(.inline)
             .sheet(isPresented: $showingPersonalizeSheet) {
-                // Personalization View (to be implemented)
+                // Personalization View
                 Text(NSLocalizedString("MainApp.PersonalizeSheet.Title", comment: "Personalize Sheet Title"))
+            }
+            // Present ChatbotView as a fullScreenCover with animation
+            .fullScreenCover(isPresented: $showingChatbot, onDismiss: {
+                searchQuery = "" // Clear search query when chatbot is dismissed
+            }) {
+                ChatbotView(authManager: authManager, firestoreManager: firestoreManager, userManager: userManager, initialMessage: searchQuery)
+                    .transition(.move(edge: .bottom)) // Animasyon aşağıdan yukarıya doğru
             }
         }
     }

@@ -23,7 +23,7 @@ class OpenRouterDeepseekManager {
     /// - Returns: A `String` containing the AI's response message.
     /// - Throws: `AppError.deepseekError` if any error occurs during the API request, such as missing API key, invalid URL, network issues, or malformed responses.
     func performChatRequest(message: String) async throws -> String {
-        guard let apiKey = ProcessInfo.processInfo.environment["DEEPSEE_API_KEY"] else {
+        guard let apiKey = ProcessInfo.processInfo.environment["DEEPSEEK_API_KEY"] else {
             throw AppError.deepseekError(.missingAPIKey)
         }
 

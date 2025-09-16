@@ -233,3 +233,8 @@
 "Firestore.Error.DocumentNotFound" = "Document not found: %@";
 "Firestore.Error.NetworkError" = "Network error occurred: %@";
 "Firestore.Error.Unknown" = "An unknown Firestore error occurred.";
+
+// MARK: - Chatbot
+"Chatbot.Greeting" = "Hello! How can I help you today?";
+"Chatbot.Input.Placeholder" = "Type a message...";
+"Chatbot.Title" = "Chat with AI";

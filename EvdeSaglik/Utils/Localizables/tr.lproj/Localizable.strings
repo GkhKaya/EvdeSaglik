@@ -224,3 +224,8 @@
 "Deepseek.Error.DecodingFailed" = "API yanıtı çözümlenemedi: %@";
 "Deepseek.Error.NoChoices" = "Deepseek API yanıtında herhangi bir seçim bulunamadı.";
 "Deepseek.Error.Custom" = "%@";
+
+// MARK: - Chatbot
+"Chatbot.Greeting" = "Merhaba! Bugün size nasıl yardımcı olabilirim?";
+"Chatbot.Input.Placeholder" = "Bir mesaj yazın...";
+"Chatbot.Title" = "Yapay Zeka ile Sohbet";
