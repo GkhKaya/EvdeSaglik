@@ -6,17 +6,7 @@
   
 */
 
-"Auth.Error.RegistrationFailed" = "Registration failed: %@";
-"Auth.Error.LoginFailed" = "Login failed: %@";
-"Auth.Error.PasswordResetFailed" = "Password reset failed: %@";
-"Auth.Error.EmailUpdateFailed" = "Email update failed: %@";
-"Auth.Error.Unknown" = "An unknown authentication error occurred.";
 
-"Firestore.Error.ReadFailed" = "Data read failed: %@";
-"Firestore.Error.WriteFailed" = "Data write failed: %@";
-"Firestore.Error.DocumentNotFound" = "Document not found: %@";
-"Firestore.Error.NetworkError" = "Network error occurred: %@";
-"Firestore.Error.Unknown" = "An unknown Firestore error occurred.";
 
 // MARK: - Register
 "Register.Title" = "Create Account";
@@ -215,3 +205,31 @@
 "UserManager.Prompt.SleepPattern" = "Sleep pattern: %@";
 "UserManager.Prompt.PhysicalActivity" = "Physical activity: %@";
 "UserManager.Prompt.NutritionHabits" = "Nutrition habits: %@";
+
+
+
+// MARK: - Errors
+// MARK: - Deepseek API Errors
+"Deepseek.Error.MissingAPIKey" = "Deepseek API Key not found in environment variables. Please set DEEPSEE_API_KEY.";
+"Deepseek.Error.InvalidURL" = "Invalid URL for OpenRouter API.";
+"Deepseek.Error.EncodingFailed" = "Failed to encode request data: %@";
+"Deepseek.Error.InvalidResponse" = "Invalid response from OpenRouter API. Status Code: %d, Body: %@";
+"Deepseek.Error.DecodingFailed" = "Failed to decode API response: %@";
+"Deepseek.Error.NoChoices" = "No choices found in the Deepseek API response.";
+"Deepseek.Error.Custom" = "%@";
+
+// MARK: - Auth Errors
+
+"Auth.Error.RegistrationFailed" = "Registration failed: %@";
+"Auth.Error.LoginFailed" = "Login failed: %@";
+"Auth.Error.PasswordResetFailed" = "Password reset failed: %@";
+"Auth.Error.EmailUpdateFailed" = "Email update failed: %@";
+"Auth.Error.Unknown" = "An unknown authentication error occurred.";
+
+// MARK: - Firestore Errors
+
+"Firestore.Error.ReadFailed" = "Data read failed: %@";
+"Firestore.Error.WriteFailed" = "Data write failed: %@";
+"Firestore.Error.DocumentNotFound" = "Document not found: %@";
+"Firestore.Error.NetworkError" = "Network error occurred: %@";
+"Firestore.Error.Unknown" = "An unknown Firestore error occurred.";

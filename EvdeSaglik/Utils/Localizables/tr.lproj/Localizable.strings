@@ -215,3 +215,12 @@
 "UserManager.Prompt.SleepPattern" = "Uyku düzeni: %@";
 "UserManager.Prompt.PhysicalActivity" = "Fiziksel aktivite: %@";
 "UserManager.Prompt.NutritionHabits" = "Beslenme alışkanlıkları: %@";
+
+// MARK: - Deepseek API Errors
+"Deepseek.Error.MissingAPIKey" = "Deepseek API Anahtarı ortam değişkenlerinde bulunamadı. Lütfen DEEPSEE_API_KEY'i ayarlayın.";
+"Deepseek.Error.InvalidURL" = "OpenRouter API için geçersiz URL.";
+"Deepseek.Error.EncodingFailed" = "İstek verileri kodlanamadı: %@";
+"Deepseek.Error.InvalidResponse" = "OpenRouter API'den geçersiz yanıt. Durum Kodu: %d, Gövde: %@";
+"Deepseek.Error.DecodingFailed" = "API yanıtı çözümlenemedi: %@";
+"Deepseek.Error.NoChoices" = "Deepseek API yanıtında herhangi bir seçim bulunamadı.";
+"Deepseek.Error.Custom" = "%@";
