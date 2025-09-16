@@ -16,6 +16,11 @@ struct MainAppView: View {
     @State private var searchQuery: String = ""
     @State private var showingPersonalizeSheet: Bool = false
     @State private var showingChatbot: Bool = false // New state for chatbot
+    @State private var showingDepartmentSuggestion: Bool = false
+    @State private var showingDiseasePrediction: Bool = false
+    @State private var showingHomeSolution: Bool = false
+    @State private var showingLabResultRecommendation: Bool = false
+    @State private var showingNaturalSolutions: Bool = false
     
     var body: some View {
         NavigationView {
@@ -60,32 +65,32 @@ struct MainAppView: View {
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.Doctor", comment: "Which doctor should I go to?"),
                             icon: "stethoscope",
-                            action: {}
+                            action: { showingDepartmentSuggestion = true }
                         )
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.Disease", comment: "What could be my disease?"),
                             icon: "cross.case",
-                            action: {}
+                            action: { showingDiseasePrediction = true }
                         )
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.HomeRemedies", comment: "What can I do at home?"),
                             icon: "house", // Changed from "house.medical" to "house"
-                            action: {}
+                            action: { showingHomeSolution = true }
                         )
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.LabResults", comment: "Lab test results"),
                             icon: "doc.text.magnifyingglass",
-                            action: {}
+                            action: { showingLabResultRecommendation = true }
                         )
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.NaturalSolutions", comment: "Natural solutions"),
                             icon: "leaf.fill",
-                            action: {}
+                            action: { showingNaturalSolutions = true }
                         )
                         MainFeatureCard(
                             title: NSLocalizedString("MainApp.Card.SkinProblems", comment: "Skin problems"),
                             icon: "face.dashed",
-                            action: {}
+                            action: { showingChatbot = true }
                         )
                     }
                     .padding(.horizontal, ResponsivePadding.large)
@@ -97,6 +102,21 @@ struct MainAppView: View {
             .sheet(isPresented: $showingPersonalizeSheet) {
                 // Personalization View
                 Text(NSLocalizedString("MainApp.PersonalizeSheet.Title", comment: "Personalize Sheet Title"))
+            }
+            .sheet(isPresented: $showingDepartmentSuggestion) {
+                DepartmentSuggestionView()
+            }
+            .sheet(isPresented: $showingDiseasePrediction) {
+                DiseasePredictionView()
+            }
+            .sheet(isPresented: $showingHomeSolution) {
+                HomeSolutionView()
+            }
+            .sheet(isPresented: $showingLabResultRecommendation) {
+                LabResultRecommendationView()
+            }
+            .sheet(isPresented: $showingNaturalSolutions) {
+                NaturalSolitionsView()
             }
             // Present ChatbotView as a fullScreenCover with animation
             .fullScreenCover(isPresented: $showingChatbot, onDismiss: {
