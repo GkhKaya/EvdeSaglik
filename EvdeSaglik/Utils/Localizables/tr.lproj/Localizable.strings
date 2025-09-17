@@ -308,3 +308,22 @@
 "HomeSolution.Save" = "Geçmişe Kaydet";
 "HomeSolution.SaveSuccess" = "Başarıyla kaydedildi";
 "HomeSolution.SaveError" = "Kaydetme başarısız";
+
+// MARK: - Lab Result Recommendation
+"LabResult.Title" = "Laboratuvar Sonuçları";
+"LabResult.Subtitle" = "Laboratuvar sonuçlarınızın PDF'ini yükleyin ve AI analizi ile öneriler alın.";
+"LabResult.Warning" = "Önemli Uyarı";
+"LabResult.WarningText" = "Bu öneriler sadece bilgilendirme amaçlıdır. Doğru tıbbi tavsiye ve tedavi için mutlaka doktorunuza danışın.";
+"LabResult.UploadPDF" = "Laboratuvar Sonuçları PDF'i Yükle";
+"LabResult.UploadDescription" = "Laboratuvar test sonuçlarınızın PDF dosyasını seçin";
+"LabResult.PDFSelected" = "PDF Seçildi";
+"LabResult.Pages" = "sayfa";
+"LabResult.TablesExtracted" = "Tablolar başarıyla çıkarıldı";
+"LabResult.Analyze" = "Sonuçları Analiz Et";
+"LabResult.Save" = "Geçmişe Kaydet";
+"LabResult.SaveSuccess" = "Başarıyla kaydedildi";
+"LabResult.SaveError" = "Kaydetme başarısız";
+
+"LabResult.SystemPersona" = "Sen bir tıbbi laboratuvar sonuçları analizcisisin. Verilen laboratuvar test sonuçlarını analiz et ve anormal değerleri belirle. Önerileri şu sırada ver: 1) Anormal değerler ve potansiyel nedenleri, 2) Doğal çözümler ve yaşam tarzı değişiklikleri, 3) İlaç önerileri (jenerik isimler), 4) Doktora danışma konusunda net uyarı.";
+"LabResult.SystemFormat" = "Cihaz dilinde net, numaralı analiz ver. JSON kullanma. Önerileri kısa ve uygulanabilir tut.";
+"LabResult.UserPrompt" = "Laboratuvar Sonuçları Verisi:\n\n%@";

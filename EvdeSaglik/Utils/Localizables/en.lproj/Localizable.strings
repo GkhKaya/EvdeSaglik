@@ -316,3 +316,22 @@
 "HomeSolution.Save" = "Save to History";
 "HomeSolution.SaveSuccess" = "Saved successfully";
 "HomeSolution.SaveError" = "Save failed";
+
+// MARK: - Lab Result Recommendation
+"LabResult.Title" = "Lab Test Results";
+"LabResult.Subtitle" = "Upload your lab results PDF and get AI analysis with recommendations.";
+"LabResult.Warning" = "Important Notice";
+"LabResult.WarningText" = "These recommendations are for informational purposes only. Always consult your doctor for proper medical advice and treatment.";
+"LabResult.UploadPDF" = "Upload Lab Results PDF";
+"LabResult.UploadDescription" = "Select your lab test results PDF file";
+"LabResult.PDFSelected" = "PDF Selected";
+"LabResult.Pages" = "pages";
+"LabResult.TablesExtracted" = "Tables extracted successfully";
+"LabResult.Analyze" = "Analyze Results";
+"LabResult.Save" = "Save to History";
+"LabResult.SaveSuccess" = "Saved successfully";
+"LabResult.SaveError" = "Save failed";
+
+"LabResult.SystemPersona" = "You are a medical lab results analyst. Analyze the provided lab test results and identify any abnormal values. Provide recommendations in this order: 1) Abnormal values and their potential causes, 2) Natural solutions and lifestyle changes, 3) Medication suggestions (generic names), 4) Clear warning about consulting a doctor.";
+"LabResult.SystemFormat" = "Provide clear, numbered analysis in the device language. Avoid JSON. Keep recommendations concise and actionable.";
+"LabResult.UserPrompt" = "Lab Results Data:\n\n%@";
