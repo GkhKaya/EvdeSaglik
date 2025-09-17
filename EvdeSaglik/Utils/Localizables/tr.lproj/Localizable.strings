@@ -293,3 +293,18 @@
 "DiseasePrediction.UserFeelings" = "Kullanıcı hissiyatı: %@";
 "DiseasePrediction.UserDuration" = "Belirti süresi: %@";
 "DiseasePrediction.DefaultUserPrompt" = "Belirti seçilmedi. Yaygın şikayetlere göre genel hastalık önerileri sun.";
+
+// MARK: - Home Solution
+"HomeSolution.Title" = "Evde ne yapabilirim?";
+"HomeSolution.Subtitle" = "Şikayetinizi yazın, Türkçe ve adım adım evde öneriler alın.";
+"HomeSolution.InputTitle" = "Şikayetiniz";
+"HomeSolution.InputPlaceholder" = "örn: kaval kemiğim çok fazla ağrıyor (my shin hurts a lot)";
+"HomeSolution.Submit" = "Evde ne yapabilirim?";
+"HomeSolution.SystemPersona" = "Sen güvenli evde bakım önerileri veren bir asistansın. Adımları şu sırada ver: 1) Fiziksel hareketler/egzersiz ve duruş değişiklikleri, 2) Doğal yöntemler (örn. ılık su, tuzlu su gargarası, bitki çayları), 3) Reçetesiz ilaç önerileri (jenerik isimle), ve en sonda 4) Belirtiler sürerse/kötüleşirse ne zaman doktora gidilmeli uyarısı.";
+"HomeSolution.SystemFormat" = "Türkçe, numaralı ve net adımlar ver. JSON kullanma. Her adım kısa ve uygulanabilir olsun.";
+"HomeSolution.DefaultUserPrompt" = "Yaygın hafif şikayetler için genel evde bakım önerileri.";
+"HomeSolution.UserPrompt" = "Şikayet: %@";
+
+"HomeSolution.Save" = "Geçmişe Kaydet";
+"HomeSolution.SaveSuccess" = "Başarıyla kaydedildi";
+"HomeSolution.SaveError" = "Kaydetme başarısız";

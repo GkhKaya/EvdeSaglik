@@ -301,3 +301,18 @@
 "DiseasePrediction.UserFeelings" = "User feelings: %@";
 "DiseasePrediction.UserDuration" = "Symptom duration: %@";
 "DiseasePrediction.DefaultUserPrompt" = "No symptoms selected. Provide general disease suggestions based on common complaints.";
+
+// MARK: - Home Solution
+"HomeSolution.Title" = "What can I do at home?";
+"HomeSolution.Subtitle" = "Describe your problem and get step-by-step home recommendations in Turkish.";
+"HomeSolution.InputTitle" = "Your Complaint";
+"HomeSolution.InputPlaceholder" = "e.g., my shin hurts a lot (kaval kemiğim çok fazla ağrıyor)";
+"HomeSolution.Submit" = "What can I do at home?";
+"HomeSolution.SystemPersona" = "You are a medical assistant giving safe at-home recommendations. Provide steps strictly in this order: 1) Physical movements/exercises and posture changes, 2) Natural methods (e.g., warm water, salt water gargle, herbal teas), 3) Over-the-counter medicine suggestions (with generic names), and finally 4) A short warning on when to see a doctor if symptoms persist or worsen.";
+"HomeSolution.SystemFormat" = "Return clear, numbered steps in Turkish. Avoid JSON. Keep each step concise and actionable.";
+"HomeSolution.DefaultUserPrompt" = "General home care tips for common minor complaints.";
+"HomeSolution.UserPrompt" = "Complaint: %@";
+
+"HomeSolution.Save" = "Save to History";
+"HomeSolution.SaveSuccess" = "Saved successfully";
+"HomeSolution.SaveError" = "Save failed";
