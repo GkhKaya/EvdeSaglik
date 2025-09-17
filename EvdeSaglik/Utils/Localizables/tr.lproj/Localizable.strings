@@ -229,3 +229,35 @@
 "Chatbot.Greeting" = "Merhaba! Bugün size nasıl yardımcı olabilirim?";
 "Chatbot.Input.Placeholder" = "Bir mesaj yazın...";
 "Chatbot.Title" = "Yapay Zeka ile Sohbet";
+
+// MARK: - Department Suggestion
+"DepartmentSuggestion.Title" = "Hangi doktora gitmeliyim?";
+"DepartmentSuggestion.Subtitle" = "Belirtilerinizi seçin veya yazın, AI sizin için en uygun uzmanlık alanını önerir.";
+"DepartmentSuggestion.Symptom.Headache" = "Baş ağrısı";
+"DepartmentSuggestion.Symptom.Nausea" = "Mide bulantısı";
+"DepartmentSuggestion.Symptom.ChestPain" = "Göğüs ağrısı";
+"DepartmentSuggestion.Symptom.Cough" = "Öksürük";
+"DepartmentSuggestion.Symptom.SkinRash" = "Cilt döküntüsü";
+"DepartmentSuggestion.Symptom.JointPain" = "Eklem ağrısı";
+"DepartmentSuggestion.Symptom.Fatigue" = "Halsizlik";
+"DepartmentSuggestion.Symptom.Fever" = "Ateş";
+"DepartmentSuggestion.Other" = "Diğer";
+"DepartmentSuggestion.OtherTitle" = "Diğer Belirtiler";
+"DepartmentSuggestion.OtherPlaceholder" = "Ek belirtileri yazın...";
+"DepartmentSuggestion.FeelingsTitle" = "Nasıl hissediyorsunuz?";
+"DepartmentSuggestion.FeelingsPlaceholder" = "Kısaca hissiyatınızı yazın";
+"DepartmentSuggestion.Submit" = "Hangi doktora gitmeliyim?";
+"DepartmentSuggestion.Confidence" = "%d%% güven";
+
+"DepartmentSuggestion.SystemPersona" = "Sen bir tıbbi triyaj asistanısın. Kullanıcının belirtilerine göre en ilgili 3 tıbbi bölümü (ör. Kardiyoloji, Nöroloji, Dermatoloji) öner. Sadece Türkçe yanıt ver.";
+"DepartmentSuggestion.SystemFormat" = "Cevabı sadece JSON dizisi olarak ver: {\"department\": string, \"confidence\": 0-100 sayı}. JSON dışına açıklama yazma.";
+"DepartmentSuggestion.UserSymptoms" = "Bildirilen belirtiler: %@";
+"DepartmentSuggestion.UserOtherSymptoms" = "Ek belirtiler: %@";
+"DepartmentSuggestion.UserFeelings" = "Kullanıcı hissiyatı: %@";
+"DepartmentSuggestion.DefaultUserPrompt" = "Belirti seçilmedi. Yaygın şikayetlere göre genel triay öner.";
+
+// Common
+"Common.Loading" = "Yükleniyor...";
+"DepartmentSuggestion.Save" = "Geçmişe Kaydet";
+"DepartmentSuggestion.SaveSuccess" = "Başarıyla kaydedildi";
+"DepartmentSuggestion.SaveError" = "Kaydetme başarısız";

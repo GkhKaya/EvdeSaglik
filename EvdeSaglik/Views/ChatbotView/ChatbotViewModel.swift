@@ -85,11 +85,22 @@ class ChatbotViewModel: ObservableObject {
             }
 
             do {
-                // Optionally, include user context from UserManager
+                // Prepare messages for API with user context
                 let userSummary = await userManager.generateUserSummaryPrompt()
-                let fullMessage = userSummary.isEmpty ? userMessageContent : "\(userSummary)\n\n\(userMessageContent)"
+                var messagesForAPI: [DeepseekMessage] = []
                 
-                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(message: fullMessage)
+                // Add user summary as system message if available
+                if !userSummary.isEmpty {
+                    messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
+                }
+                
+                // Add conversation history (excluding thinking messages)
+                let conversationMessages = self.messages.filter { !$0.isThinking }
+                for message in conversationMessages {
+                    messagesForAPI.append(DeepseekMessage(role: message.role, content: message.content))
+                }
+                
+                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
                 
                 // Update the thinking message with the actual AI response
                 if let id = self.thinkingMessageID {
@@ -181,11 +192,22 @@ class ChatbotViewModel: ObservableObject {
             }
             
             do {
-                // Optionally, include user context from UserManager
+                // Prepare messages for API with user context
                 let userSummary = await userManager.generateUserSummaryPrompt()
-                let fullMessage = userSummary.isEmpty ? userMessageContent : "\(userSummary)\n\n\(userMessageContent)"
+                var messagesForAPI: [DeepseekMessage] = []
                 
-                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(message: fullMessage)
+                // Add user summary as system message if available
+                if !userSummary.isEmpty {
+                    messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
+                }
+                
+                // Add conversation history (excluding thinking messages)
+                let conversationMessages = self.messages.filter { !$0.isThinking }
+                for message in conversationMessages {
+                    messagesForAPI.append(DeepseekMessage(role: message.role, content: message.content))
+                }
+                
+                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
                 
                 // Update the thinking message with the actual AI response
                 if let id = self.thinkingMessageID {

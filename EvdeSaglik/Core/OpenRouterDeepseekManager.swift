@@ -17,12 +17,11 @@ class OpenRouterDeepseekManager {
     private init() {}
 
     /// Performs an asynchronous chat completion request to the OpenRouter Deepseek API.
-    ///
-    /// - Parameter message: The user's message to send to the AI model.
+    /// - Parameter messages: The conversation history to send to the AI model.
     /// - Returns: A `String` containing the AI's response message.
     /// - Throws: `AppError.deepseekError` if any error occurs during the API request, such as missing API key, invalid URL, network issues, or malformed responses.
-    func performChatRequest(message: String) async throws -> String {
-        guard let apiKey = ProcessInfo.processInfo.environment["DEEPSEEK_API_KEY"] else {
+    func performChatRequest(messages: [DeepseekMessage]) async throws -> String {
+        guard let apiKey = ProcessInfo.processInfo.environment["DEEPSEEK_API_KEY"], !apiKey.isEmpty else {
             throw AppError.deepseekError(.missingAPIKey)
         }
 
@@ -34,9 +33,12 @@ class OpenRouterDeepseekManager {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        // OpenRouter recommends providing Referer and X-Title
+        request.setValue("https://evdesaglik.app", forHTTPHeaderField: "HTTP-Referer")
+        request.setValue("EvdeSaglik", forHTTPHeaderField: "X-Title")
 
-        let messages = [DeepseekMessage(role: "user", content: message)]
-        let deepseekRequest = DeepseekRequest(model: "deepseek/deepseek-chat-v3.1:free", messages: messages)
+        // NOTE: Use unified model id; adjust if needed
+        let deepseekRequest = DeepseekRequest(model: "deepseek/deepseek-chat", messages: messages)
 
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted // For readability, can be removed in production
@@ -49,7 +51,7 @@ class OpenRouterDeepseekManager {
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
-        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
             let responseBody = String(data: data, encoding: .utf8) ?? "N/A"
             throw AppError.deepseekError(.invalidResponse(statusCode: statusCode, body: responseBody))

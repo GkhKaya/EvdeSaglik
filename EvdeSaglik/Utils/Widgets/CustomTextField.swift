@@ -26,7 +26,7 @@ struct CustomTextField: View {
                     .foregroundStyle(.primary)
             }
             
-            HStack(spacing: ResponsivePadding.small) {
+            HStack(alignment: .center, spacing: ResponsivePadding.small) {
                 if !icon.isEmpty { // Sadece ikon varsa göster
                     if let onIconTap = onIconTap { // onIconTap sağlanmışsa, ikon bir düğme olur
                         Button(action: onIconTap) {
@@ -45,18 +45,20 @@ struct CustomTextField: View {
                 
                 Group {
                     if isMultiline {
-                        TextEditor(text: $text)
-                            // Removed fixed frame. TextEditor will grow based on content.
-                            .scrollDisabled(true) // Disable TextEditor's own scrolling to allow parent ScrollView to scroll
-                            .fixedSize(horizontal: false, vertical: true) // Allow vertical expansion
-                            .overlay(
-                                Text(text.isEmpty ? placeholder : "")
+                        ZStack(alignment: .topLeading) {
+                            if text.isEmpty {
+                                Text(placeholder)
                                     .foregroundStyle(Color(.placeholderText))
-                                    .padding(.horizontal, 5) // TextEditor'ın iç boşluğu
-                                    .allowsHitTesting(false) // Tıklanabilirliği kapat
-                                , alignment: .topLeading
-                            )
-                            .padding(5) // TextEditor'ın kendi boşluğu
+                                    .padding(.vertical, ResponsivePadding.medium - 2)
+                                    .padding(.horizontal, 2)
+                            }
+                            TextEditor(text: $text)
+                                .scrollDisabled(true)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.vertical, ResponsivePadding.medium - 2)
+                                .padding(.horizontal, 2)
+                        }
+                        .frame(minHeight: 44, alignment: .center)
                     } else if isSecure && !isPasswordVisible {
                         SecureField(placeholder, text: $text)
                     } else {
@@ -75,7 +77,7 @@ struct CustomTextField: View {
                     }
                 }
             }
-            .padding(isMultiline ? 0 : ResponsivePadding.medium) // Multiline ise padding'i TextEditor'a bırak
+            .padding(ResponsivePadding.medium)
             .background(
                 RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
                     .strokeBorder(Color(.separator), lineWidth: 1)

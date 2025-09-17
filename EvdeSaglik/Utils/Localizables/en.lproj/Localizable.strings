@@ -238,3 +238,34 @@
 "Chatbot.Greeting" = "Hello! How can I help you today?";
 "Chatbot.Input.Placeholder" = "Type a message...";
 "Chatbot.Title" = "Chat with AI";
+
+// MARK: - Department Suggestion
+"DepartmentSuggestion.Title" = "Which doctor should I go to?";
+"DepartmentSuggestion.Subtitle" = "Select or write your symptoms, AI will suggest the most relevant specialty for you.";
+"DepartmentSuggestion.Symptom.Headache" = "Headache";
+"DepartmentSuggestion.Symptom.Nausea" = "Nausea";
+"DepartmentSuggestion.Symptom.ChestPain" = "Chest pain";
+"DepartmentSuggestion.Symptom.Cough" = "Cough";
+"DepartmentSuggestion.Symptom.SkinRash" = "Skin rash";
+"DepartmentSuggestion.Symptom.JointPain" = "Joint pain";
+"DepartmentSuggestion.Symptom.Fatigue" = "Fatigue";
+"DepartmentSuggestion.Symptom.Fever" = "Fever";
+"DepartmentSuggestion.Other" = "Other";
+"DepartmentSuggestion.OtherTitle" = "Other Symptoms";
+"DepartmentSuggestion.OtherPlaceholder" = "Write additional symptoms...";
+"DepartmentSuggestion.FeelingsTitle" = "How do you feel?";
+"DepartmentSuggestion.FeelingsPlaceholder" = "Describe your feelings briefly";
+"DepartmentSuggestion.Submit" = "Which doctor should I go to?";
+"DepartmentSuggestion.Confidence" = "%d%% confidence";
+
+"DepartmentSuggestion.SystemPersona" = "You are a medical triage assistant. Based on the user's symptoms, suggest top 3 most relevant medical departments (e.g., Cardiology, Neurology, Dermatology). Respond ONLY in Turkish language.";
+"DepartmentSuggestion.SystemFormat" = "Respond in pure JSON array with items of {\"department\": string, \"confidence\": number 0-100}. Do not include any explanation outside JSON.";
+"DepartmentSuggestion.UserSymptoms" = "Reported symptoms: %@";
+"DepartmentSuggestion.UserOtherSymptoms" = "Additional symptoms: %@";
+"DepartmentSuggestion.UserFeelings" = "User feelings: %@";
+"DepartmentSuggestion.DefaultUserPrompt" = "No symptoms selected. Provide general triage based on common complaints.";
+
+// Common
+"DepartmentSuggestion.Save" = "Save to History";
+"DepartmentSuggestion.SaveSuccess" = "Saved successfully";
+"DepartmentSuggestion.SaveError" = "Save failed";
