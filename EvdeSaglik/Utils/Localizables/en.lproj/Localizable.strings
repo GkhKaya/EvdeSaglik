@@ -269,3 +269,35 @@
 "DepartmentSuggestion.Save" = "Save to History";
 "DepartmentSuggestion.SaveSuccess" = "Saved successfully";
 "DepartmentSuggestion.SaveError" = "Save failed";
+
+// MARK: - Disease Prediction
+"DiseasePrediction.Title" = "What could be my disease?";
+"DiseasePrediction.Subtitle" = "Select your symptoms and describe how you feel, AI will suggest possible diseases.";
+"DiseasePrediction.Symptom.Headache" = "Headache";
+"DiseasePrediction.Symptom.Fever" = "Fever";
+"DiseasePrediction.Symptom.Cough" = "Cough";
+"DiseasePrediction.Symptom.Nausea" = "Nausea";
+"DiseasePrediction.Symptom.Fatigue" = "Fatigue";
+"DiseasePrediction.Symptom.ChestPain" = "Chest pain";
+"DiseasePrediction.Symptom.AbdominalPain" = "Abdominal pain";
+"DiseasePrediction.Symptom.Dizziness" = "Dizziness";
+"DiseasePrediction.Other" = "Other";
+"DiseasePrediction.OtherTitle" = "Other Symptoms";
+"DiseasePrediction.OtherPlaceholder" = "Write additional symptoms...";
+"DiseasePrediction.FeelingsTitle" = "How do you feel?";
+"DiseasePrediction.FeelingsPlaceholder" = "Describe your feelings briefly";
+"DiseasePrediction.DurationTitle" = "Duration";
+"DiseasePrediction.DurationPlaceholder" = "How long have you had these symptoms?";
+"DiseasePrediction.Submit" = "What could be my disease?";
+"DiseasePrediction.Confidence" = "%d%% confidence";
+"DiseasePrediction.Save" = "Save to History";
+"DiseasePrediction.SaveSuccess" = "Saved successfully";
+"DiseasePrediction.SaveError" = "Save failed";
+
+"DiseasePrediction.SystemPersona" = "You are a medical diagnosis assistant. Based on the user's symptoms, suggest top 3 most likely diseases with brief descriptions. Respond ONLY in Turkish language.";
+"DiseasePrediction.SystemFormat" = "Respond in pure JSON array with items of {\"disease\": string, \"confidence\": number 0-100, \"description\": string}. Do not include any explanation outside JSON.";
+"DiseasePrediction.UserSymptoms" = "Reported symptoms: %@";
+"DiseasePrediction.UserOtherSymptoms" = "Additional symptoms: %@";
+"DiseasePrediction.UserFeelings" = "User feelings: %@";
+"DiseasePrediction.UserDuration" = "Symptom duration: %@";
+"DiseasePrediction.DefaultUserPrompt" = "No symptoms selected. Provide general disease suggestions based on common complaints.";

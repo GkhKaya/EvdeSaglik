@@ -261,3 +261,35 @@
 "DepartmentSuggestion.Save" = "Geçmişe Kaydet";
 "DepartmentSuggestion.SaveSuccess" = "Başarıyla kaydedildi";
 "DepartmentSuggestion.SaveError" = "Kaydetme başarısız";
+
+// MARK: - Disease Prediction
+"DiseasePrediction.Title" = "Hastalığım ne olabilir?";
+"DiseasePrediction.Subtitle" = "Belirtilerinizi seçin ve nasıl hissettiğinizi açıklayın, AI olası hastalıkları önerecek.";
+"DiseasePrediction.Symptom.Headache" = "Baş ağrısı";
+"DiseasePrediction.Symptom.Fever" = "Ateş";
+"DiseasePrediction.Symptom.Cough" = "Öksürük";
+"DiseasePrediction.Symptom.Nausea" = "Mide bulantısı";
+"DiseasePrediction.Symptom.Fatigue" = "Halsizlik";
+"DiseasePrediction.Symptom.ChestPain" = "Göğüs ağrısı";
+"DiseasePrediction.Symptom.AbdominalPain" = "Karın ağrısı";
+"DiseasePrediction.Symptom.Dizziness" = "Baş dönmesi";
+"DiseasePrediction.Other" = "Diğer";
+"DiseasePrediction.OtherTitle" = "Diğer Belirtiler";
+"DiseasePrediction.OtherPlaceholder" = "Ek belirtileri yazın...";
+"DiseasePrediction.FeelingsTitle" = "Nasıl hissediyorsunuz?";
+"DiseasePrediction.FeelingsPlaceholder" = "Kısaca hissiyatınızı yazın";
+"DiseasePrediction.DurationTitle" = "Süre";
+"DiseasePrediction.DurationPlaceholder" = "Bu belirtiler ne kadar süredir var?";
+"DiseasePrediction.Submit" = "Hastalığım ne olabilir?";
+"DiseasePrediction.Confidence" = "%d%% güven";
+"DiseasePrediction.Save" = "Geçmişe Kaydet";
+"DiseasePrediction.SaveSuccess" = "Başarıyla kaydedildi";
+"DiseasePrediction.SaveError" = "Kaydetme başarısız";
+
+"DiseasePrediction.SystemPersona" = "Sen bir tıbbi tanı asistanısın. Kullanıcının belirtilerine göre en olası 3 hastalığı kısa açıklamalarla öner. Sadece Türkçe yanıt ver.";
+"DiseasePrediction.SystemFormat" = "Cevabı sadece JSON dizisi olarak ver: {\"disease\": string, \"confidence\": 0-100 sayı, \"description\": string}. JSON dışına açıklama yazma.";
+"DiseasePrediction.UserSymptoms" = "Bildirilen belirtiler: %@";
+"DiseasePrediction.UserOtherSymptoms" = "Ek belirtiler: %@";
+"DiseasePrediction.UserFeelings" = "Kullanıcı hissiyatı: %@";
+"DiseasePrediction.UserDuration" = "Belirti süresi: %@";
+"DiseasePrediction.DefaultUserPrompt" = "Belirti seçilmedi. Yaygın şikayetlere göre genel hastalık önerileri sun.";
