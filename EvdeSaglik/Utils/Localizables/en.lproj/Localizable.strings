@@ -335,3 +335,35 @@
 "LabResult.SystemPersona" = "You are a medical lab results analyst. Analyze the provided lab test results and identify any abnormal values. Provide recommendations in this order: 1) Abnormal values and their potential causes, 2) Natural solutions and lifestyle changes, 3) Medication suggestions (generic names), 4) Clear warning about consulting a doctor.";
 "LabResult.SystemFormat" = "Provide clear, numbered analysis in the device language. Avoid JSON. Keep recommendations concise and actionable.";
 "LabResult.UserPrompt" = "Lab Results Data:\n\n%@";
+
+// MARK: - Natural Solutions
+"NaturalSolutions.Title" = "Natural Solutions";
+"NaturalSolutions.Subtitle" = "Describe your health concern and get natural remedy suggestions.";
+"NaturalSolutions.InputTitle" = "Your Health Concern";
+"NaturalSolutions.InputPlaceholder" = "e.g., headache, insomnia, digestive issues";
+"NaturalSolutions.Submit" = "Find Natural Solutions";
+"NaturalSolutions.Save" = "Save to History";
+"NaturalSolutions.SaveSuccess" = "Saved successfully";
+"NaturalSolutions.SaveError" = "Save failed";
+
+"NaturalSolutions.SystemPersona" = "You are a natural health consultant. Provide natural remedy suggestions for the user's health concern. Include both well-known traditional remedies and lesser-known but effective natural solutions. Focus on herbs, foods, lifestyle changes, and natural therapies.";
+"NaturalSolutions.SystemFormat" = "Provide clear, numbered natural solutions in the device language. Avoid JSON. Include both common and uncommon remedies. Keep suggestions practical and safe.";
+"NaturalSolutions.DefaultUserPrompt" = "General natural health tips for common concerns.";
+"NaturalSolutions.UserPrompt" = "Health concern: %@";
+
+"NaturalSolutions.Concern.Headache" = "Headache";
+"NaturalSolutions.Concern.Insomnia" = "Insomnia";
+"NaturalSolutions.Concern.Digestive" = "Digestive Issues";
+"NaturalSolutions.Concern.Stress" = "Stress";
+"NaturalSolutions.Concern.Cold" = "Cold/Flu";
+"NaturalSolutions.Concern.Fatigue" = "Fatigue";
+"NaturalSolutions.Concern.Skin" = "Skin Problems";
+"NaturalSolutions.Concern.JointPain" = "Joint Pain";
+"NaturalSolutions.Other" = "Other";
+"NaturalSolutions.OtherTitle" = "Other Concerns";
+"NaturalSolutions.OtherPlaceholder" = "Describe other health concerns...";
+"NaturalSolutions.FeelingsTitle" = "How do you feel?";
+"NaturalSolutions.FeelingsPlaceholder" = "Describe your feelings briefly";
+"NaturalSolutions.UserConcerns" = "Selected concerns: %@";
+"NaturalSolutions.UserOtherConcerns" = "Additional concerns: %@";
+"NaturalSolutions.UserFeelings" = "User feelings: %@";

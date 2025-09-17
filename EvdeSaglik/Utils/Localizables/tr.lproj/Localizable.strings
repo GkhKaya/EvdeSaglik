@@ -327,3 +327,35 @@
 "LabResult.SystemPersona" = "Sen bir tıbbi laboratuvar sonuçları analizcisisin. Verilen laboratuvar test sonuçlarını analiz et ve anormal değerleri belirle. Önerileri şu sırada ver: 1) Anormal değerler ve potansiyel nedenleri, 2) Doğal çözümler ve yaşam tarzı değişiklikleri, 3) İlaç önerileri (jenerik isimler), 4) Doktora danışma konusunda net uyarı.";
 "LabResult.SystemFormat" = "Cihaz dilinde net, numaralı analiz ver. JSON kullanma. Önerileri kısa ve uygulanabilir tut.";
 "LabResult.UserPrompt" = "Laboratuvar Sonuçları Verisi:\n\n%@";
+
+// MARK: - Natural Solutions
+"NaturalSolutions.Title" = "Doğal Çözümler";
+"NaturalSolutions.Subtitle" = "Sağlık sorununuzu açıklayın ve doğal çözüm önerileri alın.";
+"NaturalSolutions.InputTitle" = "Sağlık Sorununuz";
+"NaturalSolutions.InputPlaceholder" = "örn: baş ağrısı, uykusuzluk, sindirim sorunları";
+"NaturalSolutions.Submit" = "Doğal Çözümleri Bul";
+"NaturalSolutions.Save" = "Geçmişe Kaydet";
+"NaturalSolutions.SaveSuccess" = "Başarıyla kaydedildi";
+"NaturalSolutions.SaveError" = "Kaydetme başarısız";
+
+"NaturalSolutions.SystemPersona" = "Sen bir doğal sağlık danışmanısın. Kullanıcının sağlık sorunu için doğal çözüm önerileri sun. Hem bilinen geleneksel çözümleri hem de az bilinen ama etkili doğal çözümleri dahil et. Otlar, besinler, yaşam tarzı değişiklikleri ve doğal terapiler üzerine odaklan.";
+"NaturalSolutions.SystemFormat" = "Cihaz dilinde net, numaralı doğal çözümler ver. JSON kullanma. Hem yaygın hem de az bilinen çözümleri dahil et. Önerileri pratik ve güvenli tut.";
+"NaturalSolutions.DefaultUserPrompt" = "Yaygın sorunlar için genel doğal sağlık ipuçları.";
+"NaturalSolutions.UserPrompt" = "Sağlık sorunu: %@";
+
+"NaturalSolutions.Concern.Headache" = "Baş Ağrısı";
+"NaturalSolutions.Concern.Insomnia" = "Uykusuzluk";
+"NaturalSolutions.Concern.Digestive" = "Sindirim Sorunları";
+"NaturalSolutions.Concern.Stress" = "Stres";
+"NaturalSolutions.Concern.Cold" = "Soğuk Algınlığı";
+"NaturalSolutions.Concern.Fatigue" = "Halsizlik";
+"NaturalSolutions.Concern.Skin" = "Cilt Sorunları";
+"NaturalSolutions.Concern.JointPain" = "Eklem Ağrısı";
+"NaturalSolutions.Other" = "Diğer";
+"NaturalSolutions.OtherTitle" = "Diğer Sorunlar";
+"NaturalSolutions.OtherPlaceholder" = "Diğer sağlık sorunlarınızı açıklayın...";
+"NaturalSolutions.FeelingsTitle" = "Nasıl hissediyorsunuz?";
+"NaturalSolutions.FeelingsPlaceholder" = "Kısaca hissiyatınızı yazın";
+"NaturalSolutions.UserConcerns" = "Seçilen sorunlar: %@";
+"NaturalSolutions.UserOtherConcerns" = "Ek sorunlar: %@";
+"NaturalSolutions.UserFeelings" = "Kullanıcı hissiyatı: %@";
