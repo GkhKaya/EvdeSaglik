@@ -33,9 +33,48 @@ final class InteractiveIntroductionViewModel: ObservableObject {
     // MARK: - Constants
     let totalSteps = 5
     
-    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager, isFromProfile: Bool = false) {
         self.firestoreManager = firestoreManager
         self.authManager = authManager
+        
+        // Start from step 2 if coming from profile (skip introduction)
+        if isFromProfile {
+            self.currentStep = 2
+        }
+        
+        loadExistingUserData()
+    }
+    
+    // MARK: - Load Existing User Data
+    private func loadExistingUserData() {
+        guard let userId = authManager.currentUser?.uid else { return }
+        
+        firestoreManager.fetchDocument(collection: "users", documentId: userId) { [weak self] (result: Result<UserModel?, AppError>) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let userModel):
+                    if let userModel = userModel {
+                        self?.populateFieldsWithExistingData(userModel)
+                    }
+                case .failure(let error):
+                    print("Failed to load user data: \(error)")
+                }
+            }
+        }
+    }
+    
+    private func populateFieldsWithExistingData(_ userModel: UserModel) {
+        self.userModel = userModel
+        
+        // Populate step-specific fields
+        selectedGender = userModel.gender
+        selectedAge = userModel.age > 0 ? "\(userModel.age)" : ""
+        selectedChronicDiseases = userModel.chronicDiseases
+        selectedAllergies = userModel.allergies
+        selectedMedications = userModel.medications
+        selectedSleepPattern = userModel.sleepPattern
+        selectedPhysicalActivity = userModel.physicalActivity
+        selectedNutritionHabits = userModel.nutritionHabits
     }
     
     // MARK: - Computed Properties
@@ -107,6 +146,33 @@ final class InteractiveIntroductionViewModel: ObservableObject {
                     self?.shouldNavigateToMain = true
                     // Reset didJustRegister flag after successful onboarding
                     self?.authManager.didJustRegister = false
+                }
+            }
+        }
+    }
+    
+    // MARK: - Update Profile Data
+    func updateProfileData() {
+        updateUserModel()
+        
+        isLoading = true
+        
+        guard let userId = authManager.currentUser?.uid, let userEmail = authManager.currentUser?.email else {
+            print("Error: User not authenticated or email not available. Cannot save profile data.")
+            isLoading = false
+            return
+        }
+        
+        userModel.id = userId
+        userModel.email = userEmail
+        
+        // Save updated user data to Firestore
+        firestoreManager.updateDocument(collection: "users", documentId: userId, object: userModel) { [weak self] error in
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                
+                if error == nil {
+                    self?.shouldNavigateToMain = true
                 }
             }
         }

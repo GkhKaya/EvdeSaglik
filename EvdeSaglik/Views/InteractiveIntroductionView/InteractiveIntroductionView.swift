@@ -14,10 +14,12 @@ struct InteractiveIntroductionView: View {
     @EnvironmentObject var authManager: FirebaseAuthManager
     
     let onOnboardingComplete: (() -> Void)?
+    let isFromProfile: Bool
     
-    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager, onOnboardingComplete: (() -> Void)? = nil) {
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager, onOnboardingComplete: (() -> Void)? = nil, isFromProfile: Bool = false) {
         self.onOnboardingComplete = onOnboardingComplete
-        _viewModel = ObservedObject(wrappedValue: InteractiveIntroductionViewModel(firestoreManager: firestoreManager, authManager: authManager))
+        self.isFromProfile = isFromProfile
+        _viewModel = ObservedObject(wrappedValue: InteractiveIntroductionViewModel(firestoreManager: firestoreManager, authManager: authManager, isFromProfile: isFromProfile))
     }
     
     // MARK: - Body
@@ -99,8 +101,14 @@ private extension InteractiveIntroductionView {
                     .frame(maxWidth: .infinity)
                 } else {
                     CustomButton(
-                        title: NSLocalizedString("Onboarding.Finish", comment: "Finish button"),
-                        action: { viewModel.finishOnboarding(firestoreManager: firestoreManager, authManager: authManager) },
+                        title: isFromProfile ? NSLocalizedString("Onboarding.Update", comment: "Update button") : NSLocalizedString("Onboarding.Finish", comment: "Finish button"),
+                        action: { 
+                            if isFromProfile {
+                                viewModel.updateProfileData()
+                            } else {
+                                viewModel.finishOnboarding(firestoreManager: firestoreManager, authManager: authManager)
+                            }
+                        },
                         isLoading: viewModel.isLoading,
                         innerPadding: ResponsivePadding.small // Smaller padding
                     )

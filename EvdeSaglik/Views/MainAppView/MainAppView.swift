@@ -14,7 +14,7 @@ struct MainAppView: View {
     @EnvironmentObject var userManager: UserManager // Inject UserManager
     
     @State private var searchQuery: String = ""
-    @State private var showingPersonalizeSheet: Bool = false
+    @State private var showingProfile: Bool = false
     @State private var showingChatbot: Bool = false // New state for chatbot
     @State private var showingDepartmentSuggestion: Bool = false
     @State private var showingDiseasePrediction: Bool = false
@@ -40,25 +40,6 @@ struct MainAppView: View {
                         showingChatbot = true // textfield'a dokununca da aç
                     }
                     .padding(.horizontal, ResponsivePadding.large)
-                    
-                    // Personalize Button
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            showingPersonalizeSheet = true
-                        }) {
-                            HStack {
-                                Image(systemName: "person.text.rectangle")
-                                Text(NSLocalizedString("MainApp.PersonalizeButton", comment: "Personalize button"))
-                            }
-                            .font(.subheadlineResponsive)
-                            .padding(.vertical, ResponsivePadding.small)
-                            .padding(.horizontal, ResponsivePadding.medium)
-                            .background(Capsule().fill(Color.accentColor))
-                            .foregroundStyle(.white)
-                        }
-                        .padding(.horizontal, ResponsivePadding.large)
-                    }
                     
                     // Quick Access Cards Grid
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: UIScreen.screenWidth / 2 - ResponsivePadding.extraLarge))]) {
@@ -99,9 +80,18 @@ struct MainAppView: View {
             }
             .navigationTitle(NSLocalizedString("MainApp.Title", comment: "Main App Title"))
             .navigationBarTitleDisplayMode(.inline)
-            .sheet(isPresented: $showingPersonalizeSheet) {
-                // Personalization View
-                Text(NSLocalizedString("MainApp.PersonalizeSheet.Title", comment: "Personalize Sheet Title"))
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        showingProfile = true
+                    }) {
+                        Image(systemName: "person.circle")
+                            .font(.title2Responsive)
+                    }
+                }
+            }
+            .sheet(isPresented: $showingProfile) {
+                ProfileView(authManager: authManager, firestoreManager: firestoreManager)
             }
             .sheet(isPresented: $showingDepartmentSuggestion) {
                 DepartmentSuggestionView()

@@ -7,9 +7,17 @@
 
 import Foundation
 
+// MARK: - AI Service Protocols
+
+/// Protocol for AI/ML operations
+protocol AIServiceProtocol {
+    func performChatRequest(messages: [DeepseekMessage]) async throws -> String
+    func generateUserSummary(userData: UserModel) async throws -> String
+}
+
 /// `OpenRouterDeepseekManager` handles all interactions with the OpenRouter API for Deepseek chat completions.
 /// It provides a singleton instance for making chat requests and manages API key retrieval and response parsing.
-class OpenRouterDeepseekManager {
+class OpenRouterDeepseekManager: AIServiceProtocol {
     /// The shared singleton instance of `OpenRouterDeepseekManager`.
     static let shared = OpenRouterDeepseekManager()
 
@@ -67,5 +75,16 @@ class OpenRouterDeepseekManager {
         } catch {
             throw AppError.deepseekError(.decodingFailed(error.localizedDescription))
         }
+    }
+    
+    // MARK: - AIServiceProtocol Implementation
+    
+    /// Protocol implementation for generating user summary
+    func generateUserSummary(userData: UserModel) async throws -> String {
+        let messages = [
+            DeepseekMessage(role: "system", content: "You are a medical assistant. Generate a concise summary of the user's health information for context in medical consultations."),
+            DeepseekMessage(role: "user", content: "Generate a summary for this user: \(userData)")
+        ]
+        return try await performChatRequest(messages: messages)
     }
 }

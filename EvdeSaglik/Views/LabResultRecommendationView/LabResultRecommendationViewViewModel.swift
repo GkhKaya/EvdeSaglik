@@ -16,9 +16,7 @@ struct LabAnalysisSection: Identifiable, Equatable {
     let lines: [String]
 }
 
-final class LabResultRecommendationViewViewModel: ObservableObject {
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
+final class LabResultRecommendationViewViewModel: BaseViewModel {
     @Published var extractedTables: [[String]] = []
     @Published var analysisResult: String = ""
     @Published var sections: [LabAnalysisSection] = []

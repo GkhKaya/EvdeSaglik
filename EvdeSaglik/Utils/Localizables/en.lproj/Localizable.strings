@@ -72,6 +72,7 @@
 "Onboarding.Next" = "Continue";
 "Onboarding.Skip" = "Skip";
 "Onboarding.Finish" = "Finish";
+"Onboarding.Update" = "Update Profile";
 
 // Step 1 - Introduction
 "Onboarding.Intro.Title" = "Personal Assistant for Your Health";
@@ -367,3 +368,119 @@
 "NaturalSolutions.UserConcerns" = "Selected concerns: %@";
 "NaturalSolutions.UserOtherConcerns" = "Additional concerns: %@";
 "NaturalSolutions.UserFeelings" = "User feelings: %@";
+
+// MARK: - Profile Screen
+"Profile.Title" = "Profile";
+"Profile.UserName" = "User";
+"Profile.Section.AccountInfo" = "Account Information";
+"Profile.Section.Personalization" = "Personalization";
+"Profile.Section.DepartmentSuggestions" = "Department Suggestions";
+"Profile.Section.DiseasePredictions" = "Disease Predictions";
+"Profile.Section.HomeSolutions" = "Home Solutions";
+"Profile.Section.LabResults" = "Lab Results";
+"Profile.Section.NaturalSolutions" = "Natural Solutions";
+"Profile.Section.AccountSettings" = "Account Settings";
+
+"Profile.Item.Email" = "Email";
+"Profile.Item.Password" = "Password";
+"Profile.Item.Personalize" = "Personalize Profile";
+"Profile.Item.ViewHistory" = "View History";
+"Profile.Item.ResetData" = "Reset All Data";
+"Profile.Item.DeleteAccount" = "Delete Account";
+
+"Profile.Item.PasswordValue" = "Change password";
+"Profile.Item.PersonalizeValue" = "Update your health profile";
+"Profile.Item.ViewHistoryValue" = "View saved results";
+"Profile.Item.ResetDataValue" = "Delete all saved data";
+"Profile.Item.DeleteAccountValue" = "Permanently delete account";
+
+"Profile.ChangeEmail.Title" = "Change Email";
+"Profile.ChangeEmail.Description" = "Enter your new email address. You will need to verify it.";
+"Profile.ChangeEmail.NewEmail" = "New Email";
+"Profile.ChangeEmail.Placeholder" = "Enter new email address";
+"Profile.ChangeEmail.Update" = "Update Email";
+
+"Profile.ChangePassword.Title" = "Change Password";
+"Profile.ChangePassword.Description" = "Enter your current password and choose a new one.";
+"Profile.ChangePassword.Current" = "Current Password";
+"Profile.ChangePassword.New" = "New Password";
+"Profile.ChangePassword.Confirm" = "Confirm New Password";
+"Profile.ChangePassword.CurrentPlaceholder" = "Enter current password";
+"Profile.ChangePassword.NewPlaceholder" = "Enter new password";
+"Profile.ChangePassword.ConfirmPlaceholder" = "Confirm new password";
+"Profile.ChangePassword.Update" = "Update Password";
+
+"Profile.Alert.Error" = "Error";
+"Profile.Alert.Success" = "Success";
+"Profile.Alert.ResetData" = "Reset All Data";
+"Profile.Alert.DeleteAccount" = "Delete Account";
+"Profile.Alert.ResetDataMessage" = "This will permanently delete all your saved data. This action cannot be undone.";
+"Profile.Alert.DeleteAccountMessage" = "This will permanently delete your account and all data. This action cannot be undone.";
+
+"Profile.Action.Cancel" = "Cancel";
+"Profile.Action.Reset" = "Reset";
+"Profile.Action.Delete" = "Delete";
+
+"Profile.Error.EmptyEmail" = "Please enter an email address";
+"Profile.Error.InvalidEmail" = "Please enter a valid email address";
+"Profile.Error.EmptyFields" = "Please fill in all fields";
+"Profile.Error.PasswordMismatch" = "New passwords do not match";
+"Profile.Error.WeakPassword" = "Password must be at least 6 characters";
+
+"Profile.Success.EmailChanged" = "Email updated successfully";
+"Profile.Success.PasswordChanged" = "Password updated successfully";
+"Profile.Success.DataReset" = "All data has been reset";
+"Profile.Success.AccountDeleted" = "Account deleted successfully";
+
+// MARK: - History Screen Button Texts
+"Profile.Item.DepartmentHistory" = "View Doctor Suggestions";
+"Profile.Item.DepartmentHistoryValue" = "See which doctors were recommended";
+"Profile.Item.DiseaseHistory" = "View Disease Predictions";
+"Profile.Item.DiseaseHistoryValue" = "See predicted diseases";
+"Profile.Item.HomeHistory" = "View Home Solutions";
+"Profile.Item.HomeHistoryValue" = "See home remedy suggestions";
+"Profile.Item.LabHistory" = "View Lab Results";
+"Profile.Item.LabHistoryValue" = "See lab result analyses";
+"Profile.Item.NaturalHistory" = "View Natural Solutions";
+"Profile.Item.NaturalHistoryValue" = "See natural remedy suggestions";
+
+// MARK: - Department History Screen
+"DepartmentHistory.Title" = "Doctor Suggestions";
+"DepartmentHistory.Empty.Title" = "No Doctor Suggestions Yet";
+"DepartmentHistory.Empty.Description" = "Your doctor suggestions will appear here after you use the 'Which Doctor Should I Go To?' feature.";
+"DepartmentHistory.Card.Date" = "Date:";
+"DepartmentHistory.Card.Symptoms" = "Symptoms:";
+"DepartmentHistory.Card.Suggestions" = "Recommended Doctors:";
+
+// MARK: - Disease History Screen
+"DiseaseHistory.Title" = "Disease Predictions";
+"DiseaseHistory.Empty.Title" = "No Disease Predictions Yet";
+"DiseaseHistory.Empty.Description" = "Your disease predictions will appear here after you use the 'What Could Be My Disease?' feature.";
+"DiseaseHistory.Card.Date" = "Date:";
+"DiseaseHistory.Card.Symptoms" = "Symptoms:";
+"DiseaseHistory.Card.Predictions" = "Predicted Diseases:";
+
+// MARK: - Home History Screen
+"HomeHistory.Title" = "Home Solutions";
+"HomeHistory.Empty.Title" = "No Home Solutions Yet";
+"HomeHistory.Empty.Description" = "Your home solutions will appear here after you use the 'What Can I Do at Home?' feature.";
+"HomeHistory.Card.Date" = "Date:";
+"HomeHistory.Card.Symptom" = "Symptom:";
+"HomeHistory.Card.Solutions" = "Solutions:";
+
+// MARK: - Lab History Screen
+"LabHistory.Title" = "Lab Results";
+"LabHistory.Empty.Title" = "No Lab Results Yet";
+"LabHistory.Empty.Description" = "Your lab result analyses will appear here after you use the 'Lab Test Results' feature.";
+"LabHistory.Card.Date" = "Date:";
+"LabHistory.Card.Results" = "Lab Results:";
+"LabHistory.Card.Medications" = "Suggested Medications:";
+"LabHistory.Card.NaturalSolutions" = "Natural Solutions:";
+
+// MARK: - Natural History Screen
+"NaturalHistory.Title" = "Natural Solutions";
+"NaturalHistory.Empty.Title" = "No Natural Solutions Yet";
+"NaturalHistory.Empty.Description" = "Your natural solutions will appear here after you use the 'Natural Solutions' feature.";
+"NaturalHistory.Card.Date" = "Date:";
+"NaturalHistory.Card.Question" = "Question:";
+"NaturalHistory.Card.Remedies" = "Natural Remedies:";

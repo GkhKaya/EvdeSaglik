@@ -15,7 +15,7 @@ struct DiseasePredictionResult: Identifiable, Codable, Equatable {
     let description: String
 }
 
-final class DiseasePredictionViewViewModel: ObservableObject {
+final class DiseasePredictionViewViewModel: BaseViewModel {
     @Published var predefinedSymptoms: [String] = [
         NSLocalizedString("DiseasePrediction.Symptom.Headache", comment: ""),
         NSLocalizedString("DiseasePrediction.Symptom.Fever", comment: ""),
@@ -32,8 +32,6 @@ final class DiseasePredictionViewViewModel: ObservableObject {
     @Published var feelingsText: String = ""
     @Published var durationText: String = ""
 
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     @Published var results: [DiseasePredictionResult] = []
     @Published var isSaving: Bool = false
     @Published var saveMessage: String? = nil

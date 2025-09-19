@@ -12,11 +12,9 @@ struct ChatMessage: Identifiable {
 }
 
 /// ViewModel for the `ChatbotView`, managing chat logic, API interactions, and UI state.
-class ChatbotViewModel: ObservableObject {
+class ChatbotViewModel: BaseViewModel {
     @Published var messages: [ChatMessage] = []
     @Published var currentMessageText: String = ""
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     @Published var initialMessage: String = "" // New published property for initial message
 
     private let authManager: FirebaseAuthManager
@@ -59,81 +57,7 @@ class ChatbotViewModel: ObservableObject {
     /// Sends an initial message directly to the Deepseek API as a user message.
     private func _sendInitialMessage(message: String) {
         print("\n--- _sendInitialMessage called with message: \(message)")
-        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { 
-            print("_sendInitialMessage: message is empty or whitespace.")
-            return 
-        }
-        
-        let userMessageContent = message
-        let newMessage = self.addMessage(role: "user", content: userMessageContent)
-        isLoading = true
-        errorMessage = nil
-        print("_sendInitialMessage: user message added, isLoading = true.")
-
-        // Add a thinking message for the assistant
-        let thinkingMessage = self.addMessage(role: "assistant", content: "", isThinking: true)
-        self.thinkingMessageID = thinkingMessage.id // Store the ID of the thinking message
-        print("_sendInitialMessage: thinking message added with ID \(self.thinkingMessageID?.uuidString ?? "nil").")
-
-        Task {
-            defer { // Ensure isLoading and thinkingMessageID are reset regardless of success or failure
-                DispatchQueue.main.async {
-                    print("_sendInitialMessage defer block: Setting isLoading = false, thinkingMessageID = nil.")
-                    self.isLoading = false
-                    self.thinkingMessageID = nil
-                }
-            }
-
-            do {
-                // Prepare messages for API with user context
-                let userSummary = await userManager.generateUserSummaryPrompt()
-                var messagesForAPI: [DeepseekMessage] = []
-                
-                // Add user summary as system message if available
-                if !userSummary.isEmpty {
-                    messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
-                }
-                
-                // Add conversation history (excluding thinking messages)
-                let conversationMessages = self.messages.filter { !$0.isThinking }
-                for message in conversationMessages {
-                    messagesForAPI.append(DeepseekMessage(role: message.role, content: message.content))
-                }
-                
-                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
-                
-                // Update the thinking message with the actual AI response
-                if let id = self.thinkingMessageID {
-                    print("_sendInitialMessage: Updating thinking message \(id.uuidString) with AI response.")
-                    self.updateMessage(id: id, newContent: aiResponse, isThinking: false)
-                } else {
-                    // Fallback if thinkingMessageID was not set (should not happen)
-                    print("_sendInitialMessage: thinkingMessageID nil, adding new assistant message with AI response.")
-                    self.addMessage(role: "assistant", content: aiResponse)
-                }
-            } catch let appError as AppError {
-                DispatchQueue.main.async {
-                    print("_sendInitialMessage catch AppError: \(appError.localizedDescription).")
-                    self.errorMessage = appError.localizedDescription
-                    if let id = self.thinkingMessageID {
-                        self.updateMessage(id: id, newContent: "Error: \(appError.localizedDescription)", isThinking: false)
-                    } else {
-                        self.addMessage(role: "assistant", content: "Error: \(appError.localizedDescription)")
-                    }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    print("_sendInitialMessage catch generic error: \(error.localizedDescription).")
-                    self.errorMessage = error.localizedDescription
-                    if let id = self.thinkingMessageID {
-                        self.updateMessage(id: id, newContent: "Error: \(error.localizedDescription)", isThinking: false)
-                    }
-                     else {
-                        self.addMessage(role: "assistant", content: "Error: \(error.localizedDescription)")
-                    }
-                }
-            }
-        }
+        sendMessageToAI(message, isInitial: true)
     }
 
     /// Adds a new message to the chat history.
@@ -162,6 +86,75 @@ class ChatbotViewModel: ObservableObject {
         }
     }
 
+    /// Common method to send messages to AI, eliminating code duplication between initial and regular messages.
+    /// - Parameters:
+    ///   - message: The message content to send
+    ///   - isInitial: Whether this is an initial message (affects logging only)
+    private func sendMessageToAI(_ message: String, isInitial: Bool) {
+        let methodName = isInitial ? "_sendInitialMessage" : "sendMessage"
+        print("\n--- \(methodName) called with message: \(message)")
+        
+        guard !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { 
+            print("\(methodName): message is empty or whitespace.")
+            return 
+        }
+        
+        // Add user message to chat history
+        let userMessage = addMessage(role: "user", content: message)
+        print("\(methodName): user message added.")
+
+        // Add thinking message for the assistant
+        let thinkingMessage = addMessage(role: "assistant", content: "", isThinking: true)
+        thinkingMessageID = thinkingMessage.id
+        print("\(methodName): thinking message added with ID \(thinkingMessageID?.uuidString ?? "nil").")
+
+        performAsyncOperation(
+            operation: {
+                let messagesForAPI = await self.prepareMessagesForAPI()
+                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
+                return aiResponse
+            },
+            context: "ChatbotViewModel.\(methodName)",
+            onSuccess: { [weak self] aiResponse in
+                self?.handleAIResponse(aiResponse, methodName: methodName)
+            }
+        )
+    }
+    
+    /// Prepares messages for API request including user context and conversation history.
+    private func prepareMessagesForAPI() async -> [DeepseekMessage] {
+        let userSummary = await userManager.generateUserSummaryPrompt()
+        var messagesForAPI: [DeepseekMessage] = []
+        
+        // Add user summary as system message if available
+        if !userSummary.isEmpty {
+            messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
+        }
+        
+        // Add conversation history (excluding thinking messages)
+        let conversationMessages = self.messages.filter { !$0.isThinking }
+        for message in conversationMessages {
+            messagesForAPI.append(DeepseekMessage(role: message.role, content: message.content))
+        }
+        
+        return messagesForAPI
+    }
+    
+    /// Handles successful AI response by updating the thinking message.
+    private func handleAIResponse(_ aiResponse: String, methodName: String) {
+        DispatchQueue.main.async {
+            if let id = self.thinkingMessageID {
+                print("\(methodName): Updating thinking message \(id.uuidString) with AI response.")
+                self.updateMessage(id: id, newContent: aiResponse, isThinking: false)
+            } else {
+                // Fallback if thinkingMessageID was not set (should not happen)
+                print("\(methodName): thinkingMessageID nil, adding new assistant message with AI response.")
+                self.addMessage(role: "assistant", content: aiResponse)
+            }
+            self.thinkingMessageID = nil
+        }
+    }
+
     /// Sends the current message in `currentMessageText` to the Deepseek API.
     func sendMessage() {
         print("\n--- sendMessage called. currentMessageText: \(currentMessageText)")
@@ -171,74 +164,8 @@ class ChatbotViewModel: ObservableObject {
         }
         
         let userMessageContent = currentMessageText
-        let newMessage = self.addMessage(role: "user", content: userMessageContent)
-        currentMessageText = ""
-        isLoading = true
-        errorMessage = nil
-        print("sendMessage: user message added, isLoading = true.")
-
-        // Add a thinking message for the assistant
-        let thinkingMessage = self.addMessage(role: "assistant", content: "", isThinking: true)
-        self.thinkingMessageID = thinkingMessage.id // Store the ID of the thinking message
-        print("sendMessage: thinking message added with ID \(self.thinkingMessageID?.uuidString ?? "nil").")
-
-        Task {
-            defer { // Ensure isLoading and thinkingMessageID are reset regardless of success or failure
-                DispatchQueue.main.async {
-                    print("sendMessage defer block: Setting isLoading = false, thinkingMessageID = nil.")
-                    self.isLoading = false
-                    self.thinkingMessageID = nil
-                }
-            }
-            
-            do {
-                // Prepare messages for API with user context
-                let userSummary = await userManager.generateUserSummaryPrompt()
-                var messagesForAPI: [DeepseekMessage] = []
-                
-                // Add user summary as system message if available
-                if !userSummary.isEmpty {
-                    messagesForAPI.append(DeepseekMessage(role: "system", content: userSummary))
-                }
-                
-                // Add conversation history (excluding thinking messages)
-                let conversationMessages = self.messages.filter { !$0.isThinking }
-                for message in conversationMessages {
-                    messagesForAPI.append(DeepseekMessage(role: message.role, content: message.content))
-                }
-                
-                let aiResponse = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messagesForAPI)
-                
-                // Update the thinking message with the actual AI response
-                if let id = self.thinkingMessageID {
-                    print("sendMessage: Updating thinking message \(id.uuidString) with AI response.")
-                    self.updateMessage(id: id, newContent: aiResponse, isThinking: false)
-                } else {
-                    // Fallback if thinkingMessageID was not set (should not happen)
-                    print("sendMessage: thinkingMessageID nil, adding new assistant message with AI response.")
-                    self.addMessage(role: "assistant", content: aiResponse)
-                }
-            } catch let appError as AppError {
-                DispatchQueue.main.async {
-                    print("sendMessage catch AppError: \(appError.localizedDescription).")
-                    self.errorMessage = appError.localizedDescription
-                    if let id = self.thinkingMessageID {
-                        self.updateMessage(id: id, newContent: "Error: \(appError.localizedDescription)", isThinking: false)
-                    } else {
-                        self.addMessage(role: "assistant", content: "Error: \(appError.localizedDescription)")
-                    }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    print("sendMessage catch generic error: \(error.localizedDescription).")
-                    self.errorMessage = error.localizedDescription
-                    if let id = self.thinkingMessageID {
-                        self.updateMessage(id: id, newContent: "Error: \(error.localizedDescription)", isThinking: false)
-                    } else {
-                        self.addMessage(role: "assistant", content: "Error: \(error.localizedDescription)")
-                    }
-                }
-            }
-        }
+        currentMessageText = "" // Clear the input field
+        sendMessageToAI(userMessageContent, isInitial: false)
     }
 }
+

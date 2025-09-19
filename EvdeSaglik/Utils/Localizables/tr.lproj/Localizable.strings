@@ -82,6 +82,7 @@
 "Onboarding.Next" = "Devam Et";
 "Onboarding.Skip" = "Atla";
 "Onboarding.Finish" = "Bitir";
+"Onboarding.Update" = "Profili Güncelle";
 
 // Step 1 - Introduction
 "Onboarding.Intro.Title" = "Sağlığınız için Kişisel Asistan";
@@ -359,3 +360,119 @@
 "NaturalSolutions.UserConcerns" = "Seçilen sorunlar: %@";
 "NaturalSolutions.UserOtherConcerns" = "Ek sorunlar: %@";
 "NaturalSolutions.UserFeelings" = "Kullanıcı hissiyatı: %@";
+
+// MARK: - Profile Screen
+"Profile.Title" = "Profil";
+"Profile.UserName" = "Kullanıcı";
+"Profile.Section.AccountInfo" = "Hesap Bilgileri";
+"Profile.Section.Personalization" = "Kişiselleştirme";
+"Profile.Section.DepartmentSuggestions" = "Doktor Önerileri";
+"Profile.Section.DiseasePredictions" = "Hastalık Tahminleri";
+"Profile.Section.HomeSolutions" = "Ev Çözümleri";
+"Profile.Section.LabResults" = "Laboratuvar Sonuçları";
+"Profile.Section.NaturalSolutions" = "Doğal Çözümler";
+"Profile.Section.AccountSettings" = "Hesap Ayarları";
+
+"Profile.Item.Email" = "E-posta";
+"Profile.Item.Password" = "Şifre";
+"Profile.Item.Personalize" = "Profili Kişiselleştir";
+"Profile.Item.ViewHistory" = "Geçmişi Görüntüle";
+"Profile.Item.ResetData" = "Tüm Verileri Sıfırla";
+"Profile.Item.DeleteAccount" = "Hesabı Sil";
+
+"Profile.Item.PasswordValue" = "Şifreyi değiştir";
+"Profile.Item.PersonalizeValue" = "Sağlık profilinizi güncelleyin";
+"Profile.Item.ViewHistoryValue" = "Kaydedilen sonuçları görüntüle";
+"Profile.Item.ResetDataValue" = "Tüm kaydedilen verileri sil";
+"Profile.Item.DeleteAccountValue" = "Hesabı kalıcı olarak sil";
+
+"Profile.ChangeEmail.Title" = "E-posta Değiştir";
+"Profile.ChangeEmail.Description" = "Yeni e-posta adresinizi girin. Doğrulamanız gerekecek.";
+"Profile.ChangeEmail.NewEmail" = "Yeni E-posta";
+"Profile.ChangeEmail.Placeholder" = "Yeni e-posta adresini girin";
+"Profile.ChangeEmail.Update" = "E-postayı Güncelle";
+
+"Profile.ChangePassword.Title" = "Şifre Değiştir";
+"Profile.ChangePassword.Description" = "Mevcut şifrenizi girin ve yeni bir şifre seçin.";
+"Profile.ChangePassword.Current" = "Mevcut Şifre";
+"Profile.ChangePassword.New" = "Yeni Şifre";
+"Profile.ChangePassword.Confirm" = "Yeni Şifreyi Onayla";
+"Profile.ChangePassword.CurrentPlaceholder" = "Mevcut şifrenizi girin";
+"Profile.ChangePassword.NewPlaceholder" = "Yeni şifrenizi girin";
+"Profile.ChangePassword.ConfirmPlaceholder" = "Yeni şifreyi onaylayın";
+"Profile.ChangePassword.Update" = "Şifreyi Güncelle";
+
+"Profile.Alert.Error" = "Hata";
+"Profile.Alert.Success" = "Başarılı";
+"Profile.Alert.ResetData" = "Tüm Verileri Sıfırla";
+"Profile.Alert.DeleteAccount" = "Hesabı Sil";
+"Profile.Alert.ResetDataMessage" = "Bu işlem tüm kaydedilen verilerinizi kalıcı olarak silecek. Bu işlem geri alınamaz.";
+"Profile.Alert.DeleteAccountMessage" = "Bu işlem hesabınızı ve tüm verilerinizi kalıcı olarak silecek. Bu işlem geri alınamaz.";
+
+"Profile.Action.Cancel" = "İptal";
+"Profile.Action.Reset" = "Sıfırla";
+"Profile.Action.Delete" = "Sil";
+
+"Profile.Error.EmptyEmail" = "Lütfen bir e-posta adresi girin";
+"Profile.Error.InvalidEmail" = "Lütfen geçerli bir e-posta adresi girin";
+"Profile.Error.EmptyFields" = "Lütfen tüm alanları doldurun";
+"Profile.Error.PasswordMismatch" = "Yeni şifreler eşleşmiyor";
+"Profile.Error.WeakPassword" = "Şifre en az 6 karakter olmalı";
+
+"Profile.Success.EmailChanged" = "E-posta başarıyla güncellendi";
+"Profile.Success.PasswordChanged" = "Şifre başarıyla güncellendi";
+"Profile.Success.DataReset" = "Tüm veriler sıfırlandı";
+"Profile.Success.AccountDeleted" = "Hesap başarıyla silindi";
+
+// MARK: - History Screen Button Texts
+"Profile.Item.DepartmentHistory" = "Aldığın Doktor Önerilerini Görüntüle";
+"Profile.Item.DepartmentHistoryValue" = "Hangi doktorların önerildiğini gör";
+"Profile.Item.DiseaseHistory" = "Hastalık Tahminlerini Görüntüle";
+"Profile.Item.DiseaseHistoryValue" = "Tahmin edilen hastalıkları gör";
+"Profile.Item.HomeHistory" = "Ev Çözümlerini Görüntüle";
+"Profile.Item.HomeHistoryValue" = "Ev çözümü önerilerini gör";
+"Profile.Item.LabHistory" = "Laboratuvar Sonuçlarını Görüntüle";
+"Profile.Item.LabHistoryValue" = "Lab sonuç analizlerini gör";
+"Profile.Item.NaturalHistory" = "Doğal Çözümleri Görüntüle";
+"Profile.Item.NaturalHistoryValue" = "Doğal çözüm önerilerini gör";
+
+// MARK: - Department History Screen
+"DepartmentHistory.Title" = "Doktor Önerileri";
+"DepartmentHistory.Empty.Title" = "Henüz Doktor Önerisi Yok";
+"DepartmentHistory.Empty.Description" = "Doktor önerileriniz 'Hangi Doktora Gitmeliyim?' özelliğini kullandıktan sonra burada görünecek.";
+"DepartmentHistory.Card.Date" = "Tarih:";
+"DepartmentHistory.Card.Symptoms" = "Belirtiler:";
+"DepartmentHistory.Card.Suggestions" = "Önerilen Doktorlar:";
+
+// MARK: - Disease History Screen
+"DiseaseHistory.Title" = "Hastalık Tahminleri";
+"DiseaseHistory.Empty.Title" = "Henüz Hastalık Tahmini Yok";
+"DiseaseHistory.Empty.Description" = "Hastalık tahminleriniz 'Hastalığım Ne Olabilir?' özelliğini kullandıktan sonra burada görünecek.";
+"DiseaseHistory.Card.Date" = "Tarih:";
+"DiseaseHistory.Card.Symptoms" = "Belirtiler:";
+"DiseaseHistory.Card.Predictions" = "Tahmin Edilen Hastalıklar:";
+
+// MARK: - Home History Screen
+"HomeHistory.Title" = "Ev Çözümleri";
+"HomeHistory.Empty.Title" = "Henüz Ev Çözümü Yok";
+"HomeHistory.Empty.Description" = "Ev çözümleriniz 'Evde Ne Yapabilirim?' özelliğini kullandıktan sonra burada görünecek.";
+"HomeHistory.Card.Date" = "Tarih:";
+"HomeHistory.Card.Symptom" = "Belirti:";
+"HomeHistory.Card.Solutions" = "Çözümler:";
+
+// MARK: - Lab History Screen
+"LabHistory.Title" = "Laboratuvar Sonuçları";
+"LabHistory.Empty.Title" = "Henüz Lab Sonucu Yok";
+"LabHistory.Empty.Description" = "Lab sonuç analizleriniz 'Laboratuvar Sonuçları' özelliğini kullandıktan sonra burada görünecek.";
+"LabHistory.Card.Date" = "Tarih:";
+"LabHistory.Card.Results" = "Lab Sonuçları:";
+"LabHistory.Card.Medications" = "Önerilen İlaçlar:";
+"LabHistory.Card.NaturalSolutions" = "Doğal Çözümler:";
+
+// MARK: - Natural History Screen
+"NaturalHistory.Title" = "Doğal Çözümler";
+"NaturalHistory.Empty.Title" = "Henüz Doğal Çözüm Yok";
+"NaturalHistory.Empty.Description" = "Doğal çözümleriniz 'Doğal Çözümler' özelliğini kullandıktan sonra burada görünecek.";
+"NaturalHistory.Card.Date" = "Tarih:";
+"NaturalHistory.Card.Question" = "Soru:";
+"NaturalHistory.Card.Remedies" = "Doğal Çözümler:";

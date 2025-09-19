@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-final class NaturalSolutionsViewViewModel: ObservableObject {
+final class NaturalSolutionsViewViewModel: BaseViewModel {
     @Published var predefinedConcerns: [String] = [
         NSLocalizedString("NaturalSolutions.Concern.Headache", comment: ""),
         NSLocalizedString("NaturalSolutions.Concern.Insomnia", comment: ""),
@@ -24,8 +24,6 @@ final class NaturalSolutionsViewViewModel: ObservableObject {
     @Published var otherConcernsText: String = ""
     @Published var feelingsText: String = ""
 
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     @Published var resultText: String = ""
     @Published var isSaving: Bool = false
     @Published var saveMessage: String? = nil

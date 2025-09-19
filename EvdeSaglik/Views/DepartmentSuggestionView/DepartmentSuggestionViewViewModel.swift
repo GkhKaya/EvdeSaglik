@@ -14,7 +14,7 @@ struct DepartmentSuggestionResult: Identifiable, Codable, Equatable {
     let confidence: Double // 0-100
 }
 
-final class DepartmentSuggestionViewViewModel: ObservableObject {
+final class DepartmentSuggestionViewViewModel: BaseViewModel {
     @Published var predefinedSymptoms: [String] = [
         NSLocalizedString("DepartmentSuggestion.Symptom.Headache", comment: ""),
         NSLocalizedString("DepartmentSuggestion.Symptom.Nausea", comment: ""),
@@ -30,11 +30,8 @@ final class DepartmentSuggestionViewViewModel: ObservableObject {
     @Published var otherSymptomsText: String = ""
     @Published var feelingsText: String = ""
 
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     @Published var results: [DepartmentSuggestionResult] = []
     @Published var isSaving: Bool = false
-    @Published var saveMessage: String? = nil
 
     func toggleSymptom(_ symptom: String) {
         if selectedSymptoms.contains(symptom) {
@@ -73,20 +70,18 @@ final class DepartmentSuggestionViewViewModel: ObservableObject {
 
     @MainActor
     func requestSuggestions(userSummary: String) async {
-        errorMessage = nil
-        results = []
-        isLoading = true
-        defer { isLoading = false }
-
-        let messages = buildPrompt(userSummary: userSummary)
-        do {
-            let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
-            // Try to extract JSON from the response
-            let parsed: [DepartmentSuggestionResult] = parseResults(from: response)
-            self.results = parsed
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
+        performAsyncOperation(
+            operation: {
+                let messages = self.buildPrompt(userSummary: userSummary)
+                let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
+                let parsed: [DepartmentSuggestionResult] = self.parseResults(from: response)
+                return parsed
+            },
+            context: "DepartmentSuggestionViewViewModel.requestSuggestions",
+            onSuccess: { [weak self] results in
+                self?.results = results
+            }
+        )
     }
 
     private func parseResults(from response: String) -> [DepartmentSuggestionResult] {
@@ -119,36 +114,28 @@ final class DepartmentSuggestionViewViewModel: ObservableObject {
     func saveSuggestions(userId: String, firestoreManager: FirestoreManager) {
         guard !results.isEmpty else { return }
         
-        isSaving = true
-        saveMessage = nil
-        
-        let symptomList: [String] = buildSymptomsArray()
-        let departments: [String] = results
-            .sorted { $0.confidence > $1.confidence }
-            .map { "\($0.name) (\(Int($0.confidence))%)" }
-        let model = DepartmentSuggestionModel(
-            id: nil,
-            userId: userId,
-            symptoms: symptomList,
-            suggestedDepartments: departments,
-            createdAt: Date()
-        )
-        
-        firestoreManager.addDocument(to: "departmentSuggestions", object: model) { [weak self] err in
-            DispatchQueue.main.async {
-                self?.isSaving = false
-                if let err = err {
-                    self?.saveMessage = NSLocalizedString("DepartmentSuggestion.SaveError", comment: "")
-                    print("Firestore save error: \(err)")
-                } else {
-                    self?.saveMessage = NSLocalizedString("DepartmentSuggestion.SaveSuccess", comment: "")
-                    // Clear message after 2 seconds
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self?.saveMessage = nil
-                    }
-                }
+        performAsyncOperation(
+            operation: {
+                let symptomList: [String] = self.buildSymptomsArray()
+                let departments: [String] = self.results
+                    .sorted { $0.confidence > $1.confidence }
+                    .map { "\($0.name) (\(Int($0.confidence))%)" }
+                let model = DepartmentSuggestionModel(
+                    id: nil,
+                    userId: userId,
+                    symptoms: symptomList,
+                    suggestedDepartments: departments,
+                    createdAt: Date()
+                )
+                
+                try await firestoreManager.addDocument(to: "departmentSuggestions", object: model)
+                return true
+            },
+            context: "DepartmentSuggestionViewViewModel.saveSuggestions",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("DepartmentSuggestion.SaveSuccess", comment: ""))
             }
-        }
+        )
     }
     
     private func buildSymptomsArray() -> [String] {

@@ -9,9 +9,25 @@ import Foundation
 import FirebaseAuth
 import SwiftUI
 
+// MARK: - Authentication Protocols
+
+/// Protocol for authentication operations
+protocol AuthenticationServiceProtocol {
+    var currentUser: User? { get }
+    var isAuthenticated: Bool { get }
+    
+    func register(email: String, password: String) async throws
+    func login(email: String, password: String) async throws
+    func signOut() async throws
+    func resetPassword(email: String) async throws
+    func updateEmail(_ email: String) async throws
+    func updatePassword(_ password: String) async throws
+    func deleteAccount() async throws
+}
+
 /// AuthManager handles user authentication using FirebaseAuth.
 /// Supports registration, login, password reset, email & password update, and session management.
-final class FirebaseAuthManager: ObservableObject {
+final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol {
     
     /// Shared instance for EnvironmentObject usage (optional)
     // static let shared = AuthManager()
@@ -20,36 +36,83 @@ final class FirebaseAuthManager: ObservableObject {
     /// Indicates that the last auth action was a successful registration
     @Published var didJustRegister: Bool = false
     
+    /// Computed property for authentication status
+    var isAuthenticated: Bool {
+        return currentUser != nil
+    }
+    
     init() {}
     
     // MARK: - Register User
     /**
-     Registers a new user with email and password.
+     Registers a new user with email and password (async version).
+     
+     - Parameters:
+        - email: User email.
+        - password: User password.
+     - Throws: AppError if the operation fails.
+     */
+    func register(email: String, password: String) async throws {
+        do {
+            let result = try await Auth.auth().createUser(withEmail: email, password: password)
+            await MainActor.run {
+                self.currentUser = result.user
+                self.didJustRegister = true
+            }
+        } catch let error as NSError {
+            throw AppError.authError(.registrationFailed(error.localizedDescription))
+        }
+    }
+    
+    /**
+     Registers a new user with email and password (completion handler version - deprecated).
      
      - Parameters:
         - email: User email.
         - password: User password.
         - completion: Completion handler with optional error.
      */
+    @available(*, deprecated, message: "Use async version instead")
     func register(email: String, password: String, completion: @escaping (AppError?) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
-            DispatchQueue.main.async { // Ensure UI updates are on the main thread
-                if let user = result?.user {
-                    self?.currentUser = user
-                    self?.didJustRegister = true
-                }
-                if let firebaseError = error as NSError? {
-                    completion(.authError(.registrationFailed(firebaseError.localizedDescription)))
-                } else {
-                    completion(nil)
-                }
+        Task {
+            do {
+                try await register(email: email, password: password)
+                completion(nil)
+            } catch {
+                completion(error as? AppError)
             }
         }
     }
     
     // MARK: - Login User
     /**
-     Logs in a user with email and password.
+     Logs in a user with email and password (async version).
+     
+     - Parameters:
+        - email: User email.
+        - password: User password.
+        - rememberMe: Boolean indicating if user wants to be remembered.
+     - Throws: AppError if the operation fails.
+     */
+    func login(email: String, password: String, rememberMe: Bool) async throws {
+        do {
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            await MainActor.run {
+                self.currentUser = result.user
+                self.setRememberMe(value: rememberMe)
+            }
+        } catch let error as NSError {
+            throw AppError.authError(.loginFailed(error.localizedDescription))
+        }
+    }
+
+    /// Overload to conform to AuthenticationServiceProtocol
+    func login(email: String, password: String) async throws {
+        try await login(email: email, password: password, rememberMe: false)
+    }
+    
+    /**
+     Logs in a user with email and password (completion handler version - deprecated).
      
      - Parameters:
         - email: User email.
@@ -57,106 +120,160 @@ final class FirebaseAuthManager: ObservableObject {
         - rememberMe: Boolean indicating if user wants to be remembered.
         - completion: Completion handler with optional error.
      */
+    @available(*, deprecated, message: "Use async version instead")
     func login(email: String, password: String, rememberMe: Bool, completion: @escaping (AppError?) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
-            DispatchQueue.main.async { // Ensure UI updates are on the main thread
-                if let user = result?.user {
-                    self?.currentUser = user
-                    self?.setRememberMe(value: rememberMe)
-                }
-                if let firebaseError = error as NSError? {
-                    completion(.authError(.loginFailed(firebaseError.localizedDescription)))
-                } else {
-                    completion(nil)
-                }
+        Task {
+            do {
+                try await login(email: email, password: password, rememberMe: rememberMe)
+                completion(nil)
+            } catch {
+                completion(error as? AppError)
             }
         }
     }
     
     // MARK: - Sign Out
     /**
-     Signs out the current user.
+     Signs out the current user (async version).
+     
+     - Throws: AppError if the operation fails.
+     */
+    func signOut() async throws {
+        do {
+            try Auth.auth().signOut()
+            await MainActor.run {
+                self.currentUser = nil
+                self.setRememberMe(value: false) // Clear remember me preference on sign out
+            }
+        } catch {
+            throw AppError.authError(.unknown)
+        }
+    }
+    
+    /**
+     Signs out the current user (completion handler version - deprecated).
      
      - Parameter completion: Completion handler with optional error.
      */
+    @available(*, deprecated, message: "Use async version instead")
     func signOut(completion: @escaping (AppError?) -> Void) {
-        do {
-            try Auth.auth().signOut()
-            DispatchQueue.main.async { // Ensure UI updates are on the main thread
-                self.currentUser = nil
-                self.setRememberMe(value: false) // Clear remember me preference on sign out
+        Task {
+            do {
+                try await signOut()
                 completion(nil)
-            }
-        } catch _ as NSError {
-            DispatchQueue.main.async { // Ensure UI updates are on the main thread
-                completion(.authError(.unknown))
+            } catch {
+                completion(error as? AppError)
             }
         }
     }
     
     // MARK: - Reset Password
     /**
-     Sends a password reset email.
+     Sends a password reset email (async version).
+     
+     - Parameters:
+        - email: Email of the user to reset password.
+     - Throws: AppError if the operation fails.
+     */
+    func resetPassword(email: String) async throws {
+        do {
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+        } catch let error as NSError {
+            throw AppError.authError(.passwordResetFailed(error.localizedDescription))
+        }
+    }
+    
+    /**
+     Sends a password reset email (completion handler version - deprecated).
      
      - Parameters:
         - email: Email of the user to reset password.
         - completion: Completion handler with optional error.
      */
+    @available(*, deprecated, message: "Use async version instead")
     func resetPassword(email: String, completion: @escaping (AppError?) -> Void) {
-        Auth.auth().sendPasswordReset(withEmail: email) { error in
-            if let firebaseError = error as NSError? {
-                completion(.authError(.passwordResetFailed(firebaseError.localizedDescription)))
-            } else {
+        Task {
+            do {
+                try await resetPassword(email: email)
                 completion(nil)
+            } catch {
+                completion(error as? AppError)
             }
         }
     }
     
     // MARK: - Update Email
     /**
-     Updates the email of the currently logged-in user.
+     Updates the email of the currently logged-in user (completion handler version - deprecated).
      
      - Parameters:
         - newEmail: The new email address.
         - completion: Completion handler with optional error.
      */
+    @available(*, deprecated, message: "Use async version instead")
     func updateEmail(newEmail: String, completion: @escaping (AppError?) -> Void) {
-        guard let user = Auth.auth().currentUser else {
-            completion(.authError(.unknown))
-            return
-        }
-        user.sendEmailVerification(beforeUpdatingEmail: newEmail) { error in
-            if let firebaseError = error as NSError? {
-                completion(.authError(.emailUpdateFailed(firebaseError.localizedDescription)))
-            } else {
-                // E-posta doğrulama linki başarıyla gönderildi.
-                // Kullanıcıya bu konuda bilgi verilmeli ve e-postasını kontrol etmesi istenmeli.
+        Task {
+            do {
+                try await updateEmail(newEmail)
                 completion(nil)
+            } catch {
+                completion(error as? AppError)
             }
+        }
+    }
+    
+    /**
+     Updates the email of the currently logged-in user (async version).
+     
+     - Parameter newEmail: The new email address.
+     - Throws: AppError if the operation fails.
+     */
+    func updateEmail(_ newEmail: String) async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw AppError.authError(.unknown)
+        }
+        
+        try await user.updateEmail(to: newEmail)
+        DispatchQueue.main.async {
+            self.currentUser = Auth.auth().currentUser
         }
     }
     
     // MARK: - Update Password
     /**
-     Updates the password of the currently logged-in user.
+     Updates the password of the currently logged-in user (completion handler version - deprecated).
      
      - Parameters:
         - newPassword: The new password.
         - completion: Completion handler with optional error.
      */
+    @available(*, deprecated, message: "Use async version instead")
     func updatePassword(newPassword: String, completion: @escaping (AppError?) -> Void) {
-        guard let user = Auth.auth().currentUser else {
-            completion(.authError(.unknown))
-            return
-        }
-        user.updatePassword(to: newPassword) { error in
-            if error != nil {
-                completion(.authError(.unknown))
-            } else {
+        Task {
+            do {
+                try await updatePassword(newPassword)
                 completion(nil)
+            } catch {
+                completion(error as? AppError)
             }
         }
     }
+    
+    /**
+     Updates the password of the currently logged-in user (async version).
+     
+     - Parameter newPassword: The new password.
+     - Throws: AppError if the operation fails.
+     */
+    func updatePassword(_ newPassword: String) async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw AppError.authError(.unknown)
+        }
+        
+        try await user.updatePassword(to: newPassword)
+    }
+    
+    
     
     // MARK: - Check Current User
     /**
@@ -179,5 +296,23 @@ final class FirebaseAuthManager: ObservableObject {
         return UserDefaults.standard.bool(forKey: rememberMeKey)
     }
     
+    // MARK: - Delete Account
+    /**
+     Deletes the current user's account (async version).
+     
+     - Throws: AppError if the operation fails
+     */
+    func deleteAccount() async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw AppError.authError(.unknown)
+        }
+        
+        try await user.delete()
+        await MainActor.run {
+            self.currentUser = nil
+        }
+    }
+    
     // Removed checkAndSignOutIfRememberMeFalse() as per user request to simplify startup flow.
 }
+

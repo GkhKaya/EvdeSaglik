@@ -90,6 +90,7 @@ struct ChatbotView: View {
                 }
             }
         }
+        .messageDisplay(for: viewModel)
     }
 }
 

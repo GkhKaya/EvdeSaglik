@@ -8,10 +8,8 @@
 import Foundation
 import SwiftUI
 
-final class HomeSolutionViewViewModel: ObservableObject {
+final class HomeSolutionViewViewModel: BaseViewModel {
     @Published var inputText: String = ""
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     @Published var resultText: String = ""
     @Published var isSaving: Bool = false
     @Published var saveMessage: String? = nil
