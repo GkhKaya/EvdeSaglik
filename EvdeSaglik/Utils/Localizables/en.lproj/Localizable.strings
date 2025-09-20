@@ -193,6 +193,7 @@
 "MainApp.Card.HomeRemedies" = "What can I do at home?";
 "MainApp.Card.LabResults" = "Lab test results";
 "MainApp.Card.NaturalSolutions" = "Natural solutions";
+"MainApp.Card.DrugFoodInteraction" = "Drug & Food Interaction";
 "MainApp.Card.SkinProblems" = "Skin problems";
 
 // MARK: - UserManager Prompts
@@ -484,3 +485,19 @@
 "NaturalHistory.Card.Date" = "Date:";
 "NaturalHistory.Card.Question" = "Question:";
 "NaturalHistory.Card.Remedies" = "Natural Remedies:";
+
+// MARK: - Drug Food Interaction
+"DrugFoodInteraction.Title" = "Drug & Food Interaction Check";
+"DrugFoodInteraction.Subtitle" = "Check drug and food interactions, learn about potential side effects.";
+"DrugFoodInteraction.DrugName.Label" = "Drug Name";
+"DrugFoodInteraction.DrugName.Placeholder" = "e.g., Aspirin, Paracetamol";
+"DrugFoodInteraction.FoodName.Label" = "Food Name";
+"DrugFoodInteraction.FoodName.Placeholder" = "e.g., Grapefruit, Milk, Coffee";
+"DrugFoodInteraction.Submit" = "Check Interaction";
+"DrugFoodInteraction.Save" = "Save to History";
+"DrugFoodInteraction.SaveSuccess" = "Saved successfully";
+"DrugFoodInteraction.SaveError" = "Save failed";
+"DrugFoodInteraction.EmptyFields" = "Please enter both drug and food names.";
+"DrugFoodInteraction.SystemPersona" = "You are a pharmacology expert. Analyze drug-food interactions and explain potential side effects, interaction mechanisms, and recommendations in detail. Respond in Turkish.";
+"DrugFoodInteraction.SystemFormat" = "Provide clear and understandable explanation in Turkish. Avoid JSON. Specify interaction level (low/medium/high) and recommendations.";
+"DrugFoodInteraction.UserPrompt" = "Drug: %@\nFood: %@\n\nUser Information:\n%@";

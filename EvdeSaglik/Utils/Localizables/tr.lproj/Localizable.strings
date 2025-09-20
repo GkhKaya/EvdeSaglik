@@ -203,6 +203,7 @@
 "MainApp.Card.HomeRemedies" = "Evde ne yapabilirim?";
 "MainApp.Card.LabResults" = "Kan tahlili sonuçları";
 "MainApp.Card.NaturalSolutions" = "Doğal çözümler";
+"MainApp.Card.DrugFoodInteraction" = "İlaç & Gıda Etkileşimi";
 "MainApp.Card.SkinProblems" = "Cilt problemleri";
 
 // MARK: - UserManager Prompts
@@ -476,3 +477,19 @@
 "NaturalHistory.Card.Date" = "Tarih:";
 "NaturalHistory.Card.Question" = "Soru:";
 "NaturalHistory.Card.Remedies" = "Doğal Çözümler:";
+
+// MARK: - Drug Food Interaction
+"DrugFoodInteraction.Title" = "İlaç & Gıda Etkileşim Kontrolü";
+"DrugFoodInteraction.Subtitle" = "İlaç ve gıda etkileşimlerini kontrol edin, olası yan etkileri öğrenin.";
+"DrugFoodInteraction.DrugName.Label" = "İlaç Adı";
+"DrugFoodInteraction.DrugName.Placeholder" = "örn: Aspirin, Paracetamol";
+"DrugFoodInteraction.FoodName.Label" = "Gıda Adı";
+"DrugFoodInteraction.FoodName.Placeholder" = "örn: Greyfurt, Süt, Kahve";
+"DrugFoodInteraction.Submit" = "Etkileşimi Kontrol Et";
+"DrugFoodInteraction.Save" = "Geçmişe Kaydet";
+"DrugFoodInteraction.SaveSuccess" = "Başarıyla kaydedildi";
+"DrugFoodInteraction.SaveError" = "Kaydetme başarısız";
+"DrugFoodInteraction.EmptyFields" = "Lütfen hem ilaç hem de gıda adını giriniz.";
+"DrugFoodInteraction.SystemPersona" = "Sen bir farmakoloji uzmanısın. İlaç-gıda etkileşimlerini analiz et ve olası yan etkileri, etkileşim mekanizmalarını ve önerileri detaylı şekilde açıkla. Türkçe yanıt ver.";
+"DrugFoodInteraction.SystemFormat" = "Türkçe, net ve anlaşılır açıklama ver. JSON kullanma. Etkileşim seviyesini (düşük/orta/yüksek) ve önerileri belirt.";
+"DrugFoodInteraction.UserPrompt" = "İlaç: %@\nGıda: %@\n\nKullanıcı Bilgileri:\n%@";
