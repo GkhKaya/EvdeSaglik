@@ -78,18 +78,15 @@ final class ValidationHelper {
         return nil
     }
     
-    // MARK: - Generic Field Validation
-    
-    /// Validates that a field is not empty
+    /// Validates password confirmation
     /// - Parameters:
-    ///   - value: Value to validate
-    ///   - fieldName: Name of the field for error message
+    ///   - password: Original password
+    ///   - confirmPassword: Password confirmation
     /// - Returns: ValidationError if invalid, nil if valid
-    static func validateNotEmpty(_ value: String, fieldName: String) -> ValidationError? {
-        guard !value.isEmpty else {
-            return .emptyField(fieldName)
+    static func validatePasswordConfirmation(password: String, confirmPassword: String) -> ValidationError? {
+        guard password == confirmPassword else {
+            return .passwordMismatch
         }
-        
         return nil
     }
     

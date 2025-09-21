@@ -76,19 +76,18 @@ final class DiseasePredictionViewViewModel: BaseViewModel {
 
     @MainActor
     func requestPredictions(userSummary: String) async {
-        errorMessage = nil
-        results = []
-        isLoading = true
-        defer { isLoading = false }
-
-        let messages = buildPrompt(userSummary: userSummary)
-        do {
-            let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
-            let parsed: [DiseasePredictionResult] = parseResults(from: response)
-            self.results = parsed
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
+        performAsyncOperation(
+            operation: {
+                let messages = self.buildPrompt(userSummary: userSummary)
+                let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
+                let parsed: [DiseasePredictionResult] = self.parseResults(from: response)
+                return parsed
+            },
+            context: "DiseasePredictionViewViewModel.requestPredictions",
+            onSuccess: { [weak self] results in
+                self?.results = results
+            }
+        )
     }
 
     private func parseResults(from response: String) -> [DiseasePredictionResult] {
@@ -124,36 +123,28 @@ final class DiseasePredictionViewViewModel: BaseViewModel {
     func savePredictions(userId: String, firestoreManager: FirestoreManager) {
         guard !results.isEmpty else { return }
         
-        isSaving = true
-        saveMessage = nil
-        
-        let symptomList: [String] = buildSymptomsArray()
-        let diseases: [PredictedDisease] = results
-            .sorted { $0.confidence > $1.confidence }
-            .map { PredictedDisease(name: $0.diseaseName, probability: $0.confidence) }
-        let model = DiseasePredictionModel(
-            id: nil,
-            userId: userId,
-            symptoms: symptomList,
-            possibleDiseases: diseases,
-            createdAt: Date()
-        )
-        
-        firestoreManager.addDocument(to: "diseasePredictions", object: model) { [weak self] err in
-            DispatchQueue.main.async {
-                self?.isSaving = false
-                if let err = err {
-                    self?.saveMessage = NSLocalizedString("DiseasePrediction.SaveError", comment: "")
-                    print("Firestore save error: \(err)")
-                } else {
-                    self?.saveMessage = NSLocalizedString("DiseasePrediction.SaveSuccess", comment: "")
-                    // Clear message after 2 seconds
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self?.saveMessage = nil
-                    }
-                }
+        performAsyncOperation(
+            operation: {
+                let symptomList: [String] = self.buildSymptomsArray()
+                let diseases: [PredictedDisease] = self.results
+                    .sorted { $0.confidence > $1.confidence }
+                    .map { PredictedDisease(name: $0.diseaseName, probability: $0.confidence) }
+                let model = DiseasePredictionModel(
+                    id: nil,
+                    userId: userId,
+                    symptoms: symptomList,
+                    possibleDiseases: diseases,
+                    createdAt: Date()
+                )
+                
+                try await firestoreManager.addDocument(to: "diseasePredictions", object: model)
+                return true
+            },
+            context: "DiseasePredictionViewViewModel.savePredictions",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("DiseasePrediction.SaveSuccess", comment: ""))
             }
-        }
+        )
     }
     
     private func buildSymptomsArray() -> [String] {

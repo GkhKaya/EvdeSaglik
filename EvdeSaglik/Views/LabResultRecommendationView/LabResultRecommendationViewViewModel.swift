@@ -165,25 +165,24 @@ final class LabResultRecommendationViewViewModel: BaseViewModel {
     
     @MainActor
     func analyzeLabResults(userSummary: String, tables: [[String]]) async {
-        errorMessage = nil
-        analysisResult = ""
-        sections = []
-        isLoading = true
-        defer { isLoading = false }
-        
-        let messages = buildPrompt(userSummary: userSummary, tables: tables)
-        do {
-            let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
-            // Clean basic markdown emphasis but preserve numbered structure
-            let cleaned = response
-                .replacingOccurrences(of: "**", with: "")
-                .replacingOccurrences(of: "*", with: "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            self.analysisResult = cleaned
-            self.sections = Self.parseAnalysisIntoSections(cleaned)
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
+        performAsyncOperation(
+            operation: {
+                let messages = self.buildPrompt(userSummary: userSummary, tables: tables)
+                let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
+                // Clean basic markdown emphasis but preserve numbered structure
+                let cleaned = response
+                    .replacingOccurrences(of: "**", with: "")
+                    .replacingOccurrences(of: "*", with: "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                let sections = Self.parseAnalysisIntoSections(cleaned)
+                return (cleaned, sections)
+            },
+            context: "LabResultRecommendationViewViewModel.analyzeLabResults",
+            onSuccess: { [weak self] result in
+                self?.analysisResult = result.0
+                self?.sections = result.1
+            }
+        )
     }
     
     static func parseAnalysisIntoSections(_ text: String) -> [LabAnalysisSection] {
@@ -235,50 +234,43 @@ final class LabResultRecommendationViewViewModel: BaseViewModel {
     func saveLabResults(userId: String, firestoreManager: FirestoreManager) {
         guard !analysisResult.isEmpty else { return }
         
-        isSaving = true
-        saveMessage = nil
-        
-        // Convert table rows to map (Test -> value) with a simple heuristic: first token = name, first numeric = value
-        var labResults: [String: Double] = [:]
-        let numberRegex = try? NSRegularExpression(pattern: "[-+]?[0-9]*[\\.,]?[0-9]+")
-        for row in extractedTables {
-            guard let first = row.first else { continue }
-            var value: Double?
-            for cell in row.dropFirst() {
-                if let regex = numberRegex {
-                    let range = NSRange(location: 0, length: cell.utf16.count)
-                    if let match = regex.firstMatch(in: cell, options: [], range: range), let r = Range(match.range, in: cell) {
-                        let numStr = String(cell[r]).replacingOccurrences(of: ",", with: ".")
-                        if let v = Double(numStr) { value = v; break }
+        performAsyncOperation(
+            operation: {
+                // Convert table rows to map (Test -> value) with a simple heuristic: first token = name, first numeric = value
+                var labResults: [String: Double] = [:]
+                let numberRegex = try? NSRegularExpression(pattern: "[-+]?[0-9]*[\\.,]?[0-9]+")
+                for row in self.extractedTables {
+                    guard let first = row.first else { continue }
+                    var value: Double?
+                    for cell in row.dropFirst() {
+                        if let regex = numberRegex {
+                            let range = NSRange(location: 0, length: cell.utf16.count)
+                            if let match = regex.firstMatch(in: cell, options: [], range: range), let r = Range(match.range, in: cell) {
+                                let numStr = String(cell[r]).replacingOccurrences(of: ",", with: ".")
+                                if let v = Double(numStr) { value = v; break }
+                            }
+                        }
                     }
+                    if let v = value { labResults[first] = v }
                 }
+                
+                let model = LabResultRecommendationModel(
+                    id: nil,
+                    userId: userId,
+                    labResults: labResults,
+                    suggestedMedications: self.extractSuggestedMedications(from: self.analysisResult),
+                    suggestedNaturalSolutions: self.extractSuggestedNaturalSolutions(from: self.analysisResult),
+                    createdAt: Date()
+                )
+                
+                try await firestoreManager.addDocument(to: "labResultRecommendations", object: model)
+                return true
+            },
+            context: "LabResultRecommendationViewViewModel.saveLabResults",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("LabResult.SaveSuccess", comment: ""))
             }
-            if let v = value { labResults[first] = v }
-        }
-        
-        let model = LabResultRecommendationModel(
-            id: nil,
-            userId: userId,
-            labResults: labResults,
-            suggestedMedications: extractSuggestedMedications(from: analysisResult),
-            suggestedNaturalSolutions: extractSuggestedNaturalSolutions(from: analysisResult),
-            createdAt: Date()
         )
-        
-        firestoreManager.addDocument(to: "labResultRecommendations", object: model) { [weak self] err in
-            DispatchQueue.main.async {
-                self?.isSaving = false
-                if let err = err {
-                    self?.saveMessage = NSLocalizedString("LabResult.SaveError", comment: "")
-                    print("Firestore save error: \(err)")
-                } else {
-                    self?.saveMessage = NSLocalizedString("LabResult.SaveSuccess", comment: "")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self?.saveMessage = nil
-                    }
-                }
-            }
-        }
     }
     
     private func extractSuggestedMedications(from text: String) -> [String] {

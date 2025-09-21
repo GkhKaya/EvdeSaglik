@@ -37,101 +37,88 @@ final class ProfileViewModel: BaseViewModel {
     
     @MainActor
     func changeEmail() async {
-        guard !newEmail.isEmpty else {
-            errorMessage = NSLocalizedString("Profile.Error.EmptyEmail", comment: "")
+        // Validation using ValidationHelper
+        if let validationError = ValidationHelper.validateEmail(newEmail) {
+            handleError(AppError.validationError(validationError))
             return
         }
         
-        guard newEmail.contains("@") else {
-            errorMessage = NSLocalizedString("Profile.Error.InvalidEmail", comment: "")
-            return
-        }
-        
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            try await authManager.updateEmail(newEmail)
-            successMessage = NSLocalizedString("Profile.Success.EmailChanged", comment: "")
-            newEmail = ""
-            showingChangeEmail = false
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        
-        isLoading = false
+        performAsyncOperation(
+            operation: {
+                try await self.authManager.updateEmail(self.newEmail)
+                return true
+            },
+            context: "ProfileViewModel.changeEmail",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("Profile.Success.EmailChanged", comment: ""))
+                self?.newEmail = ""
+                self?.showingChangeEmail = false
+            }
+        )
     }
     
     @MainActor
     func changePassword() async {
-        guard !currentPassword.isEmpty && !newPassword.isEmpty && !confirmPassword.isEmpty else {
-            errorMessage = NSLocalizedString("Profile.Error.EmptyFields", comment: "")
+        // Validation using ValidationHelper
+        if let validationError = ValidationHelper.validatePassword(newPassword) {
+            handleError(AppError.validationError(validationError))
+            return
+        }
+        if let validationError = ValidationHelper.validatePasswordConfirmation(password: newPassword, confirmPassword: confirmPassword) {
+            handleError(AppError.validationError(validationError))
             return
         }
         
-        guard newPassword == confirmPassword else {
-            errorMessage = NSLocalizedString("Profile.Error.PasswordMismatch", comment: "")
-            return
-        }
-        
-        guard newPassword.count >= 6 else {
-            errorMessage = NSLocalizedString("Profile.Error.WeakPassword", comment: "")
-            return
-        }
-        
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            try await authManager.updatePassword(newPassword)
-            successMessage = NSLocalizedString("Profile.Success.PasswordChanged", comment: "")
-            currentPassword = ""
-            newPassword = ""
-            confirmPassword = ""
-            showingChangePassword = false
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        
-        isLoading = false
+        performAsyncOperation(
+            operation: {
+                try await self.authManager.updatePassword(self.newPassword)
+                return true
+            },
+            context: "ProfileViewModel.changePassword",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("Profile.Success.PasswordChanged", comment: ""))
+                self?.currentPassword = ""
+                self?.newPassword = ""
+                self?.confirmPassword = ""
+                self?.showingChangePassword = false
+            }
+        )
     }
     
     @MainActor
     func resetUserData() async {
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            // Delete all user data from Firestore
-            try await firestoreManager.deleteUserData(userId: authManager.currentUser?.uid ?? "")
-            successMessage = NSLocalizedString("Profile.Success.DataReset", comment: "")
-            showingResetData = false
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        
-        isLoading = false
+        performAsyncOperation(
+            operation: {
+                // Delete all user data from Firestore
+                try await self.firestoreManager.deleteUserData(userId: self.authManager.currentUser?.uid ?? "")
+                return true
+            },
+            context: "ProfileViewModel.resetUserData",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("Profile.Success.DataReset", comment: ""))
+                self?.showingResetData = false
+            }
+        )
     }
     
     @MainActor
     func deleteAccount() async {
-        isLoading = true
-        errorMessage = nil
-        
-        do {
-            // First delete user data from Firestore
-            try await firestoreManager.deleteUserData(userId: authManager.currentUser?.uid ?? "")
-            
-            // Then delete the Firebase Auth account
-            try await authManager.deleteAccount()
-            
-            successMessage = NSLocalizedString("Profile.Success.AccountDeleted", comment: "")
-            showingDeleteAccount = false
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-        
-        isLoading = false
+        performAsyncOperation(
+            operation: {
+                // First delete user data from Firestore
+                try await self.firestoreManager.deleteUserData(userId: self.authManager.currentUser?.uid ?? "")
+                
+                // Then delete the Firebase Auth account
+                try await self.authManager.deleteAccount()
+                
+                return true
+            },
+            context: "ProfileViewModel.deleteAccount",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("Profile.Success.AccountDeleted", comment: ""))
+                self?.showingDeleteAccount = false
+            }
+        )
     }
     
     override func clearMessages() {

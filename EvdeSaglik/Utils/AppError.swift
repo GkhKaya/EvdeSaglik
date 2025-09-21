@@ -118,6 +118,7 @@ enum ValidationError: LocalizedError {
     case emptyField(String)
     case invalidFormat(String)
     case passwordTooWeak
+    case passwordMismatch
     case emailInvalid
     case ageInvalid
     case nameTooShort
@@ -131,6 +132,8 @@ enum ValidationError: LocalizedError {
             return NSLocalizedString("Validation.Error.InvalidFormat", comment: "Invalid \(field) format")
         case .passwordTooWeak:
             return NSLocalizedString("Validation.Error.WeakPassword", comment: "Password must be at least 6 characters")
+        case .passwordMismatch:
+            return NSLocalizedString("Validation.Error.PasswordMismatch", comment: "Passwords do not match")
         case .emailInvalid:
             return NSLocalizedString("Validation.Error.InvalidEmail", comment: "Please enter a valid email address")
         case .ageInvalid:

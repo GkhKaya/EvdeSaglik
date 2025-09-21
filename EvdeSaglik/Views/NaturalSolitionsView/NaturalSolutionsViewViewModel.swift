@@ -65,26 +65,25 @@ final class NaturalSolutionsViewViewModel: BaseViewModel {
 
     @MainActor
     func requestNaturalSolutions(userSummary: String) async {
-        errorMessage = nil
-        resultText = ""
-        isLoading = true
-        defer { isLoading = false }
-
-        let messages = buildPrompt(userSummary: userSummary)
-        do {
-            let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
-            // Clean markdown formatting
-            let cleaned = response
-                .replacingOccurrences(of: "**", with: "")
-                .replacingOccurrences(of: "*", with: "")
-                .replacingOccurrences(of: "###", with: "")
-                .replacingOccurrences(of: "##", with: "")
-                .replacingOccurrences(of: "#", with: "")
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-            self.resultText = cleaned
-        } catch {
-            self.errorMessage = error.localizedDescription
-        }
+        performAsyncOperation(
+            operation: {
+                let messages = self.buildPrompt(userSummary: userSummary)
+                let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
+                // Clean markdown formatting
+                let cleaned = response
+                    .replacingOccurrences(of: "**", with: "")
+                    .replacingOccurrences(of: "*", with: "")
+                    .replacingOccurrences(of: "###", with: "")
+                    .replacingOccurrences(of: "##", with: "")
+                    .replacingOccurrences(of: "#", with: "")
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                return cleaned
+            },
+            context: "NaturalSolutionsViewViewModel.requestNaturalSolutions",
+            onSuccess: { [weak self] result in
+                self?.resultText = result
+            }
+        )
     }
 
     // MARK: - Persist
@@ -92,34 +91,27 @@ final class NaturalSolutionsViewViewModel: BaseViewModel {
     func saveNaturalSolutions(userId: String, firestoreManager: FirestoreManager) {
         guard !resultText.isEmpty else { return }
         
-        isSaving = true
-        saveMessage = nil
-        
-        // Extract remedies from the result text
-        let remedies = extractRemedies(from: resultText)
-        
-        let model = NaturalSolitionsModel(
-            id: nil,
-            userId: userId,
-            question: buildConcernsString(),
-            remedies: remedies,
-            createdAt: Date()
-        )
-        
-        firestoreManager.addDocument(to: "naturalSolutions", object: model) { [weak self] err in
-            DispatchQueue.main.async {
-                self?.isSaving = false
-                if let err = err {
-                    self?.saveMessage = NSLocalizedString("NaturalSolutions.SaveError", comment: "")
-                    print("Firestore save error: \(err)")
-                } else {
-                    self?.saveMessage = NSLocalizedString("NaturalSolutions.SaveSuccess", comment: "")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                        self?.saveMessage = nil
-                    }
-                }
+        performAsyncOperation(
+            operation: {
+                // Extract remedies from the result text
+                let remedies = self.extractRemedies(from: self.resultText)
+                
+                let model = NaturalSolitionsModel(
+                    id: nil,
+                    userId: userId,
+                    question: self.buildConcernsString(),
+                    remedies: remedies,
+                    createdAt: Date()
+                )
+                
+                try await firestoreManager.addDocument(to: "naturalSolutions", object: model)
+                return true
+            },
+            context: "NaturalSolutionsViewViewModel.saveNaturalSolutions",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("NaturalSolutions.SaveSuccess", comment: ""))
             }
-        }
+        )
     }
     
     private func extractRemedies(from text: String) -> [String] {
