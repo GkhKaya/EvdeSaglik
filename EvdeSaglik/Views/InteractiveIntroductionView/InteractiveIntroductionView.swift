@@ -43,14 +43,17 @@ struct InteractiveIntroductionView: View {
                     BasicInfoStep(viewModel: viewModel)
                         .tag(2)
                     
-                    HealthInfoStep(viewModel: viewModel)
+                    WelcomeStep(viewModel: viewModel)
                         .tag(3)
                     
-                    LifestyleStep(viewModel: viewModel)
+                    HealthInfoStep(viewModel: viewModel)
                         .tag(4)
                     
-                    SummaryStep(viewModel: viewModel)
+                    LifestyleStep(viewModel: viewModel)
                         .tag(5)
+                    
+                    SummaryStep(viewModel: viewModel)
+                        .tag(6)
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .animation(.easeInOut(duration: 0.3), value: viewModel.currentStep)
@@ -256,7 +259,46 @@ struct BasicInfoStep: View {
     }
 }
 
-// MARK: - Step 3: Health Information
+// MARK: - Step 3: Welcome Message
+struct WelcomeStep: View {
+    @ObservedObject var viewModel: InteractiveIntroductionViewModel
+    
+    var body: some View {
+        VStack(spacing: ResponsivePadding.large) {
+            // Icon
+            Image(systemName: "hand.wave.fill")
+                .font(.largeTitleResponsive)
+                .foregroundStyle(.blue)
+            
+            // Content
+            VStack(spacing: ResponsivePadding.medium) {
+                Text(String(format: NSLocalizedString("Onboarding.Welcome.Title", comment: "Welcome title"), viewModel.userModel.fullName))
+                    .font(.title1Responsive)
+                    .fontWeight(.semibold)
+                    .multilineTextAlignment(.center)
+                
+                Text(NSLocalizedString("Onboarding.Welcome.Description", comment: "Welcome description"))
+                    .font(.bodyResponsive)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            
+            Spacer()
+            
+            // Next button
+            CustomButton(
+                title: NSLocalizedString("Onboarding.Welcome.Next", comment: "Continue button"),
+                action: viewModel.nextStep,
+                innerPadding: ResponsivePadding.small
+            )
+            .frame(maxWidth: .infinity)
+        }
+        .padding(.horizontal, ResponsivePadding.large)
+    }
+}
+
+// MARK: - Step 4: Health Information
 struct HealthInfoStep: View {
     @ObservedObject var viewModel: InteractiveIntroductionViewModel
     
@@ -335,7 +377,7 @@ struct HealthInfoStep: View {
     }
 }
 
-// MARK: - Step 4: Lifestyle
+// MARK: - Step 5: Lifestyle
 struct LifestyleStep: View {
     @ObservedObject var viewModel: InteractiveIntroductionViewModel
     
@@ -438,7 +480,7 @@ struct LifestyleStep: View {
     }
 }
 
-// MARK: - Step 5: Summary
+// MARK: - Step 6: Summary
 struct SummaryStep: View {
     @ObservedObject var viewModel: InteractiveIntroductionViewModel
     

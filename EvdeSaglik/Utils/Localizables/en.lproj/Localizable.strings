@@ -1,386 +1,85 @@
-/* 
-  Localizable.strings
-  EvdeSaglik
-
-  Created by gkhkaya on 14.09.2025.
-  
-*/
-
-
-
-// MARK: - Register
-"Register.Title" = "Create Account";
-"Register.Subtitle" = "Create your account to start your healthy living journey.";
-"Register.Email.Label" = "Email Address";
-"Register.Email.Placeholder" = "example@email.com";
-"Register.Password.Label" = "Password";
-"Register.Password.Placeholder" = "Enter your password";
-"Register.ConfirmPassword.Label" = "Confirm Password";
-"Register.ConfirmPassword.Placeholder" = "Re-enter your password";
-"Register.Button" = "Create Account";
-"Register.Login.Prefix" = "Already have an account?";
-"Register.Login.Link" = "Sign in";
-
-// MARK: - Register Errors
-"Register.Error.InvalidForm" = "Please fill in all fields correctly.";
-"Register.Error.EmailAlreadyInUse" = "This email address is already in use.";
-"Register.Error.InvalidEmail" = "Invalid email address.";
-"Register.Error.WeakPassword" = "Password must be at least 6 characters.";
-"Register.Error.Generic" = "An error occurred while creating your account. Please try again.";
-
-// MARK: - Register Validation Hints
-"Register.EmailHint.Invalid" = "Please enter a valid email address.";
-"Register.PasswordHint.MinLength" = "Min 8 characters";
-"Register.PasswordHint.Uppercase" = "Uppercase letter";
-"Register.PasswordHint.Lowercase" = "Lowercase letter";
-"Register.PasswordHint.Number" = "A number";
-"Register.PasswordHint.SpecialCharacter" = "A special character";
-
-// MARK: - Password Strength
-"Password.Strength.Weak" = "Weak";
-"Password.Strength.Medium" = "Medium";
-"Password.Strength.Strong" = "Strong";
-"Password.Strength.VeryStrong" = "Very Strong";
-
-// MARK: - Login
-"Login.AppName" = "Evde Sağlık";
-"Login.Title" = "Manage Your Health from Home";
-"Login.Subtitle" = "Welcome to your AI-powered personal health assistant";
-"Login.Email.Label" = "Email";
-"Login.Email.Placeholder" = "health@email.com";
-"Login.Password.Label" = "Password";
-"Login.Password.Placeholder" = "Your secure password";
-"Login.ForgotPassword" = "Forgot password";
-"Login.SignIn" = "Sign In";
-"Login.SignUp.Title" = "Don't have an account?";
-"Login.SignUp.Action" = "Sign up now";
-"Login.Validation.Invalid" = "Please enter a valid email and password.";
-"Login.Or" = "or";
-"Login.Continue.Apple" = "Continue with Apple";
-"Login.Continue.Google" = "Continue with Google";
-"Login.Benefits.Title" = "Why Evde Sağlık?";
-"Login.Benefits.AI" = "AI-powered disease prediction";
-"Login.Benefits.Home" = "Home-applicable solutions";
-"Login.Benefits.Lab" = "Lab result analysis";
-"Login.RememberMe" = "Remember me";
-"Login.ForgotPassword.InvalidEmail" = "Please enter a valid email address for password reset.";
-"Login.ForgotPassword.Success" = "Password reset link has been sent to your email address.";
-"Login.Error.Generic" = "An error occurred during login. Please try again.";
-
-// MARK: - Onboarding
-"Onboarding.Back" = "Back";
-"Onboarding.Next" = "Continue";
-"Onboarding.Skip" = "Skip";
-"Onboarding.Finish" = "Finish";
-"Onboarding.Update" = "Update Profile";
-
-// Step 1 - Introduction
-"Onboarding.Intro.Title" = "Personal Assistant for Your Health";
-"Onboarding.Intro.Description" = "This information will be used to provide you with personalized health recommendations. You can skip this step and complete it later if you prefer.";
-
-// Step 2 - Basic Info
-"Onboarding.BasicInfo.Title" = "Basic Information";
-"Onboarding.BasicInfo.Description" = "We'd like to know some basic information about you to serve you better.";
-"Onboarding.BasicInfo.Name" = "Full Name";
-"Onboarding.BasicInfo.NamePlaceholder" = "Your first and last name";
-"Onboarding.BasicInfo.Gender" = "Gender";
-"Onboarding.BasicInfo.Gender.Male" = "Male";
-"Onboarding.BasicInfo.Gender.Female" = "Female";
-"Onboarding.BasicInfo.Gender.Other" = "Other";
-"Onboarding.BasicInfo.Age" = "Age";
-"Onboarding.BasicInfo.AgeSelect" = "Select your age";
-
-// Step 3 - Health Info
-"Onboarding.HealthInfo.Title" = "Health Status";
-"Onboarding.HealthInfo.Description" = "Tell us about your current health status so we can provide the most suitable recommendations.";
-"Onboarding.HealthInfo.ChronicDiseases" = "Your Chronic Diseases";
-"Onboarding.HealthInfo.ChronicDiseases.Diabetes" = "Diabetes";
-"Onboarding.HealthInfo.ChronicDiseases.Hypertension" = "Hypertension";
-"Onboarding.HealthInfo.ChronicDiseases.Asthma" = "Asthma";
-"Onboarding.HealthInfo.ChronicDiseases.HeartDisease" = "Heart Disease";
-"Onboarding.HealthInfo.ChronicDiseases.KidneyDisease" = "Kidney Disease";
-"Onboarding.HealthInfo.ChronicDiseases.LiverDisease" = "Liver Disease";
-"Onboarding.HealthInfo.ChronicDiseases.Thyroid" = "Thyroid";
-"Onboarding.HealthInfo.ChronicDiseases.None" = "None";
-"Onboarding.HealthInfo.Allergies" = "Your Allergies";
-"Onboarding.HealthInfo.Allergies.Medication" = "Medication Allergy";
-"Onboarding.HealthInfo.Allergies.Food" = "Food Allergy";
-"Onboarding.HealthInfo.Allergies.Pollen" = "Pollen Allergy";
-"Onboarding.HealthInfo.Allergies.Animal" = "Animal Allergy";
-"Onboarding.HealthInfo.Allergies.Dust" = "Dust Allergy";
-"Onboarding.HealthInfo.Allergies.Other" = "Other";
-"Onboarding.HealthInfo.Allergies.Unknown" = "Unknown";
-"Onboarding.HealthInfo.Allergies.None" = "None";
-"Onboarding.HealthInfo.Medications" = "Medications You Use Regularly";
-"Onboarding.HealthInfo.Medications.BloodPressure" = "Blood Pressure Medication";
-"Onboarding.HealthInfo.Medications.Diabetes" = "Diabetes Medication";
-"Onboarding.HealthInfo.Medications.Heart" = "Heart Medication";
-"Onboarding.HealthInfo.Medications.Painkiller" = "Painkiller";
-"Onboarding.HealthInfo.Medications.Vitamin" = "Vitamin";
-"Onboarding.HealthInfo.Medications.Antidepressant" = "Antidepressant";
-"Onboarding.HealthInfo.Medications.Other" = "Other";
-"Onboarding.HealthInfo.Medications.None" = "None";
-
-// Step 4 - Lifestyle
-"Onboarding.Lifestyle.Title" = "Lifestyle";
-"Onboarding.Lifestyle.Description" = "Tell us about your lifestyle so we can provide appropriate recommendations.";
-"Onboarding.Lifestyle.Sleep" = "Your Sleep Pattern";
-"Onboarding.Lifestyle.SleepDescription" = "Evaluate your overall sleep quality and routine";
-"Onboarding.Lifestyle.Sleep.Good" = "Good";
-"Onboarding.Lifestyle.Sleep.GoodDescription" = "Regular sleep hours and quality sleep";
-"Onboarding.Lifestyle.Sleep.GoodExample" = "Example: I sleep 7-9 hours a day, go to bed at 11 PM and wake up at 7 AM";
-"Onboarding.Lifestyle.Sleep.Medium" = "Medium";
-"Onboarding.Lifestyle.Sleep.MediumDescription" = "Sometimes irregularities occur";
-"Onboarding.Lifestyle.Sleep.MediumExample" = "Example: I sleep 5-7 hours a day, my sleep hours vary";
-"Onboarding.Lifestyle.Sleep.Bad" = "Bad";
-"Onboarding.Lifestyle.Sleep.BadDescription" = "Irregular sleep and insufficient rest";
-"Onboarding.Lifestyle.Sleep.BadExample" = "Example: I sleep less than 5 hours a day, I am constantly sleepless";
-    
-"Onboarding.Lifestyle.Activity" = "Your Physical Activity Level";
-"Onboarding.Lifestyle.ActivityDescription" = "Specify your daily physical activity level";
-"Onboarding.Lifestyle.Activity.Low" = "Low";
-"Onboarding.Lifestyle.Activity.LowDescription" = "Sedentary lifestyle";
-"Onboarding.Lifestyle.Activity.LowExample" = "Example: I take light walks 1-2 days a week, mostly work at a desk";
-"Onboarding.Lifestyle.Activity.Medium" = "Medium";
-"Onboarding.Lifestyle.Activity.MediumDescription" = "Regular physical activity";
-"Onboarding.Lifestyle.Activity.MediumExample" = "Example: I walk or exercise for 30 minutes 3-4 days a week";
-"Onboarding.Lifestyle.Activity.High" = "High";
-"Onboarding.Lifestyle.Activity.HighDescription" = "Active lifestyle and regular exercise";
-"Onboarding.Lifestyle.Activity.HighExample" = "Example: I exercise 5+ days a week, take 10,000+ steps daily";
-    
-"Onboarding.Lifestyle.Nutrition" = "Your Nutrition Habits";
-"Onboarding.Lifestyle.NutritionDescription" = "Evaluate your eating habits and preferences";
-"Onboarding.Lifestyle.Nutrition.Bad" = "Bad";
-"Onboarding.Lifestyle.Nutrition.BadDescription" = "Irregular eating and unhealthy choices";
-"Onboarding.Lifestyle.Nutrition.BadExample" = "Example: Mostly fast food, sugary drinks, irregular meal times";
-"Onboarding.Lifestyle.Nutrition.Medium" = "Medium";
-"Onboarding.Lifestyle.Nutrition.MediumDescription" = "Mixed eating habits";
-"Onboarding.Lifestyle.Nutrition.MediumExample" = "Example: Sometimes home-cooked meals, sometimes out, vegetable/fruit consumption varies";
-"Onboarding.Lifestyle.Nutrition.Good" = "Good";
-"Onboarding.Lifestyle.Nutrition.GoodDescription" = "Balanced and healthy eating";
-"Onboarding.Lifestyle.Nutrition.GoodExample" = "Example: Regular meals, 5 servings of fruits/vegetables daily, drink plenty of water";
-
-// MARK: - Onboarding Custom Options
-"Onboarding.CustomOption" = "Other";
-"Onboarding.CustomOptionPlaceholder" = "Write your own...";
-"Onboarding.Add" = "Add";
-"Onboarding.Cancel" = "Cancel";
-
-// Step 5 - Summary
-"Onboarding.Summary.Title" = "Summary";
-"Onboarding.Summary.Description" = "Here's a summary of the information you provided. If everything looks correct, you can finish.";
-"Onboarding.Summary.BasicInfo" = "Basic Information";
-"Onboarding.Summary.HealthInfo" = "Health Information";
-"Onboarding.Summary.Lifestyle" = "Lifestyle";
-"Onboarding.Summary.ChronicDiseases" = "Chronic Diseases";
-"Onboarding.Summary.Allergies" = "Allergies";
-"Onboarding.Summary.Sleep" = "Sleep";
-"Onboarding.Summary.Activity" = "Activity";
-"Onboarding.Summary.Nutrition" = "Nutrition";
-
-// MARK: - Main App
-"MainApp.Title" = "Welcome to Main App!";
-"MainApp.LogoutButton" = "Log Out";
-
-// MARK: - MainApp View
-"MainApp.SearchBar.Title" = "How can we help you?";
-"MainApp.SearchBar.Placeholder" = "Ask a health question...";
-"MainApp.PersonalizeButton" = "Personalize";
-"MainApp.PersonalizeSheet.Title" = "Personalization Settings";
-
-"MainApp.Card.Doctor" = "Which doctor should I go to?";
-"MainApp.Card.Disease" = "What could be my disease?";
-"MainApp.Card.HomeRemedies" = "What can I do at home?";
-"MainApp.Card.LabResults" = "Lab test results";
-"MainApp.Card.NaturalSolutions" = "Natural solutions";
-"MainApp.Card.DrugFoodInteraction" = "Drug & Food Interaction";
-"MainApp.Card.SkinProblems" = "Skin problems";
-
-// MARK: - UserManager Prompts
-"UserManager.NoUserInformation" = "No user information available for personalization.";
-"UserManager.Prompt.FullName" = "User's full name: %@";
-"UserManager.Prompt.Age" = "Age: %d";
-"UserManager.Prompt.Gender" = "Gender: %@";
-"UserManager.Prompt.ChronicDiseases" = "Chronic diseases: %@";
-"UserManager.Prompt.Allergies" = "Allergies: %@";
-"UserManager.Prompt.Medications" = "Regular medications: %@";
-"UserManager.Prompt.SleepPattern" = "Sleep pattern: %@";
-"UserManager.Prompt.PhysicalActivity" = "Physical activity: %@";
-"UserManager.Prompt.NutritionHabits" = "Nutrition habits: %@";
-
-
-
-// MARK: - Errors
-// MARK: - Deepseek API Errors
-"Deepseek.Error.MissingAPIKey" = "Deepseek API Key not found in environment variables. Please set DEEPSEE_API_KEY.";
-"Deepseek.Error.InvalidURL" = "Invalid URL for OpenRouter API.";
-"Deepseek.Error.EncodingFailed" = "Failed to encode request data: %@";
-"Deepseek.Error.InvalidResponse" = "Invalid response from OpenRouter API. Status Code: %d, Body: %@";
-"Deepseek.Error.DecodingFailed" = "Failed to decode API response: %@";
-"Deepseek.Error.NoChoices" = "No choices found in the Deepseek API response.";
-"Deepseek.Error.Custom" = "%@";
-
-// MARK: - Auth Errors
-
-"Auth.Error.RegistrationFailed" = "Registration failed: %@";
-"Auth.Error.LoginFailed" = "Login failed: %@";
-"Auth.Error.PasswordResetFailed" = "Password reset failed: %@";
-"Auth.Error.EmailUpdateFailed" = "Email update failed: %@";
-"Auth.Error.Unknown" = "An unknown authentication error occurred.";
-
-// MARK: - Firestore Errors
-
-"Firestore.Error.ReadFailed" = "Data read failed: %@";
-"Firestore.Error.WriteFailed" = "Data write failed: %@";
-"Firestore.Error.DocumentNotFound" = "Document not found: %@";
-"Firestore.Error.NetworkError" = "Network error occurred: %@";
-"Firestore.Error.Unknown" = "An unknown Firestore error occurred.";
-
-// MARK: - Chatbot
-"Chatbot.Greeting" = "Hello! How can I help you today?";
-"Chatbot.Input.Placeholder" = "Type a message...";
-"Chatbot.Title" = "Chat with AI";
-
-// MARK: - Department Suggestion
-"DepartmentSuggestion.Title" = "Which doctor should I go to?";
-"DepartmentSuggestion.Subtitle" = "Select or write your symptoms, AI will suggest the most relevant specialty for you.";
-"DepartmentSuggestion.Symptom.Headache" = "Headache";
-"DepartmentSuggestion.Symptom.Nausea" = "Nausea";
-"DepartmentSuggestion.Symptom.ChestPain" = "Chest pain";
-"DepartmentSuggestion.Symptom.Cough" = "Cough";
-"DepartmentSuggestion.Symptom.SkinRash" = "Skin rash";
-"DepartmentSuggestion.Symptom.JointPain" = "Joint pain";
-"DepartmentSuggestion.Symptom.Fatigue" = "Fatigue";
-"DepartmentSuggestion.Symptom.Fever" = "Fever";
-"DepartmentSuggestion.Other" = "Other";
-"DepartmentSuggestion.OtherTitle" = "Other Symptoms";
-"DepartmentSuggestion.OtherPlaceholder" = "Write additional symptoms...";
-"DepartmentSuggestion.FeelingsTitle" = "How do you feel?";
-"DepartmentSuggestion.FeelingsPlaceholder" = "Describe your feelings briefly";
-"DepartmentSuggestion.Submit" = "Which doctor should I go to?";
-"DepartmentSuggestion.Confidence" = "%d%% confidence";
-
-"DepartmentSuggestion.SystemPersona" = "You are a medical triage assistant. Based on the user's symptoms, suggest top 3 most relevant medical departments (e.g., Cardiology, Neurology, Dermatology). Respond ONLY in Turkish language.";
-"DepartmentSuggestion.SystemFormat" = "Respond in pure JSON array with items of {\"department\": string, \"confidence\": number 0-100}. Do not include any explanation outside JSON.";
-"DepartmentSuggestion.UserSymptoms" = "Reported symptoms: %@";
-"DepartmentSuggestion.UserOtherSymptoms" = "Additional symptoms: %@";
-"DepartmentSuggestion.UserFeelings" = "User feelings: %@";
-"DepartmentSuggestion.DefaultUserPrompt" = "No symptoms selected. Provide general triage based on common complaints.";
-
 // Common
+"Common.Loading" = "Loading...";
+"Loading.Initializing" = "Initializing app...";
+
+// Validation Errors
+"Validation.Error.EmptyField" = "%@ field cannot be empty";
+"Validation.Error.InvalidFormat" = "Invalid %@ format";
+"Validation.Error.WeakPassword" = "Password must be at least 6 characters";
+"Validation.Error.InvalidEmail" = "Please enter a valid email address";
+"Validation.Error.InvalidAge" = "Please enter a valid age";
+"Validation.Error.NameTooShort" = "Name must be at least 2 characters";
+"Validation.Error.RequiredFieldMissing" = "%@ is required";
+
+// Network Errors
+"Network.Error.NoConnection" = "No internet connection";
+"Network.Error.Timeout" = "Request timed out";
+"Network.Error.ServerUnavailable" = "Server is currently unavailable";
+"Network.Error.InvalidResponse" = "Invalid response from server";
+"Network.Error.RequestFailed" = "Request failed with status code: %@";
+
+// Business Logic Errors
+"Business.Error.UserNotFound" = "User not found";
+"Business.Error.InsufficientPermissions" = "Insufficient permissions";
+"Business.Error.OperationNotAllowed" = "Operation not allowed";
+"Business.Error.DataCorrupted" = "Data is corrupted";
+"Business.Error.LimitExceeded" = "Limit exceeded: %@";
+"Business.Error.DuplicateEntry" = "Duplicate entry: %@";
+
+// Recovery Suggestions
+"Recovery.CheckConnection" = "Check your internet connection";
+"Recovery.TryAgain" = "Try again";
+"Recovery.CheckEmailFormat" = "Check email format";
+"Recovery.EnterValidEmail" = "Enter a valid email address";
+"Recovery.ContactSupport" = "Contact support if problem persists";
+
+// Success Messages
+"Login.Success" = "Successfully logged in";
+"Register.Success" = "Successfully registered";
+"DrugFoodInteraction.SaveSuccess" = "Successfully saved to history";
+
+// Department Suggestion
 "DepartmentSuggestion.Save" = "Save to History";
-"DepartmentSuggestion.SaveSuccess" = "Saved successfully";
-"DepartmentSuggestion.SaveError" = "Save failed";
 
-// MARK: - Disease Prediction
-"DiseasePrediction.Title" = "What could be my disease?";
-"DiseasePrediction.Subtitle" = "Select your symptoms and describe how you feel, AI will suggest possible diseases.";
-"DiseasePrediction.Symptom.Headache" = "Headache";
-"DiseasePrediction.Symptom.Fever" = "Fever";
-"DiseasePrediction.Symptom.Cough" = "Cough";
-"DiseasePrediction.Symptom.Nausea" = "Nausea";
-"DiseasePrediction.Symptom.Fatigue" = "Fatigue";
-"DiseasePrediction.Symptom.ChestPain" = "Chest pain";
-"DiseasePrediction.Symptom.AbdominalPain" = "Abdominal pain";
-"DiseasePrediction.Symptom.Dizziness" = "Dizziness";
-"DiseasePrediction.Other" = "Other";
-"DiseasePrediction.OtherTitle" = "Other Symptoms";
-"DiseasePrediction.OtherPlaceholder" = "Write additional symptoms...";
-"DiseasePrediction.FeelingsTitle" = "How do you feel?";
-"DiseasePrediction.FeelingsPlaceholder" = "Describe your feelings briefly";
-"DiseasePrediction.DurationTitle" = "Duration";
-"DiseasePrediction.DurationPlaceholder" = "How long have you had these symptoms?";
-"DiseasePrediction.Submit" = "What could be my disease?";
-"DiseasePrediction.Confidence" = "%d%% confidence";
-"DiseasePrediction.Save" = "Save to History";
-"DiseasePrediction.SaveSuccess" = "Saved successfully";
-"DiseasePrediction.SaveError" = "Save failed";
+// Drug Food Interaction
+"DrugFoodInteraction.Title" = "Drug-Food Interaction";
+"DrugFoodInteraction.DrugName" = "Drug Name";
+"DrugFoodInteraction.DrugNamePlaceholder" = "Enter drug name";
+"DrugFoodInteraction.FoodName" = "Food Name";
+"DrugFoodInteraction.FoodNamePlaceholder" = "Enter food name";
+"DrugFoodInteraction.CheckButton" = "Check Interaction";
+"DrugFoodInteraction.SaveButton" = "Save to History";
+"DrugFoodInteraction.EmptyFields" = "Please enter both drug and food names.";
+"DrugFoodInteraction.SaveError" = "An error occurred while saving.";
+"DrugFoodInteraction.SaveSuccess" = "Successfully saved to history";
+"DrugFoodInteraction.SystemPersona" = "You are an expert pharmacist specializing in drug-food interactions. You analyze drug-food interactions considering users' health conditions.";
+"DrugFoodInteraction.SystemFormat" = "Provide your response in this format:\n\n**Interaction Status:** [High/Medium/Low Risk or Safe]\n\n**Description:** [Detailed explanation of the interaction]\n\n**Recommendations:** [Recommendations for the user]\n\n**Precautions:** [Important warnings]";
+"DrugFoodInteraction.UserPrompt" = "Drug: %@\nFood: %@\n\nUser Information:\n%@";
 
-"DiseasePrediction.SystemPersona" = "You are a medical diagnosis assistant. Based on the user's symptoms, suggest top 3 most likely diseases with brief descriptions. Respond ONLY in Turkish language.";
-"DiseasePrediction.SystemFormat" = "Respond in pure JSON array with items of {\"disease\": string, \"confidence\": number 0-100, \"description\": string}. Do not include any explanation outside JSON.";
-"DiseasePrediction.UserSymptoms" = "Reported symptoms: %@";
-"DiseasePrediction.UserOtherSymptoms" = "Additional symptoms: %@";
-"DiseasePrediction.UserFeelings" = "User feelings: %@";
-"DiseasePrediction.UserDuration" = "Symptom duration: %@";
-"DiseasePrediction.DefaultUserPrompt" = "No symptoms selected. Provide general disease suggestions based on common complaints.";
+// Drug Food Interaction History
+"DrugFoodInteractionHistory.Title" = "Drug-Food Interaction History";
+"DrugFoodInteractionHistory.Empty" = "No interaction analyses saved yet.";
+"DrugFoodInteractionHistory.Delete" = "Delete";
+"DrugFoodInteractionHistory.DeleteConfirm" = "Are you sure you want to delete this record?";
 
-// MARK: - Home Solution
-"HomeSolution.Title" = "What can I do at home?";
-"HomeSolution.Subtitle" = "Describe your problem and get step-by-step home recommendations in Turkish.";
-"HomeSolution.InputTitle" = "Your Complaint";
-"HomeSolution.InputPlaceholder" = "e.g., my shin hurts a lot (kaval kemiğim çok fazla ağrıyor)";
-"HomeSolution.Submit" = "What can I do at home?";
-"HomeSolution.SystemPersona" = "You are a medical assistant giving safe at-home recommendations. Provide steps strictly in this order: 1) Physical movements/exercises and posture changes, 2) Natural methods (e.g., warm water, salt water gargle, herbal teas), 3) Over-the-counter medicine suggestions (with generic names), and finally 4) A short warning on when to see a doctor if symptoms persist or worsen.";
-"HomeSolution.SystemFormat" = "Return clear, numbered steps in Turkish. Avoid JSON. Keep each step concise and actionable.";
-"HomeSolution.DefaultUserPrompt" = "General home care tips for common minor complaints.";
-"HomeSolution.UserPrompt" = "Complaint: %@";
+// Onboarding
+"Onboarding.Welcome.Title" = "Welcome, %@!";
+"Onboarding.Welcome.Description" = "This application provides health solutions you can apply at home to solve the overcrowding problems in today's hospitals. It also answers all health problems that come to your mind.";
+"Onboarding.Welcome.Next" = "Continue";
 
-"HomeSolution.Save" = "Save to History";
-"HomeSolution.SaveSuccess" = "Saved successfully";
-"HomeSolution.SaveError" = "Save failed";
-
-// MARK: - Lab Result Recommendation
-"LabResult.Title" = "Lab Test Results";
-"LabResult.Subtitle" = "Upload your lab results PDF and get AI analysis with recommendations.";
-"LabResult.Warning" = "Important Notice";
-"LabResult.WarningText" = "These recommendations are for informational purposes only. Always consult your doctor for proper medical advice and treatment.";
-"LabResult.UploadPDF" = "Upload Lab Results PDF";
-"LabResult.UploadDescription" = "Select your lab test results PDF file";
-"LabResult.PDFSelected" = "PDF Selected";
-"LabResult.Pages" = "pages";
-"LabResult.TablesExtracted" = "Tables extracted successfully";
-"LabResult.Analyze" = "Analyze Results";
-"LabResult.Save" = "Save to History";
-"LabResult.SaveSuccess" = "Saved successfully";
-"LabResult.SaveError" = "Save failed";
-
-"LabResult.SystemPersona" = "You are a medical lab results analyst. Analyze the provided lab test results and identify any abnormal values. Provide recommendations in this order: 1) Abnormal values and their potential causes, 2) Natural solutions and lifestyle changes, 3) Medication suggestions (generic names), 4) Clear warning about consulting a doctor.";
-"LabResult.SystemFormat" = "Provide clear, numbered analysis in the device language. Avoid JSON. Keep recommendations concise and actionable.";
-"LabResult.UserPrompt" = "Lab Results Data:\n\n%@";
-
-// MARK: - Natural Solutions
-"NaturalSolutions.Title" = "Natural Solutions";
-"NaturalSolutions.Subtitle" = "Describe your health concern and get natural remedy suggestions.";
-"NaturalSolutions.InputTitle" = "Your Health Concern";
-"NaturalSolutions.InputPlaceholder" = "e.g., headache, insomnia, digestive issues";
-"NaturalSolutions.Submit" = "Find Natural Solutions";
-"NaturalSolutions.Save" = "Save to History";
-"NaturalSolutions.SaveSuccess" = "Saved successfully";
-"NaturalSolutions.SaveError" = "Save failed";
-
-"NaturalSolutions.SystemPersona" = "You are a natural health consultant. Provide natural remedy suggestions for the user's health concern. Include both well-known traditional remedies and lesser-known but effective natural solutions. Focus on herbs, foods, lifestyle changes, and natural therapies.";
-"NaturalSolutions.SystemFormat" = "Provide clear, numbered natural solutions in the device language. Avoid JSON. Include both common and uncommon remedies. Keep suggestions practical and safe.";
-"NaturalSolutions.DefaultUserPrompt" = "General natural health tips for common concerns.";
-"NaturalSolutions.UserPrompt" = "Health concern: %@";
-
-"NaturalSolutions.Concern.Headache" = "Headache";
-"NaturalSolutions.Concern.Insomnia" = "Insomnia";
-"NaturalSolutions.Concern.Digestive" = "Digestive Issues";
-"NaturalSolutions.Concern.Stress" = "Stress";
-"NaturalSolutions.Concern.Cold" = "Cold/Flu";
-"NaturalSolutions.Concern.Fatigue" = "Fatigue";
-"NaturalSolutions.Concern.Skin" = "Skin Problems";
-"NaturalSolutions.Concern.JointPain" = "Joint Pain";
-"NaturalSolutions.Other" = "Other";
-"NaturalSolutions.OtherTitle" = "Other Concerns";
-"NaturalSolutions.OtherPlaceholder" = "Describe other health concerns...";
-"NaturalSolutions.FeelingsTitle" = "How do you feel?";
-"NaturalSolutions.FeelingsPlaceholder" = "Describe your feelings briefly";
-"NaturalSolutions.UserConcerns" = "Selected concerns: %@";
-"NaturalSolutions.UserOtherConcerns" = "Additional concerns: %@";
-"NaturalSolutions.UserFeelings" = "User feelings: %@";
-
-// MARK: - Profile Screen
+// Profile
 "Profile.Title" = "Profile";
 "Profile.UserName" = "User";
-"Profile.Section.AccountInfo" = "Account Information";
+"Profile.Section.AccountSettings" = "Account Settings";
 "Profile.Section.Personalization" = "Personalization";
+"Profile.Section.SavedData" = "Saved Data";
 "Profile.Section.DepartmentSuggestions" = "Department Suggestions";
 "Profile.Section.DiseasePredictions" = "Disease Predictions";
 "Profile.Section.HomeSolutions" = "Home Solutions";
 "Profile.Section.LabResults" = "Lab Results";
 "Profile.Section.NaturalSolutions" = "Natural Solutions";
-"Profile.Section.AccountSettings" = "Account Settings";
+"Profile.Section.DrugFoodInteraction" = "Drug-Food Interaction";
+"Profile.Section.DangerZone" = "Danger Zone";
 
 "Profile.Item.Email" = "Email";
 "Profile.Item.Password" = "Password";
@@ -389,115 +88,152 @@
 "Profile.Item.ResetData" = "Reset All Data";
 "Profile.Item.DeleteAccount" = "Delete Account";
 
+"Profile.Item.ChangeEmail" = "Change Email";
+"Profile.Item.ChangePassword" = "Change Password";
+"Profile.Item.Personalization" = "Personalization";
+
 "Profile.Item.PasswordValue" = "Change password";
 "Profile.Item.PersonalizeValue" = "Update your health profile";
 "Profile.Item.ViewHistoryValue" = "View saved results";
 "Profile.Item.ResetDataValue" = "Delete all saved data";
 "Profile.Item.DeleteAccountValue" = "Permanently delete account";
 
+"Profile.Item.ChangeEmailValue" = "Change your email address";
+"Profile.Item.ChangePasswordValue" = "Change your password";
+"Profile.Item.PersonalizationValue" = "Update your health profile";
+
+"Profile.Item.DepartmentSuggestionHistory" = "Department Suggestion History";
+"Profile.Item.DiseasePredictionHistory" = "Disease Prediction History";
+"Profile.Item.HomeSolutionHistory" = "Home Solution History";
+"Profile.Item.LabResultHistory" = "Lab Result History";
+"Profile.Item.NaturalSolutionHistory" = "Natural Solution History";
+"Profile.Item.DrugFoodInteractionHistory" = "Drug-Food Interaction History";
+
+"Profile.Item.DepartmentSuggestionHistoryValue" = "View your department suggestions";
+"Profile.Item.DiseasePredictionHistoryValue" = "View your disease predictions";
+"Profile.Item.HomeSolutionHistoryValue" = "View your home solutions";
+"Profile.Item.LabResultHistoryValue" = "View your lab results";
+"Profile.Item.NaturalSolutionHistoryValue" = "View your natural solutions";
+"Profile.Item.DrugFoodInteractionHistoryValue" = "View your drug-food interactions";
+
 "Profile.ChangeEmail.Title" = "Change Email";
-"Profile.ChangeEmail.Description" = "Enter your new email address. You will need to verify it.";
+"Profile.ChangeEmail.Description" = "Update your email address";
 "Profile.ChangeEmail.NewEmail" = "New Email";
-"Profile.ChangeEmail.Placeholder" = "Enter new email address";
-"Profile.ChangeEmail.Update" = "Update Email";
+"Profile.ChangeEmail.Placeholder" = "new@email.com";
+"Profile.ChangeEmail.Update" = "Update";
 
 "Profile.ChangePassword.Title" = "Change Password";
-"Profile.ChangePassword.Description" = "Enter your current password and choose a new one.";
+"Profile.ChangePassword.Description" = "Update your password";
 "Profile.ChangePassword.Current" = "Current Password";
-"Profile.ChangePassword.New" = "New Password";
-"Profile.ChangePassword.Confirm" = "Confirm New Password";
 "Profile.ChangePassword.CurrentPlaceholder" = "Enter current password";
+"Profile.ChangePassword.New" = "New Password";
 "Profile.ChangePassword.NewPlaceholder" = "Enter new password";
-"Profile.ChangePassword.ConfirmPlaceholder" = "Confirm new password";
-"Profile.ChangePassword.Update" = "Update Password";
+"Profile.ChangePassword.Confirm" = "Confirm Password";
+"Profile.ChangePassword.ConfirmPlaceholder" = "Re-enter new password";
+"Profile.ChangePassword.Update" = "Update";
 
-"Profile.Alert.Error" = "Error";
-"Profile.Alert.Success" = "Success";
-"Profile.Alert.ResetData" = "Reset All Data";
-"Profile.Alert.DeleteAccount" = "Delete Account";
-"Profile.Alert.ResetDataMessage" = "This will permanently delete all your saved data. This action cannot be undone.";
-"Profile.Alert.DeleteAccountMessage" = "This will permanently delete your account and all data. This action cannot be undone.";
-
-"Profile.Action.Cancel" = "Cancel";
-"Profile.Action.Reset" = "Reset";
-"Profile.Action.Delete" = "Delete";
-
-"Profile.Error.EmptyEmail" = "Please enter an email address";
+"Profile.Error.EmptyEmail" = "Email field cannot be empty";
 "Profile.Error.InvalidEmail" = "Please enter a valid email address";
-"Profile.Error.EmptyFields" = "Please fill in all fields";
-"Profile.Error.PasswordMismatch" = "New passwords do not match";
+"Profile.Error.EmptyFields" = "Please fill all fields";
+"Profile.Error.PasswordMismatch" = "Passwords do not match";
 "Profile.Error.WeakPassword" = "Password must be at least 6 characters";
+"Profile.Success.EmailChanged" = "Email successfully changed";
+"Profile.Success.PasswordChanged" = "Password successfully changed";
 
-"Profile.Success.EmailChanged" = "Email updated successfully";
-"Profile.Success.PasswordChanged" = "Password updated successfully";
-"Profile.Success.DataReset" = "All data has been reset";
-"Profile.Success.AccountDeleted" = "Account deleted successfully";
+"Profile.Alert.DeleteAccount" = "Delete Account";
+"Profile.Alert.DeleteAccountMessage" = "Are you sure you want to delete your account? This action cannot be undone.";
+"Profile.Alert.Cancel" = "Cancel";
+"Profile.Alert.Delete" = "Delete";
 
-// MARK: - History Screen Button Texts
-"Profile.Item.DepartmentHistory" = "View Doctor Suggestions";
-"Profile.Item.DepartmentHistoryValue" = "See which doctors were recommended";
-"Profile.Item.DiseaseHistory" = "View Disease Predictions";
-"Profile.Item.DiseaseHistoryValue" = "See predicted diseases";
-"Profile.Item.HomeHistory" = "View Home Solutions";
-"Profile.Item.HomeHistoryValue" = "See home remedy suggestions";
-"Profile.Item.LabHistory" = "View Lab Results";
-"Profile.Item.LabHistoryValue" = "See lab result analyses";
-"Profile.Item.NaturalHistory" = "View Natural Solutions";
-"Profile.Item.NaturalHistoryValue" = "See natural remedy suggestions";
+// Main App
+"MainApp.Title" = "Home Health";
+"MainApp.SearchBar.Title" = "Search";
+"MainApp.SearchBar.Placeholder" = "Write your health problem...";
+"MainApp.Card.Doctor" = "Which doctor should I go to?";
+"MainApp.Card.Disease" = "What could be my disease?";
+"MainApp.Card.HomeRemedies" = "What can I do at home?";
+"MainApp.Card.LabResults" = "Lab test results";
+"MainApp.Card.NaturalSolutions" = "Natural solutions";
+"MainApp.Card.DrugFoodInteraction" = "Drug & Food Interaction";
 
-// MARK: - Department History Screen
-"DepartmentHistory.Title" = "Doctor Suggestions";
-"DepartmentHistory.Empty.Title" = "No Doctor Suggestions Yet";
-"DepartmentHistory.Empty.Description" = "Your doctor suggestions will appear here after you use the 'Which Doctor Should I Go To?' feature.";
-"DepartmentHistory.Card.Date" = "Date:";
-"DepartmentHistory.Card.Symptoms" = "Symptoms:";
-"DepartmentHistory.Card.Suggestions" = "Recommended Doctors:";
+// Login
+"Login.Title" = "Sign In";
+"Login.Subtitle" = "Sign in to your account";
+"Login.Email" = "Email";
+"Login.EmailPlaceholder" = "example@email.com";
+"Login.Password" = "Password";
+"Login.PasswordPlaceholder" = "Enter your password";
+"Login.RememberMe" = "Remember me";
+"Login.SignIn" = "Sign In";
+"Login.ForgotPassword" = "Forgot password";
+"Login.NoAccount" = "Don't have an account?";
+"Login.Register" = "Register";
+"Login.Validation.Invalid" = "Invalid login credentials";
+"Login.ForgotPassword.InvalidEmail" = "Enter valid email for password reset";
+"Login.ForgotPassword.Success" = "Password reset email sent";
+"Login.Error.Generic" = "An error occurred during login";
 
-// MARK: - Disease History Screen
-"DiseaseHistory.Title" = "Disease Predictions";
-"DiseaseHistory.Empty.Title" = "No Disease Predictions Yet";
-"DiseaseHistory.Empty.Description" = "Your disease predictions will appear here after you use the 'What Could Be My Disease?' feature.";
-"DiseaseHistory.Card.Date" = "Date:";
-"DiseaseHistory.Card.Symptoms" = "Symptoms:";
-"DiseaseHistory.Card.Predictions" = "Predicted Diseases:";
+// Register
+"Register.Title" = "Register";
+"Register.Subtitle" = "Create a new account";
+"Register.Email" = "Email";
+"Register.EmailPlaceholder" = "example@email.com";
+"Register.Password" = "Password";
+"Register.PasswordPlaceholder" = "Create your password";
+"Register.ConfirmPassword" = "Confirm Password";
+"Register.ConfirmPasswordPlaceholder" = "Re-enter your password";
+"Register.Register" = "Register";
+"Register.HaveAccount" = "Already have an account?";
+"Register.Login" = "Sign in";
+"Register.EmailHint.Invalid" = "Invalid Email Format";
+"Register.PasswordHint.MinLength" = "Min 8 characters";
+"Register.PasswordHint.Uppercase" = "Uppercase letter";
+"Register.PasswordHint.Lowercase" = "Lowercase letter";
+"Register.PasswordHint.Number" = "A number";
+"Register.PasswordHint.SpecialCharacter" = "A special character";
+"Register.Error.InvalidForm" = "Invalid form";
+"Register.Error.EmailAlreadyInUse" = "This email is already in use";
+"Register.Error.InvalidEmail" = "Invalid email";
+"Register.Error.WeakPassword" = "Weak password";
+"Register.Error.Generic" = "An error occurred during registration";
 
-// MARK: - Home History Screen
-"HomeHistory.Title" = "Home Solutions";
-"HomeHistory.Empty.Title" = "No Home Solutions Yet";
-"HomeHistory.Empty.Description" = "Your home solutions will appear here after you use the 'What Can I Do at Home?' feature.";
-"HomeHistory.Card.Date" = "Date:";
-"HomeHistory.Card.Symptom" = "Symptom:";
-"HomeHistory.Card.Solutions" = "Solutions:";
+// Auth Errors
+"Auth.Error.RegistrationFailed" = "Registration failed: %@";
+"Auth.Error.LoginFailed" = "Login failed: %@";
+"Auth.Error.PasswordResetFailed" = "Password reset failed: %@";
+"Auth.Error.EmailUpdateFailed" = "Email update failed: %@";
+"Auth.Error.Unknown" = "An unknown authentication error occurred.";
 
-// MARK: - Lab History Screen
-"LabHistory.Title" = "Lab Results";
-"LabHistory.Empty.Title" = "No Lab Results Yet";
-"LabHistory.Empty.Description" = "Your lab result analyses will appear here after you use the 'Lab Test Results' feature.";
-"LabHistory.Card.Date" = "Date:";
-"LabHistory.Card.Results" = "Lab Results:";
-"LabHistory.Card.Medications" = "Suggested Medications:";
-"LabHistory.Card.NaturalSolutions" = "Natural Solutions:";
+// Firestore Errors
+"Firestore.Error.ReadFailed" = "Data read failed: %@";
+"Firestore.Error.WriteFailed" = "Data write failed: %@";
+"Firestore.Error.DocumentNotFound" = "Document not found: %@";
+"Firestore.Error.NetworkError" = "Network error: %@";
+"Firestore.Error.Unknown" = "An unknown Firestore error occurred.";
 
-// MARK: - Natural History Screen
-"NaturalHistory.Title" = "Natural Solutions";
-"NaturalHistory.Empty.Title" = "No Natural Solutions Yet";
-"NaturalHistory.Empty.Description" = "Your natural solutions will appear here after you use the 'Natural Solutions' feature.";
-"NaturalHistory.Card.Date" = "Date:";
-"NaturalHistory.Card.Question" = "Question:";
-"NaturalHistory.Card.Remedies" = "Natural Remedies:";
+// Deepseek Errors
+"Deepseek.Error.MissingAPIKey" = "Deepseek API Key not found in environment variables.";
+"Deepseek.Error.InvalidURL" = "Invalid URL for OpenRouter API.";
+"Deepseek.Error.EncodingFailed" = "Failed to encode request data: %@";
+"Deepseek.Error.InvalidResponse" = "Invalid response from OpenRouter API. Status Code: %@, Body: %@";
+"Deepseek.Error.DecodingFailed" = "Failed to decode API response: %@";
+"Deepseek.Error.NoChoices" = "No choices found in the Deepseek API response.";
+"Deepseek.Error.Custom" = "%@";
 
-// MARK: - Drug Food Interaction
-"DrugFoodInteraction.Title" = "Drug & Food Interaction Check";
-"DrugFoodInteraction.Subtitle" = "Check drug and food interactions, learn about potential side effects.";
-"DrugFoodInteraction.DrugName.Label" = "Drug Name";
-"DrugFoodInteraction.DrugName.Placeholder" = "e.g., Aspirin, Paracetamol";
-"DrugFoodInteraction.FoodName.Label" = "Food Name";
-"DrugFoodInteraction.FoodName.Placeholder" = "e.g., Grapefruit, Milk, Coffee";
-"DrugFoodInteraction.Submit" = "Check Interaction";
-"DrugFoodInteraction.Save" = "Save to History";
-"DrugFoodInteraction.SaveSuccess" = "Saved successfully";
-"DrugFoodInteraction.SaveError" = "Save failed";
-"DrugFoodInteraction.EmptyFields" = "Please enter both drug and food names.";
-"DrugFoodInteraction.SystemPersona" = "You are a pharmacology expert. Analyze drug-food interactions and explain potential side effects, interaction mechanisms, and recommendations in detail. Respond in Turkish.";
-"DrugFoodInteraction.SystemFormat" = "Provide clear and understandable explanation in Turkish. Avoid JSON. Specify interaction level (low/medium/high) and recommendations.";
-"DrugFoodInteraction.UserPrompt" = "Drug: %@\nFood: %@\n\nUser Information:\n%@";
+// Common
+"Error" = "Error";
+"Success" = "Success";
+"OK" = "OK";
+"Cancel" = "Cancel";
+"Save" = "Save";
+"Delete" = "Delete";
+"Edit" = "Edit";
+"Done" = "Done";
+"Back" = "Back";
+"Next" = "Next";
+"Previous" = "Previous";
+"Continue" = "Continue";
+"Finish" = "Finish";
+"Close" = "Close";
+"Retry" = "Retry";
+"Refresh" = "Refresh";

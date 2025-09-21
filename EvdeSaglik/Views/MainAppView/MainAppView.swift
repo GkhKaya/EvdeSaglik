@@ -22,7 +22,6 @@ struct MainAppView: View {
     @State private var showingLabResultRecommendation: Bool = false
     @State private var showingNaturalSolutions: Bool = false
     @State private var showingDrugFoodInteraction: Bool = false
-    @State private var showingRoboflowTest: Bool = false
     
     var body: some View {
         NavigationView {
@@ -75,11 +74,6 @@ struct MainAppView: View {
                             icon: "pills.fill",
                             action: { showingDrugFoodInteraction = true }
                         )
-                        MainFeatureCard(
-                            title: NSLocalizedString("MainApp.Card.SkinProblems", comment: "Skin problems"),
-                            icon: "face.dashed",
-                            action: { showingRoboflowTest = true }
-                        )
                     }
                     .padding(.horizontal, ResponsivePadding.large)
                 }
@@ -121,9 +115,6 @@ struct MainAppView: View {
                     firestoreManager: firestoreManager,
                     authManager: authManager
                 )
-            }
-            .sheet(isPresented: $showingRoboflowTest) {
-                RoboflowTestView()
             }
             // Present ChatbotView as a fullScreenCover with animation
             .fullScreenCover(isPresented: $showingChatbot, onDismiss: {

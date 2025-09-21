@@ -31,7 +31,7 @@ final class InteractiveIntroductionViewModel: ObservableObject {
     @Published var selectedNutritionHabits: String = ""
     
     // MARK: - Constants
-    let totalSteps = 5
+    let totalSteps = 6
     
     init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager, isFromProfile: Bool = false) {
         self.firestoreManager = firestoreManager
@@ -85,10 +85,12 @@ final class InteractiveIntroductionViewModel: ObservableObject {
         case 2:
             return !userModel.fullName.isEmpty && !selectedGender.isEmpty && !selectedAge.isEmpty
         case 3:
-            return true // Optional selections
+            return true // Welcome step - always can proceed
         case 4:
-            return !selectedSleepPattern.isEmpty && !selectedPhysicalActivity.isEmpty && !selectedNutritionHabits.isEmpty
+            return true // Optional selections
         case 5:
+            return !selectedSleepPattern.isEmpty && !selectedPhysicalActivity.isEmpty && !selectedNutritionHabits.isEmpty
+        case 6:
             return true // Summary step
         default:
             return false

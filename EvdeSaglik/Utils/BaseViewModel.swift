@@ -208,4 +208,104 @@ extension BaseViewModel {
             self.errorMessage = nil
         }
     }
+    
+    // MARK: - Standardized Error Handling
+    
+    /// Handles validation errors in a standardized way
+    /// - Parameter validationError: The validation error to handle
+    func handleValidationError(_ validationError: ValidationError) {
+        DispatchQueue.main.async {
+            self.isLoading = false
+            self.errorMessage = validationError.localizedDescription
+        }
+    }
+    
+    /// Validates and handles common form fields
+    /// - Parameters:
+    ///   - email: Email to validate
+    ///   - password: Password to validate
+    ///   - name: Name to validate
+    /// - Returns: True if all validations pass
+    func validateCommonFields(email: String? = nil, password: String? = nil, name: String? = nil) -> Bool {
+        var validations: [() -> ValidationError?] = []
+        
+        if let email = email {
+            validations.append { ValidationHelper.validateEmail(email) }
+        }
+        
+        if let password = password {
+            validations.append { ValidationHelper.validatePassword(password) }
+        }
+        
+        if let name = name {
+            validations.append { ValidationHelper.validateName(name) }
+        }
+        
+        if let error = ValidationHelper.validateMultiple(validations) {
+            handleValidationError(error)
+            return false
+        }
+        
+        return true
+    }
+    
+    /// Validates drug and food names for interaction checking
+    /// - Parameters:
+    ///   - drugName: Drug name to validate
+    ///   - foodName: Food name to validate
+    /// - Returns: True if both validations pass
+    func validateDrugFoodNames(drugName: String, foodName: String) -> Bool {
+        if let error = ValidationHelper.validateDrugFoodName(drugName, type: "Drug") {
+            handleValidationError(error)
+            return false
+        }
+        
+        if let error = ValidationHelper.validateDrugFoodName(foodName, type: "Food") {
+            handleValidationError(error)
+            return false
+        }
+        
+        return true
+    }
+    
+    /// Validates login form fields
+    /// - Parameters:
+    ///   - email: Email to validate
+    ///   - password: Password to validate
+    /// - Returns: True if validation passes
+    func validateLoginForm(email: String, password: String) -> Bool {
+        if let error = ValidationHelper.validateLoginForm(email: email, password: password) {
+            handleValidationError(error)
+            return false
+        }
+        return true
+    }
+    
+    /// Validates registration form fields
+    /// - Parameters:
+    ///   - email: Email to validate
+    ///   - password: Password to validate
+    ///   - confirmPassword: Password confirmation to validate
+    ///   - name: Name to validate
+    /// - Returns: True if validation passes
+    func validateRegistrationForm(email: String, password: String, confirmPassword: String, name: String) -> Bool {
+        if let error = ValidationHelper.validateRegistrationForm(email: email, password: password, confirmPassword: confirmPassword, name: name) {
+            handleValidationError(error)
+            return false
+        }
+        return true
+    }
+    
+    /// Validates drug-food interaction form fields
+    /// - Parameters:
+    ///   - drugName: Drug name to validate
+    ///   - foodName: Food name to validate
+    /// - Returns: True if validation passes
+    func validateDrugFoodForm(drugName: String, foodName: String) -> Bool {
+        if let error = ValidationHelper.validateDrugFoodForm(drugName: drugName, foodName: foodName) {
+            handleValidationError(error)
+            return false
+        }
+        return true
+    }
 }

@@ -1,13 +1,11 @@
 import Foundation
 import SwiftUI
 
-final class DrugFoodInteractionViewModel: ObservableObject {
+final class DrugFoodInteractionViewModel: BaseViewModel {
     @Published var drugName = ""
     @Published var foodName = ""
-    @Published var isLoading = false
     @Published var isSaving = false
     @Published var interactionResult = ""
-    @Published var errorMessage: AppError? = nil
     @Published var showSaveAlert = false
     @Published var saveSuccess = false
     
@@ -22,9 +20,9 @@ final class DrugFoodInteractionViewModel: ObservableObject {
     }
     
     func checkInteraction() {
-        guard !drugName.isEmpty && !foodName.isEmpty else {
-            errorMessage = .authError(.loginFailed(NSLocalizedString("DrugFoodInteraction.EmptyFields", comment: "Lütfen hem ilaç hem de gıda adını giriniz.")))
-            return
+        // ✅ YENİ: Standardized validation using ValidationHelper
+        guard validateDrugFoodForm(drugName: drugName, foodName: foodName) else {
+            return // Error already handled by BaseViewModel
         }
         
         isLoading = true
@@ -50,9 +48,9 @@ final class DrugFoodInteractionViewModel: ObservableObject {
                     self.isLoading = false
                 }
             } catch {
+                // ✅ YENİ: Standardized error handling
                 await MainActor.run {
-                    self.errorMessage = error as? AppError ?? .authError(.unknown)
-                    self.isLoading = false
+                    self.handleError(error, context: "DrugFoodInteraction")
                 }
             }
         }
@@ -60,7 +58,8 @@ final class DrugFoodInteractionViewModel: ObservableObject {
     
     func saveToHistory() {
         guard let userId = authManager.currentUser?.uid else {
-            errorMessage = .authError(.unknown)
+            // ✅ YENİ: Use standardized error handling
+            handleError(AppError.businessLogicError(.userNotFound), context: "DrugFoodInteraction.Save")
             return
         }
         
@@ -75,13 +74,19 @@ final class DrugFoodInteractionViewModel: ObservableObject {
             userSummary: userSummary
         )
         
-        firestoreManager.addDocument(to: "drugFoodInteractions", object: interactionModel) { error in
-            DispatchQueue.main.async {
-                self.isSaving = false
-                if let error = error {
-                    self.errorMessage = error
-                } else {
+        // ✅ YENİ: Use async/await instead of completion handler
+        Task {
+            do {
+                try await firestoreManager.addDocument(to: "drugFoodInteractions", object: interactionModel)
+                await MainActor.run {
+                    self.isSaving = false
                     self.saveSuccess = true
+                    self.handleSuccess(NSLocalizedString("DrugFoodInteraction.SaveSuccess", comment: "Successfully saved to history"))
+                }
+            } catch {
+                await MainActor.run {
+                    self.isSaving = false
+                    self.handleError(error, context: "DrugFoodInteraction.Save")
                 }
             }
         }
@@ -91,7 +96,7 @@ final class DrugFoodInteractionViewModel: ObservableObject {
         drugName = ""
         foodName = ""
         interactionResult = ""
-        errorMessage = nil
+        clearMessages() // ✅ YENİ: Use BaseViewModel method
         saveSuccess = false
         isSaving = false
     }

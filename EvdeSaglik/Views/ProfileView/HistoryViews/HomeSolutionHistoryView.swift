@@ -2,153 +2,177 @@
 //  HomeSolutionHistoryView.swift
 //  EvdeSaglik
 //
-//  Created by gkhkaya on 17.09.2025.
+//  Created by gkhkaya on 15.09.2025.
 //
 
 import SwiftUI
 
 struct HomeSolutionHistoryView: View {
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var authManager: FirebaseAuthManager
-    @EnvironmentObject var firestoreManager: FirestoreManager
-    @StateObject private var viewModel = HomeSolutionHistoryViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    @StateObject private var viewModel: HomeSolutionHistoryViewModel
+    
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        self._viewModel = StateObject(wrappedValue: HomeSolutionHistoryViewModel(
+            firestoreManager: firestoreManager,
+            authManager: authManager
+        ))
+    }
     
     var body: some View {
         NavigationView {
-            Group {
+            VStack {
                 if viewModel.isLoading {
-                    ProgressView(NSLocalizedString("Common.Loading", comment: ""))
+                    ProgressView(NSLocalizedString("Loading.Loading", comment: "Loading"))
+                        .progressViewStyle(CircularProgressViewStyle())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if viewModel.solutions.isEmpty {
-                    VStack(spacing: ResponsivePadding.large) {
-                        Image(systemName: "house")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.secondary)
-                        
-                        Text(NSLocalizedString("HomeHistory.Empty.Title", comment: ""))
-                            .font(.title2Responsive)
-                            .fontWeight(.semibold)
-                        
-                        Text(NSLocalizedString("HomeHistory.Empty.Description", comment: ""))
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding(ResponsivePadding.large)
+                    EmptyStateView(
+                        icon: "house",
+                        title: NSLocalizedString("HomeHistory.Empty.Title", comment: "No home solutions yet"),
+                        description: NSLocalizedString("HomeHistory.Empty.Description", comment: "Your home solutions will appear here")
+                    )
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: ResponsivePadding.medium) {
-                            ForEach(viewModel.solutions) { solution in
-                                HomeSolutionHistoryCard(solution: solution)
+                        LazyVStack(spacing: 16) {
+                            ForEach(viewModel.solutions, id: \.id) { solution in
+                                HomeSolutionCard(solution: solution)
                             }
                         }
-                        .padding(ResponsivePadding.large)
+                        .padding()
                     }
                 }
             }
-            .navigationTitle(NSLocalizedString("HomeHistory.Title", comment: ""))
+            .navigationTitle(NSLocalizedString("HomeHistory.Title", comment: "Home Solutions"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.bodyResponsive)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(NSLocalizedString("Common.Close", comment: "Close")) {
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
-            .onAppear {
-                viewModel.loadSolutions(authManager: authManager, firestoreManager: firestoreManager)
+        }
+        .onAppear {
+            Task {
+                await viewModel.loadSolutions()
             }
         }
     }
 }
 
-struct HomeSolutionHistoryCard: View {
-    let solution: HomeSolutionModel
+// MARK: - Home Solution Card
+struct HomeSolutionCard: View {
+    let solution: HomeSolutionHistory
     
     var body: some View {
-        VStack(alignment: .leading, spacing: ResponsivePadding.medium) {
-            // Header with date
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(NSLocalizedString("HomeHistory.Card.Date", comment: ""))
-                    .font(.captionResponsive)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(NSLocalizedString("HomeHistory.Card.Date", comment: "Date:"))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(solution.createdAt, style: .date)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
                 
                 Spacer()
                 
-                Text(solution.createdAt, style: .date)
-                    .font(.captionResponsive)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(NSLocalizedString("HomeHistory.Card.Time", comment: "Time:"))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(solution.createdAt, style: .time)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
             }
             
-            // Symptom
-            VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                Text(NSLocalizedString("HomeHistory.Card.Symptom", comment: ""))
-                    .font(.subheadlineResponsive)
-                    .fontWeight(.semibold)
-                
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("HomeHistory.Card.Problem", comment: "Problem:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 Text(solution.symptom)
-                    .font(.bodyResponsive)
-                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .multilineTextAlignment(.leading)
             }
             
-            // Solutions
-            VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                Text(NSLocalizedString("HomeHistory.Card.Solutions", comment: ""))
-                    .font(.subheadlineResponsive)
-                    .fontWeight(.semibold)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("HomeHistory.Card.Solutions", comment: "Home Solutions:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 
                 ForEach(solution.solutions, id: \.title) { solutionItem in
-                    VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                        Text(solutionItem.title)
-                            .font(.bodyResponsive)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.green)
-                        
-                        Text(solutionItem.description)
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.secondary)
+                    HStack(alignment: .top) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundColor(.green)
+                            .font(.caption)
+                            .padding(.top, 2)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(solutionItem.title)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                            Text(solutionItem.description)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                     }
-                    .padding(.vertical, ResponsivePadding.small)
-                    .padding(.horizontal, ResponsivePadding.medium)
-                    .background(
-                        RoundedRectangle(cornerRadius: ResponsiveRadius.small)
-                            .fill(Color(.systemGray6))
-                    )
                 }
             }
         }
-        .padding(ResponsivePadding.medium)
-        .background(
-            RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color(.systemGray).opacity(0.1), radius: 4, x: 0, y: 2)
-        )
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
 
-final class HomeSolutionHistoryViewModel: ObservableObject {
-    @Published var solutions: [HomeSolutionModel] = []
+// MARK: - View Model
+class HomeSolutionHistoryViewModel: ObservableObject {
+    @Published var solutions: [HomeSolutionHistory] = []
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     
-    func loadSolutions(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager) {
-        guard let userId = authManager.currentUser?.uid else { return }
-        
+    private let firestoreManager: FirestoreManager
+    private let authManager: FirebaseAuthManager
+    
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        self.firestoreManager = firestoreManager
+        self.authManager = authManager
+    }
+    
+    @MainActor
+    func loadSolutions() async {
         isLoading = true
         
-        firestoreManager.queryDocuments(collection: "homeSolutions", field: "userId", isEqualTo: userId) { [weak self] (result: Result<[HomeSolutionModel], AppError>) in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                
-                switch result {
-                case .success(let solutions):
-                    self?.solutions = solutions.sorted { $0.createdAt > $1.createdAt }
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        guard let userId = authManager.currentUser?.uid else {
+            isLoading = false
+            return
         }
+        
+        do {
+            solutions = try await firestoreManager.queryDocuments(
+                from: "homeSolutions", 
+                where: "userId", 
+                isEqualTo: userId, 
+                as: HomeSolutionHistory.self
+            )
+        } catch {
+            print("Error loading home solution history: \(error)")
+        }
+        
+        isLoading = false
     }
 }
 
+// MARK: - Data Model
+typealias HomeSolutionHistory = HomeSolutionModel
+
+// MARK: - Preview
+#Preview {
+    HomeSolutionHistoryView(
+        firestoreManager: FirestoreManager(),
+        authManager: FirebaseAuthManager()
+    )
+}

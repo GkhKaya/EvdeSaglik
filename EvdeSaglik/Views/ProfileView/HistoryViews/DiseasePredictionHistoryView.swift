@@ -2,155 +2,200 @@
 //  DiseasePredictionHistoryView.swift
 //  EvdeSaglik
 //
-//  Created by gkhkaya on 17.09.2025.
+//  Created by gkhkaya on 15.09.2025.
 //
 
 import SwiftUI
 
 struct DiseasePredictionHistoryView: View {
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var authManager: FirebaseAuthManager
-    @EnvironmentObject var firestoreManager: FirestoreManager
-    @StateObject private var viewModel = DiseasePredictionHistoryViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    @StateObject private var viewModel: DiseasePredictionHistoryViewModel
+    
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        self._viewModel = StateObject(wrappedValue: DiseasePredictionHistoryViewModel(
+            firestoreManager: firestoreManager,
+            authManager: authManager
+        ))
+    }
     
     var body: some View {
         NavigationView {
-            Group {
+            VStack {
                 if viewModel.isLoading {
-                    ProgressView(NSLocalizedString("Common.Loading", comment: ""))
+                    ProgressView(NSLocalizedString("Loading.Loading", comment: "Loading"))
+                        .progressViewStyle(CircularProgressViewStyle())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if viewModel.predictions.isEmpty {
-                    VStack(spacing: ResponsivePadding.large) {
-                        Image(systemName: "cross.case")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.secondary)
-                        
-                        Text(NSLocalizedString("DiseaseHistory.Empty.Title", comment: ""))
-                            .font(.title2Responsive)
-                            .fontWeight(.semibold)
-                        
-                        Text(NSLocalizedString("DiseaseHistory.Empty.Description", comment: ""))
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding(ResponsivePadding.large)
+                    EmptyStateView(
+                        icon: "cross.case",
+                        title: NSLocalizedString("DiseaseHistory.Empty.Title", comment: "No disease predictions yet"),
+                        description: NSLocalizedString("DiseaseHistory.Empty.Description", comment: "Your disease predictions will appear here")
+                    )
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: ResponsivePadding.medium) {
-                            ForEach(viewModel.predictions) { prediction in
-                                DiseasePredictionHistoryCard(prediction: prediction)
+                        LazyVStack(spacing: 16) {
+                            ForEach(viewModel.predictions, id: \.id) { prediction in
+                                DiseasePredictionCard(prediction: prediction)
                             }
                         }
-                        .padding(ResponsivePadding.large)
+                        .padding()
                     }
                 }
             }
-            .navigationTitle(NSLocalizedString("DiseaseHistory.Title", comment: ""))
+            .navigationTitle(NSLocalizedString("DiseaseHistory.Title", comment: "Disease Predictions"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.bodyResponsive)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(NSLocalizedString("Common.Close", comment: "Close")) {
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
-            .onAppear {
-                viewModel.loadPredictions(authManager: authManager, firestoreManager: firestoreManager)
+        }
+        .onAppear {
+            Task {
+                await viewModel.loadPredictions()
             }
         }
     }
 }
 
-struct DiseasePredictionHistoryCard: View {
-    let prediction: DiseasePredictionModel
+// MARK: - Disease Prediction Card
+struct DiseasePredictionCard: View {
+    let prediction: DiseasePredictionHistory
     
     var body: some View {
-        VStack(alignment: .leading, spacing: ResponsivePadding.medium) {
-            // Header with date
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(NSLocalizedString("DiseaseHistory.Card.Date", comment: ""))
-                    .font(.captionResponsive)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(NSLocalizedString("DiseaseHistory.Card.Date", comment: "Date:"))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(prediction.createdAt, style: .date)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
                 
                 Spacer()
                 
-                Text(prediction.createdAt, style: .date)
-                    .font(.captionResponsive)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(NSLocalizedString("DiseaseHistory.Card.Time", comment: "Time:"))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(prediction.createdAt, style: .time)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
             }
             
-            // Symptoms
-            VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                Text(NSLocalizedString("DiseaseHistory.Card.Symptoms", comment: ""))
-                    .font(.subheadlineResponsive)
-                    .fontWeight(.semibold)
-                
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("DiseaseHistory.Card.Symptoms", comment: "Symptoms:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 Text(prediction.symptoms.joined(separator: ", "))
-                    .font(.bodyResponsive)
-                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .multilineTextAlignment(.leading)
             }
             
-            // Disease predictions
-            VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                Text(NSLocalizedString("DiseaseHistory.Card.Predictions", comment: ""))
-                    .font(.subheadlineResponsive)
-                    .fontWeight(.semibold)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("DiseaseHistory.Card.Predictions", comment: "Predicted Diseases:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 
-                ForEach(prediction.possibleDiseases, id: \.name) { disease in
+                ForEach(Array(prediction.possibleDiseases.enumerated()), id: \.offset) { index, disease in
                     HStack {
-                        Text(disease.name)
-                            .font(.bodyResponsive)
-                            .fontWeight(.medium)
+                        ZStack {
+                            Circle()
+                                .fill(confidenceColor(disease.probability))
+                                .frame(width: 20, height: 20)
+                            Text("\(index + 1)")
+                                .font(.caption)
+                                .fontWeight(.bold)
+                                .foregroundColor(.white)
+                        }
+                        
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(disease.name)
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                            Text("\(Int(disease.probability * 100))% confidence")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
                         
                         Spacer()
-                        
-                        Text("\(Int(disease.probability * 100))%")
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.orange)
-                            .fontWeight(.semibold)
                     }
-                    .padding(.vertical, ResponsivePadding.small)
-                    .padding(.horizontal, ResponsivePadding.medium)
-                    .background(
-                        RoundedRectangle(cornerRadius: ResponsiveRadius.small)
-                            .fill(Color(.systemGray6))
-                    )
+                    .padding(.vertical, 2)
                 }
             }
         }
-        .padding(ResponsivePadding.medium)
-        .background(
-            RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color(.systemGray).opacity(0.1), radius: 4, x: 0, y: 2)
-        )
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
+    }
+    
+    private func confidenceColor(_ probability: Double) -> Color {
+        let percentage = probability * 100
+        switch percentage {
+        case 80...100:
+            return .red
+        case 60..<80:
+            return .orange
+        case 40..<60:
+            return .yellow
+        default:
+            return .gray
+        }
     }
 }
 
-final class DiseasePredictionHistoryViewModel: ObservableObject {
-    @Published var predictions: [DiseasePredictionModel] = []
+// MARK: - View Model
+class DiseasePredictionHistoryViewModel: ObservableObject {
+    @Published var predictions: [DiseasePredictionHistory] = []
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     
-    func loadPredictions(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager) {
-        guard let userId = authManager.currentUser?.uid else { return }
-        
+    private let firestoreManager: FirestoreManager
+    private let authManager: FirebaseAuthManager
+    
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        self.firestoreManager = firestoreManager
+        self.authManager = authManager
+    }
+    
+    @MainActor
+    func loadPredictions() async {
         isLoading = true
         
-        firestoreManager.queryDocuments(collection: "diseasePredictions", field: "userId", isEqualTo: userId) { [weak self] (result: Result<[DiseasePredictionModel], AppError>) in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                
-                switch result {
-                case .success(let predictions):
-                    self?.predictions = predictions.sorted { $0.createdAt > $1.createdAt }
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        guard let userId = authManager.currentUser?.uid else {
+            isLoading = false
+            return
         }
+        
+        do {
+            predictions = try await firestoreManager.queryDocuments(
+                from: "diseasePredictions", 
+                where: "userId", 
+                isEqualTo: userId, 
+                as: DiseasePredictionHistory.self
+            )
+        } catch {
+            print("Error loading disease prediction history: \(error)")
+        }
+        
+        isLoading = false
     }
 }
 
+// MARK: - Data Model
+typealias DiseasePredictionHistory = DiseasePredictionModel
+
+// MARK: - Preview
+#Preview {
+    DiseasePredictionHistoryView(
+        firestoreManager: FirestoreManager(),
+        authManager: FirebaseAuthManager()
+    )
+}

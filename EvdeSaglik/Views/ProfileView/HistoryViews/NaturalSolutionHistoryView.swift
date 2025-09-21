@@ -2,146 +2,170 @@
 //  NaturalSolutionHistoryView.swift
 //  EvdeSaglik
 //
-//  Created by gkhkaya on 17.09.2025.
+//  Created by gkhkaya on 15.09.2025.
 //
 
 import SwiftUI
 
 struct NaturalSolutionHistoryView: View {
-    @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var authManager: FirebaseAuthManager
-    @EnvironmentObject var firestoreManager: FirestoreManager
-    @StateObject private var viewModel = NaturalSolutionHistoryViewModel()
+    @Environment(\.presentationMode) var presentationMode
+    @StateObject private var viewModel: NaturalSolutionHistoryViewModel
+    
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        self._viewModel = StateObject(wrappedValue: NaturalSolutionHistoryViewModel(
+            firestoreManager: firestoreManager,
+            authManager: authManager
+        ))
+    }
     
     var body: some View {
         NavigationView {
-            Group {
+            VStack {
                 if viewModel.isLoading {
-                    ProgressView(NSLocalizedString("Common.Loading", comment: ""))
+                    ProgressView(NSLocalizedString("Loading.Loading", comment: "Loading"))
+                        .progressViewStyle(CircularProgressViewStyle())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else if viewModel.solutions.isEmpty {
-                    VStack(spacing: ResponsivePadding.large) {
-                        Image(systemName: "leaf.fill")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.secondary)
-                        
-                        Text(NSLocalizedString("NaturalHistory.Empty.Title", comment: ""))
-                            .font(.title2Responsive)
-                            .fontWeight(.semibold)
-                        
-                        Text(NSLocalizedString("NaturalHistory.Empty.Description", comment: ""))
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .padding(ResponsivePadding.large)
+                    EmptyStateView(
+                        icon: "leaf.fill",
+                        title: NSLocalizedString("NaturalHistory.Empty.Title", comment: "No natural solutions yet"),
+                        description: NSLocalizedString("NaturalHistory.Empty.Description", comment: "Your natural remedy suggestions will appear here")
+                    )
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: ResponsivePadding.medium) {
-                            ForEach(viewModel.solutions) { solution in
-                                NaturalSolutionHistoryCard(solution: solution)
+                        LazyVStack(spacing: 16) {
+                            ForEach(viewModel.solutions, id: \.id) { solution in
+                                NaturalSolutionCard(solution: solution)
                             }
                         }
-                        .padding(ResponsivePadding.large)
+                        .padding()
                     }
                 }
             }
-            .navigationTitle(NSLocalizedString("NaturalHistory.Title", comment: ""))
+            .navigationTitle(NSLocalizedString("NaturalHistory.Title", comment: "Natural Solutions"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.bodyResponsive)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(NSLocalizedString("Common.Close", comment: "Close")) {
+                        presentationMode.wrappedValue.dismiss()
                     }
                 }
             }
-            .onAppear {
-                viewModel.loadSolutions(authManager: authManager, firestoreManager: firestoreManager)
+        }
+        .onAppear {
+            Task {
+                await viewModel.loadSolutions()
             }
         }
     }
 }
 
-struct NaturalSolutionHistoryCard: View {
-    let solution: NaturalSolitionsModel
+// MARK: - Natural Solution Card
+struct NaturalSolutionCard: View {
+    let solution: NaturalSolutionHistory
     
     var body: some View {
-        VStack(alignment: .leading, spacing: ResponsivePadding.medium) {
-            // Header with date
+        VStack(alignment: .leading, spacing: 12) {
             HStack {
-                Text(NSLocalizedString("NaturalHistory.Card.Date", comment: ""))
-                    .font(.captionResponsive)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(NSLocalizedString("NaturalHistory.Card.Date", comment: "Date:"))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(solution.createdAt, style: .date)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
                 
                 Spacer()
                 
-                Text(solution.createdAt, style: .date)
-                    .font(.captionResponsive)
-                    .foregroundStyle(.secondary)
+                VStack(alignment: .trailing, spacing: 4) {
+                    Text(NSLocalizedString("NaturalHistory.Card.Time", comment: "Time:"))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(solution.createdAt, style: .time)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
             }
             
-            // Question
-            VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                Text(NSLocalizedString("NaturalHistory.Card.Question", comment: ""))
-                    .font(.subheadlineResponsive)
-                    .fontWeight(.semibold)
-                
+            Divider()
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("NaturalHistory.Card.Condition", comment: "Condition:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 Text(solution.question)
-                    .font(.bodyResponsive)
-                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
             }
             
-            // Remedies
-            VStack(alignment: .leading, spacing: ResponsivePadding.small) {
-                Text(NSLocalizedString("NaturalHistory.Card.Remedies", comment: ""))
-                    .font(.subheadlineResponsive)
-                    .fontWeight(.semibold)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("NaturalHistory.Card.Solutions", comment: "Natural Solutions:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 
                 ForEach(solution.remedies, id: \.self) { remedy in
-                    Text("• \(remedy)")
-                        .font(.bodyResponsive)
-                        .foregroundStyle(.secondary)
-                        .padding(.vertical, ResponsivePadding.small)
-                        .padding(.horizontal, ResponsivePadding.medium)
-                        .background(
-                            RoundedRectangle(cornerRadius: ResponsiveRadius.small)
-                                .fill(Color(.systemGray6))
-                        )
+                    HStack {
+                        Image(systemName: "leaf.fill")
+                            .foregroundColor(.green)
+                            .font(.caption)
+                        Text(remedy)
+                            .font(.subheadline)
+                    }
                 }
             }
         }
-        .padding(ResponsivePadding.medium)
-        .background(
-            RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
-                .fill(Color(.systemBackground))
-                .shadow(color: Color(.systemGray).opacity(0.1), radius: 4, x: 0, y: 2)
-        )
+        .padding()
+        .background(Color(.systemBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }
 
-final class NaturalSolutionHistoryViewModel: ObservableObject {
-    @Published var solutions: [NaturalSolitionsModel] = []
+// MARK: - View Model
+class NaturalSolutionHistoryViewModel: ObservableObject {
+    @Published var solutions: [NaturalSolutionHistory] = []
     @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
     
-    func loadSolutions(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager) {
-        guard let userId = authManager.currentUser?.uid else { return }
-        
+    private let firestoreManager: FirestoreManager
+    private let authManager: FirebaseAuthManager
+    
+    init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        self.firestoreManager = firestoreManager
+        self.authManager = authManager
+    }
+    
+    @MainActor
+    func loadSolutions() async {
         isLoading = true
         
-        firestoreManager.queryDocuments(collection: "naturalSolutions", field: "userId", isEqualTo: userId) { [weak self] (result: Result<[NaturalSolitionsModel], AppError>) in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                
-                switch result {
-                case .success(let solutions):
-                    self?.solutions = solutions.sorted { $0.createdAt > $1.createdAt }
-                case .failure(let error):
-                    self?.errorMessage = error.localizedDescription
-                }
-            }
+        guard let userId = authManager.currentUser?.uid else {
+            isLoading = false
+            return
         }
+        
+        do {
+            solutions = try await firestoreManager.queryDocuments(
+                from: "naturalSolutions", 
+                where: "userId", 
+                isEqualTo: userId, 
+                as: NaturalSolutionHistory.self
+            )
+        } catch {
+            print("Error loading natural solution history: \(error)")
+        }
+        
+        isLoading = false
     }
 }
 
+// MARK: - Data Model
+typealias NaturalSolutionHistory = NaturalSolitionsModel
+
+// MARK: - Preview
+#Preview {
+    NaturalSolutionHistoryView(
+        firestoreManager: FirestoreManager(),
+        authManager: FirebaseAuthManager()
+    )
+}

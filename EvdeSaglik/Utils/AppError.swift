@@ -10,7 +10,10 @@ import Foundation
 enum AppError: LocalizedError {
     case authError(AuthError)
     case firestoreError(FirestoreError)
-    case deepseekError(DeepseekError) // New case for Deepseek API errors
+    case deepseekError(DeepseekError)
+    case validationError(ValidationError)
+    case networkError(NetworkError)
+    case businessLogicError(BusinessLogicError)
     // case aiBackendError(AIBackendError) // Uncomment if AI/Backend errors are needed
 
     var errorDescription: String? {
@@ -20,6 +23,12 @@ enum AppError: LocalizedError {
         case .firestoreError(let error):
             return error.errorDescription
         case .deepseekError(let error):
+            return error.errorDescription
+        case .validationError(let error):
+            return error.errorDescription
+        case .networkError(let error):
+            return error.errorDescription
+        case .businessLogicError(let error):
             return error.errorDescription
         // case .aiBackendError(let error):
         //     return error.errorDescription
@@ -104,3 +113,83 @@ enum DeepseekError: LocalizedError {
     }
 }
 
+/// Validation errors for form inputs and data validation
+enum ValidationError: LocalizedError {
+    case emptyField(String)
+    case invalidFormat(String)
+    case passwordTooWeak
+    case emailInvalid
+    case ageInvalid
+    case nameTooShort
+    case requiredFieldMissing(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .emptyField(let field):
+            return NSLocalizedString("Validation.Error.EmptyField", comment: "\(field) field cannot be empty")
+        case .invalidFormat(let field):
+            return NSLocalizedString("Validation.Error.InvalidFormat", comment: "Invalid \(field) format")
+        case .passwordTooWeak:
+            return NSLocalizedString("Validation.Error.WeakPassword", comment: "Password must be at least 6 characters")
+        case .emailInvalid:
+            return NSLocalizedString("Validation.Error.InvalidEmail", comment: "Please enter a valid email address")
+        case .ageInvalid:
+            return NSLocalizedString("Validation.Error.InvalidAge", comment: "Please enter a valid age")
+        case .nameTooShort:
+            return NSLocalizedString("Validation.Error.NameTooShort", comment: "Name must be at least 2 characters")
+        case .requiredFieldMissing(let field):
+            return NSLocalizedString("Validation.Error.RequiredFieldMissing", comment: "\(field) is required")
+        }
+    }
+}
+
+/// Network-related errors
+enum NetworkError: LocalizedError {
+    case noInternetConnection
+    case timeout
+    case serverUnavailable
+    case invalidResponse
+    case requestFailed(Int) // HTTP status code
+    
+    var errorDescription: String? {
+        switch self {
+        case .noInternetConnection:
+            return NSLocalizedString("Network.Error.NoConnection", comment: "No internet connection")
+        case .timeout:
+            return NSLocalizedString("Network.Error.Timeout", comment: "Request timed out")
+        case .serverUnavailable:
+            return NSLocalizedString("Network.Error.ServerUnavailable", comment: "Server is currently unavailable")
+        case .invalidResponse:
+            return NSLocalizedString("Network.Error.InvalidResponse", comment: "Invalid response from server")
+        case .requestFailed(let code):
+            return NSLocalizedString("Network.Error.RequestFailed", comment: "Request failed with status code: \(code)")
+        }
+    }
+}
+
+/// Business logic errors
+enum BusinessLogicError: LocalizedError {
+    case userNotFound
+    case insufficientPermissions
+    case operationNotAllowed
+    case dataCorrupted
+    case limitExceeded(String)
+    case duplicateEntry(String)
+    
+    var errorDescription: String? {
+        switch self {
+        case .userNotFound:
+            return NSLocalizedString("Business.Error.UserNotFound", comment: "User not found")
+        case .insufficientPermissions:
+            return NSLocalizedString("Business.Error.InsufficientPermissions", comment: "Insufficient permissions")
+        case .operationNotAllowed:
+            return NSLocalizedString("Business.Error.OperationNotAllowed", comment: "Operation not allowed")
+        case .dataCorrupted:
+            return NSLocalizedString("Business.Error.DataCorrupted", comment: "Data is corrupted")
+        case .limitExceeded(let limit):
+            return NSLocalizedString("Business.Error.LimitExceeded", comment: "Limit exceeded: \(limit)")
+        case .duplicateEntry(let entry):
+            return NSLocalizedString("Business.Error.DuplicateEntry", comment: "Duplicate entry: \(entry)")
+        }
+    }
+}

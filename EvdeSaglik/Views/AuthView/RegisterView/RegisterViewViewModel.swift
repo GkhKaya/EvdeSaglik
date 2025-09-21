@@ -7,21 +7,16 @@
 
 import Foundation
 import Combine
-import SwiftUI // Added for Color
-import EvdeSaglik // Import the main module to access PasswordStrength
+import SwiftUI
 
-// Removed PasswordStrength enum - moved to its own file
-
-final class RegisterViewViewModel: ObservableObject {
+final class RegisterViewViewModel: BaseViewModel {
     // MARK: - Published Properties
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String = ""
     @Published var shouldNavigateToLogin: Bool = false
-    @Published var didRegisterSuccessfully: Bool = false // New property
-    @Published var passwordStrength: PasswordStrength = .none // Password strength indicator
+    @Published var didRegisterSuccessfully: Bool = false
+    @Published var passwordStrength: PasswordStrength = .none
     
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
@@ -83,29 +78,36 @@ final class RegisterViewViewModel: ObservableObject {
     }
     
     // MARK: - Initialization
-    init() {
+    override init() {
+        super.init()
         setupValidation()
     }
     
     // MARK: - Public Methods
     func register(authManager: FirebaseAuthManager) {
+        // ✅ YENİ: Use standardized validation
+        guard validateRegistrationForm(email: email, password: password, confirmPassword: confirmPassword, name: "") else {
+            return // Error already handled by BaseViewModel
+        }
+        
         guard isFormValid else {
-            errorMessage = NSLocalizedString("Register.Error.InvalidForm", comment: "Invalid form error")
+            handleValidationError(.invalidFormat("Registration form"))
             return
         }
         
         isLoading = true
-        errorMessage = ""
+        clearMessages()
         
-        authManager.register(email: email, password: password) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                
-                if let error = error {
-                    self?.handleAuthError(error)
-                } else {
-                    // If error is nil, registration was successful
-                    self?.didRegisterSuccessfully = true // Set to true on success
+        Task {
+            do {
+                try await authManager.register(email: email, password: password)
+                await MainActor.run {
+                    self.didRegisterSuccessfully = true
+                    self.handleSuccess(NSLocalizedString("Register.Success", comment: "Successfully registered"))
+                }
+            } catch {
+                await MainActor.run {
+                    self.handleError(error, context: "Registration")
                 }
             }
         }
@@ -120,7 +122,7 @@ final class RegisterViewViewModel: ObservableObject {
         // Clear error message when user starts typing
         Publishers.CombineLatest3($email, $password, $confirmPassword)
             .sink { [weak self] _, password, _ in
-                self?.errorMessage = ""
+                self?.clearMessages()
                 self?.calculatePasswordStrength(password: password)
             }
             .store(in: &cancellables)
@@ -142,29 +144,6 @@ final class RegisterViewViewModel: ObservableObject {
         case 4: self.passwordStrength = .strong
         case 5: self.passwordStrength = .veryStrong
         default: self.passwordStrength = .none
-        }
-    }
-    
-    private func handleAuthError(_ error: AppError) {
-        switch error {
-        case .authError(let authError):
-            switch authError {
-            case .registrationFailed(let message):
-                // Check for specific Firebase error codes in the message
-                if message.contains("email-already-in-use") {
-                    errorMessage = NSLocalizedString("Register.Error.EmailAlreadyInUse", comment: "Email already in use")
-                } else if message.contains("invalid-email") {
-                    errorMessage = NSLocalizedString("Register.Error.InvalidEmail", comment: "Invalid email")
-                } else if message.contains("weak-password") {
-                    errorMessage = NSLocalizedString("Register.Error.WeakPassword", comment: "Weak password")
-                } else {
-                    errorMessage = NSLocalizedString("Register.Error.Generic", comment: "Generic registration error")
-                }
-            default:
-                errorMessage = NSLocalizedString("Register.Error.Generic", comment: "Generic registration error")
-            }
-        default:
-            errorMessage = NSLocalizedString("Register.Error.Generic", comment: "Generic registration error")
         }
     }
 }

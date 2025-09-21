@@ -13,6 +13,14 @@ struct ProfileView: View {
     @EnvironmentObject var firestoreManager: FirestoreManager
     @StateObject private var viewModel: ProfileViewModel
     
+    // History view states
+    @State private var showingDepartmentSuggestionHistory = false
+    @State private var showingDiseasePredictionHistory = false
+    @State private var showingHomeSolutionHistory = false
+    @State private var showingLabResultHistory = false
+    @State private var showingNaturalSolutionHistory = false
+    @State private var showingDrugFoodInteractionHistory = false
+    
     init(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager) {
         self._viewModel = StateObject(wrappedValue: ProfileViewModel(authManager: authManager, firestoreManager: firestoreManager))
     }
@@ -22,82 +30,26 @@ struct ProfileView: View {
             ScrollView {
                 VStack(spacing: ResponsivePadding.large) {
                     // Header
-                    VStack(spacing: ResponsivePadding.medium) {
-                        // Profile Avatar
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 80))
-                            .foregroundStyle(.blue)
-                        
-                        // User Info
-                        VStack(spacing: ResponsivePadding.small) {
-                            Text(viewModel.currentUserName.isEmpty ? NSLocalizedString("Profile.UserName", comment: "") : viewModel.currentUserName)
-                                .font(.title2Responsive)
-                                .fontWeight(.semibold)
-                            
-                            Text(viewModel.currentUserEmail)
-                                .font(.subheadlineResponsive)
-                                .foregroundStyle(.secondary)
-                        }
-                    }
-                    .padding(.top, ResponsivePadding.large)
-                    
-                    // Account Information Section
-                    ProfileSection(
-                        title: NSLocalizedString("Profile.Section.AccountInfo", comment: ""),
-                        items: [
-                            ProfileItem(
-                                title: NSLocalizedString("Profile.Item.Email", comment: ""),
-                                value: viewModel.currentUserEmail,
-                                icon: "envelope",
-                                action: { viewModel.showingChangeEmail = true }
-                            ),
-                            ProfileItem(
-                                title: NSLocalizedString("Profile.Item.Password", comment: ""),
-                                value: NSLocalizedString("Profile.Item.PasswordValue", comment: ""),
-                                icon: "key",
-                                action: { viewModel.showingChangePassword = true }
-                            )
-                        ]
-                    )
-                    
-                    // Personalization Section
-                    ProfileSection(
-                        title: NSLocalizedString("Profile.Section.Personalization", comment: ""),
-                        items: [
-                            ProfileItem(
-                                title: NSLocalizedString("Profile.Item.Personalize", comment: ""),
-                                value: NSLocalizedString("Profile.Item.PersonalizeValue", comment: ""),
-                                icon: "person.text.rectangle",
-                                action: { viewModel.showingPersonalization = true }
-                            )
-                        ]
+                    ProfileHeader(
+                        userName: viewModel.currentUserName,
+                        userEmail: viewModel.currentUserEmail
                     )
                     
                     // Saved Data Sections
-                    SavedDataSections(viewModel: viewModel)
-                    
-                    // Account Settings Section
-                    ProfileSection(
-                        title: NSLocalizedString("Profile.Section.AccountSettings", comment: ""),
-                        items: [
-                            ProfileItem(
-                                title: NSLocalizedString("Profile.Item.ResetData", comment: ""),
-                                value: NSLocalizedString("Profile.Item.ResetDataValue", comment: ""),
-                                icon: "arrow.clockwise",
-                                action: { viewModel.showingResetData = true },
-                                isDestructive: true
-                            ),
-                            ProfileItem(
-                                title: NSLocalizedString("Profile.Item.DeleteAccount", comment: ""),
-                                value: NSLocalizedString("Profile.Item.DeleteAccountValue", comment: ""),
-                                icon: "trash",
-                                action: { viewModel.showingDeleteAccount = true },
-                                isDestructive: true
-                            )
-                        ]
+                    SavedDataSections(
+                        showingDepartmentSuggestionHistory: $showingDepartmentSuggestionHistory,
+                        showingDiseasePredictionHistory: $showingDiseasePredictionHistory,
+                        showingHomeSolutionHistory: $showingHomeSolutionHistory,
+                        showingLabResultHistory: $showingLabResultHistory,
+                        showingNaturalSolutionHistory: $showingNaturalSolutionHistory,
+                        showingDrugFoodInteractionHistory: $showingDrugFoodInteractionHistory
                     )
                     
-                    Spacer(minLength: ResponsivePadding.extraLarge)
+                    // Account Settings Section
+                    AccountSettingsSection(viewModel: viewModel)
+                    
+                    // Danger Zone Section
+                    DangerZoneSection(viewModel: viewModel)
                 }
                 .padding(.horizontal, ResponsivePadding.large)
             }
@@ -107,23 +59,8 @@ struct ProfileView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
-                            .font(.bodyResponsive)
                     }
                 }
-            }
-            .alert(NSLocalizedString("Profile.Alert.Error", comment: ""), isPresented: .constant(viewModel.errorMessage != nil)) {
-                Button(NSLocalizedString("Common.OK", comment: "")) {
-                    viewModel.clearMessages()
-                }
-            } message: {
-                Text(viewModel.errorMessage ?? "")
-            }
-            .alert(NSLocalizedString("Profile.Alert.Success", comment: ""), isPresented: .constant(viewModel.successMessage != nil)) {
-                Button(NSLocalizedString("Common.OK", comment: "")) {
-                    viewModel.clearMessages()
-                }
-            } message: {
-                Text(viewModel.successMessage ?? "")
             }
             .sheet(isPresented: $viewModel.showingPersonalization) {
                 InteractiveIntroductionView(
@@ -132,22 +69,32 @@ struct ProfileView: View {
                 )
             }
             .sheet(isPresented: $viewModel.showingChangeEmail) {
-                ChangeEmailView(viewModel: viewModel)
+                ChangeEmailView(authManager: authManager)
             }
             .sheet(isPresented: $viewModel.showingChangePassword) {
-                ChangePasswordView(viewModel: viewModel)
+                ChangePasswordView(authManager: authManager)
             }
-            .alert(NSLocalizedString("Profile.Alert.ResetData", comment: ""), isPresented: $viewModel.showingResetData) {
-                Button(NSLocalizedString("Profile.Action.Cancel", comment: ""), role: .cancel) { }
-                Button(NSLocalizedString("Profile.Action.Reset", comment: ""), role: .destructive) {
-                    Task { await viewModel.resetUserData() }
+                .sheet(isPresented: $showingDepartmentSuggestionHistory) {
+                    DepartmentSuggestionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
                 }
-            } message: {
-                Text(NSLocalizedString("Profile.Alert.ResetDataMessage", comment: ""))
-            }
+                .sheet(isPresented: $showingDiseasePredictionHistory) {
+                    DiseasePredictionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
+                }
+                .sheet(isPresented: $showingHomeSolutionHistory) {
+                    HomeSolutionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
+                }
+                .sheet(isPresented: $showingLabResultHistory) {
+                    LabResultRecommendationHistoryView(firestoreManager: firestoreManager, authManager: authManager)
+                }
+                .sheet(isPresented: $showingNaturalSolutionHistory) {
+                    NaturalSolutionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
+                }
+                .sheet(isPresented: $showingDrugFoodInteractionHistory) {
+                    DrugFoodInteractionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
+                }
             .alert(NSLocalizedString("Profile.Alert.DeleteAccount", comment: ""), isPresented: $viewModel.showingDeleteAccount) {
-                Button(NSLocalizedString("Profile.Action.Cancel", comment: ""), role: .cancel) { }
-                Button(NSLocalizedString("Profile.Action.Delete", comment: ""), role: .destructive) {
+                Button(NSLocalizedString("Profile.Alert.Cancel", comment: ""), role: .cancel) { }
+                Button(NSLocalizedString("Profile.Alert.Delete", comment: ""), role: .destructive) {
                     Task { await viewModel.deleteAccount() }
                 }
             } message: {
@@ -240,251 +187,35 @@ struct ProfileItemView: View {
 
 // MARK: - Saved Data Sections
 struct SavedDataSections: View {
-    @ObservedObject var viewModel: ProfileViewModel
+    @Binding var showingDepartmentSuggestionHistory: Bool
+    @Binding var showingDiseasePredictionHistory: Bool
+    @Binding var showingHomeSolutionHistory: Bool
+    @Binding var showingLabResultHistory: Bool
+    @Binding var showingNaturalSolutionHistory: Bool
+    @Binding var showingDrugFoodInteractionHistory: Bool
     
     var body: some View {
         VStack(spacing: ResponsivePadding.medium) {
-            // Department Suggestions
-            ProfileSection(
-                title: NSLocalizedString("Profile.Section.DepartmentSuggestions", comment: ""),
-                items: [
-                    ProfileItem(
-                        title: NSLocalizedString("Profile.Item.ViewHistory", comment: ""),
-                        value: NSLocalizedString("Profile.Item.ViewHistoryValue", comment: ""),
-                        icon: "list.bullet",
-                        action: { 
-                            viewModel.selectCategory("departmentSuggestions")
-                            // TODO: Navigate to history 
-                        },
-                        isSelected: viewModel.isCategorySelected("departmentSuggestions")
-                    )
-                ]
+            DepartmentSuggestionsSection(
+                showingDepartmentSuggestionHistory: $showingDepartmentSuggestionHistory
             )
-            
-            // Disease Predictions
-            ProfileSection(
-                title: NSLocalizedString("Profile.Section.DiseasePredictions", comment: ""),
-                items: [
-                    ProfileItem(
-                        title: NSLocalizedString("Profile.Item.ViewHistory", comment: ""),
-                        value: NSLocalizedString("Profile.Item.ViewHistoryValue", comment: ""),
-                        icon: "list.bullet",
-                        action: { 
-                            viewModel.selectCategory("diseasePredictions")
-                            // TODO: Navigate to history 
-                        },
-                        isSelected: viewModel.isCategorySelected("diseasePredictions")
-                    )
-                ]
+            DiseasePredictionsSection(
+                showingDiseasePredictionHistory: $showingDiseasePredictionHistory
             )
-            
-            // Home Solutions
-            ProfileSection(
-                title: NSLocalizedString("Profile.Section.HomeSolutions", comment: ""),
-                items: [
-                    ProfileItem(
-                        title: NSLocalizedString("Profile.Item.ViewHistory", comment: ""),
-                        value: NSLocalizedString("Profile.Item.ViewHistoryValue", comment: ""),
-                        icon: "list.bullet",
-                        action: { 
-                            viewModel.selectCategory("homeSolutions")
-                            // TODO: Navigate to history 
-                        },
-                        isSelected: viewModel.isCategorySelected("homeSolutions")
-                    )
-                ]
+            HomeSolutionsSection(
+                showingHomeSolutionHistory: $showingHomeSolutionHistory
             )
-            
-            // Lab Results
-            ProfileSection(
-                title: NSLocalizedString("Profile.Section.LabResults", comment: ""),
-                items: [
-                    ProfileItem(
-                        title: NSLocalizedString("Profile.Item.ViewHistory", comment: ""),
-                        value: NSLocalizedString("Profile.Item.ViewHistoryValue", comment: ""),
-                        icon: "list.bullet",
-                        action: { 
-                            viewModel.selectCategory("labResults")
-                            // TODO: Navigate to history 
-                        },
-                        isSelected: viewModel.isCategorySelected("labResults")
-                    )
-                ]
+            LabResultsSection(
+                showingLabResultHistory: $showingLabResultHistory
             )
-            
-            // Natural Solutions
-            ProfileSection(
-                title: NSLocalizedString("Profile.Section.NaturalSolutions", comment: ""),
-                items: [
-                    ProfileItem(
-                        title: NSLocalizedString("Profile.Item.ViewHistory", comment: ""),
-                        value: NSLocalizedString("Profile.Item.ViewHistoryValue", comment: ""),
-                        icon: "list.bullet",
-                        action: { 
-                            viewModel.selectCategory("naturalSolutions")
-                            // TODO: Navigate to history 
-                        },
-                        isSelected: viewModel.isCategorySelected("naturalSolutions")
-                    )
-                ]
+            NaturalSolutionsSection(
+                showingNaturalSolutionHistory: $showingNaturalSolutionHistory
+            )
+            DrugFoodInteractionSection(
+                showingDrugFoodInteractionHistory: $showingDrugFoodInteractionHistory
             )
         }
     }
 }
 
-// MARK: - Change Email View
-struct ChangeEmailView: View {
-    @ObservedObject var viewModel: ProfileViewModel
-    @Environment(\.dismiss) private var dismiss
-    @FocusState private var isEmailFocused: Bool
-    
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: ResponsivePadding.large) {
-                    VStack(alignment: .leading, spacing: ResponsivePadding.medium) {
-                        Text(NSLocalizedString("Profile.ChangeEmail.Title", comment: ""))
-                            .font(.title2Responsive)
-                            .fontWeight(.semibold)
-                        
-                        Text(NSLocalizedString("Profile.ChangeEmail.Description", comment: ""))
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.secondary)
-                        
-                        CustomTextField(
-                            title: NSLocalizedString("Profile.ChangeEmail.NewEmail", comment: ""),
-                            placeholder: NSLocalizedString("Profile.ChangeEmail.Placeholder", comment: ""),
-                            icon: "envelope",
-                            text: $viewModel.newEmail,
-                            isMultiline: false
-                        )
-                        .focused($isEmailFocused)
-                        .textInputAutocapitalization(.never)
-                        .keyboardType(.emailAddress)
-                    }
-                    
-                    Spacer(minLength: ResponsivePadding.large)
-                    
-                    Button(action: {
-                        Task { await viewModel.changeEmail() }
-                    }) {
-                        HStack {
-                            if viewModel.isLoading {
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            }
-                            Text(NSLocalizedString("Profile.ChangeEmail.Update", comment: ""))
-                                .font(.bodyResponsive)
-                                .fontWeight(.semibold)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(ResponsivePadding.medium)
-                        .background(Capsule().fill(Color.accentColor))
-                        .foregroundStyle(.white)
-                    }
-                    .disabled(viewModel.isLoading || viewModel.newEmail.isEmpty)
-                }
-                .padding(ResponsivePadding.large)
-            }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
-            .navigationTitle(NSLocalizedString("Profile.ChangeEmail.Title", comment: ""))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                    }
-                }
-            }
-        }
-    }
-}
 
-// MARK: - Change Password View
-struct ChangePasswordView: View {
-    @ObservedObject var viewModel: ProfileViewModel
-    @Environment(\.dismiss) private var dismiss
-    @FocusState private var isCurrentPasswordFocused: Bool
-    @FocusState private var isNewPasswordFocused: Bool
-    @FocusState private var isConfirmPasswordFocused: Bool
-    
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: ResponsivePadding.large) {
-                    VStack(alignment: .leading, spacing: ResponsivePadding.medium) {
-                        Text(NSLocalizedString("Profile.ChangePassword.Title", comment: ""))
-                            .font(.title2Responsive)
-                            .fontWeight(.semibold)
-                        
-                        Text(NSLocalizedString("Profile.ChangePassword.Description", comment: ""))
-                            .font(.bodyResponsive)
-                            .foregroundStyle(.secondary)
-                        
-                        CustomTextField(
-                            title: NSLocalizedString("Profile.ChangePassword.Current", comment: ""),
-                            placeholder: NSLocalizedString("Profile.ChangePassword.CurrentPlaceholder", comment: ""),
-                            icon: "key",
-                            text: $viewModel.currentPassword,
-                            isMultiline: false
-                        )
-                        .focused($isCurrentPasswordFocused)
-                        .textContentType(.password)
-                        
-                        CustomTextField(
-                            title: NSLocalizedString("Profile.ChangePassword.New", comment: ""),
-                            placeholder: NSLocalizedString("Profile.ChangePassword.NewPlaceholder", comment: ""),
-                            icon: "key.fill",
-                            text: $viewModel.newPassword,
-                            isMultiline: false
-                        )
-                        .focused($isNewPasswordFocused)
-                        .textContentType(.newPassword)
-                        
-                        CustomTextField(
-                            title: NSLocalizedString("Profile.ChangePassword.Confirm", comment: ""),
-                            placeholder: NSLocalizedString("Profile.ChangePassword.ConfirmPlaceholder", comment: ""),
-                            icon: "key.fill",
-                            text: $viewModel.confirmPassword,
-                            isMultiline: false
-                        )
-                        .focused($isConfirmPasswordFocused)
-                        .textContentType(.newPassword)
-                    }
-                    
-                    Spacer(minLength: ResponsivePadding.large)
-                    
-                    Button(action: {
-                        Task { await viewModel.changePassword() }
-                    }) {
-                        HStack {
-                            if viewModel.isLoading {
-                                ProgressView()
-                                    .scaleEffect(0.8)
-                            }
-                            Text(NSLocalizedString("Profile.ChangePassword.Update", comment: ""))
-                                .font(.bodyResponsive)
-                                .fontWeight(.semibold)
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(ResponsivePadding.medium)
-                        .background(Capsule().fill(Color.accentColor))
-                        .foregroundStyle(.white)
-                    }
-                    .disabled(viewModel.isLoading || viewModel.currentPassword.isEmpty || viewModel.newPassword.isEmpty || viewModel.confirmPassword.isEmpty)
-                }
-                .padding(ResponsivePadding.large)
-            }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
-            .navigationTitle(NSLocalizedString("Profile.ChangePassword.Title", comment: ""))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                    }
-                }
-            }
-        }
-    }
-}

@@ -1,5 +1,5 @@
 //
-//  DepartmentSuggestionHistoryView.swift
+//  LabResultRecommendationHistoryView.swift
 //  EvdeSaglik
 //
 //  Created by gkhkaya on 15.09.2025.
@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct DepartmentSuggestionHistoryView: View {
+struct LabResultRecommendationHistoryView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject private var viewModel: DepartmentSuggestionHistoryViewModel
+    @StateObject private var viewModel: LabResultRecommendationHistoryViewModel
     
     init(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
-        self._viewModel = StateObject(wrappedValue: DepartmentSuggestionHistoryViewModel(
+        self._viewModel = StateObject(wrappedValue: LabResultRecommendationHistoryViewModel(
             firestoreManager: firestoreManager,
             authManager: authManager
         ))
@@ -25,24 +25,24 @@ struct DepartmentSuggestionHistoryView: View {
                     ProgressView(NSLocalizedString("Loading.Loading", comment: "Loading"))
                         .progressViewStyle(CircularProgressViewStyle())
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else if viewModel.suggestions.isEmpty {
+                } else if viewModel.recommendations.isEmpty {
                     EmptyStateView(
-                        icon: "stethoscope",
-                        title: NSLocalizedString("DepartmentHistory.Empty.Title", comment: "No doctor suggestions yet"),
-                        description: NSLocalizedString("DepartmentHistory.Empty.Description", comment: "Your doctor suggestions will appear here")
+                        icon: "doc.text.magnifyingglass",
+                        title: NSLocalizedString("LabHistory.Empty.Title", comment: "No lab results yet"),
+                        description: NSLocalizedString("LabHistory.Empty.Description", comment: "Your lab result analyses will appear here")
                     )
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 16) {
-                            ForEach(viewModel.suggestions, id: \.id) { suggestion in
-                                DepartmentSuggestionCard(suggestion: suggestion)
+                            ForEach(viewModel.recommendations, id: \.id) { recommendation in
+                                LabResultRecommendationCard(recommendation: recommendation)
                             }
                         }
                         .padding()
                     }
                 }
             }
-            .navigationTitle(NSLocalizedString("DepartmentHistory.Title", comment: "Doctor Suggestions"))
+            .navigationTitle(NSLocalizedString("LabHistory.Title", comment: "Lab Results"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -54,24 +54,24 @@ struct DepartmentSuggestionHistoryView: View {
         }
         .onAppear {
             Task {
-                await viewModel.loadSuggestions()
+                await viewModel.loadRecommendations()
             }
         }
     }
 }
 
-// MARK: - Department Suggestion Card
-struct DepartmentSuggestionCard: View {
-    let suggestion: DepartmentSuggestionHistory
+// MARK: - Lab Result Recommendation Card
+struct LabResultRecommendationCard: View {
+    let recommendation: LabResultRecommendationHistory
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(NSLocalizedString("DepartmentHistory.Card.Date", comment: "Date:"))
+                    Text(NSLocalizedString("LabHistory.Card.Date", comment: "Date:"))
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    Text(suggestion.createdAt, style: .date)
+                    Text(recommendation.createdAt, style: .date)
                         .font(.subheadline)
                         .fontWeight(.medium)
                 }
@@ -79,10 +79,10 @@ struct DepartmentSuggestionCard: View {
                 Spacer()
                 
                 VStack(alignment: .trailing, spacing: 4) {
-                    Text(NSLocalizedString("DepartmentHistory.Card.Time", comment: "Time:"))
+                    Text(NSLocalizedString("LabHistory.Card.Time", comment: "Time:"))
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    Text(suggestion.createdAt, style: .time)
+                    Text(recommendation.createdAt, style: .time)
                         .font(.subheadline)
                         .fontWeight(.medium)
                 }
@@ -91,25 +91,54 @@ struct DepartmentSuggestionCard: View {
             Divider()
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(NSLocalizedString("DepartmentHistory.Card.Symptoms", comment: "Symptoms:"))
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                Text(suggestion.symptoms.joined(separator: ", "))
-                    .font(.subheadline)
-                    .multilineTextAlignment(.leading)
-            }
-            
-            VStack(alignment: .leading, spacing: 8) {
-                Text(NSLocalizedString("DepartmentHistory.Card.Suggestions", comment: "Recommended Doctors:"))
+                Text(NSLocalizedString("LabHistory.Card.LabResults", comment: "Lab Results:"))
                     .font(.caption)
                     .foregroundColor(.secondary)
                 
-                ForEach(suggestion.suggestedDepartments, id: \.self) { department in
+                ForEach(Array(recommendation.labResults.keys), id: \.self) { key in
                     HStack {
-                        Image(systemName: "checkmark.circle.fill")
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(key)
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                            Text("\(recommendation.labResults[key] ?? 0)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        
+                        Spacer()
+                    }
+                    .padding(.vertical, 2)
+                }
+            }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("LabHistory.Card.Medications", comment: "Suggested Medications:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                ForEach(recommendation.suggestedMedications, id: \.self) { medication in
+                    HStack {
+                        Image(systemName: "pills.fill")
+                            .foregroundColor(.blue)
+                            .font(.caption)
+                        Text(medication)
+                            .font(.subheadline)
+                    }
+                }
+            }
+            
+            VStack(alignment: .leading, spacing: 8) {
+                Text(NSLocalizedString("LabHistory.Card.NaturalSolutions", comment: "Natural Solutions:"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                ForEach(recommendation.suggestedNaturalSolutions, id: \.self) { solution in
+                    HStack {
+                        Image(systemName: "leaf.fill")
                             .foregroundColor(.green)
                             .font(.caption)
-                        Text(department)
+                        Text(solution)
                             .font(.subheadline)
                     }
                 }
@@ -123,8 +152,8 @@ struct DepartmentSuggestionCard: View {
 }
 
 // MARK: - View Model
-class DepartmentSuggestionHistoryViewModel: ObservableObject {
-    @Published var suggestions: [DepartmentSuggestionHistory] = []
+class LabResultRecommendationHistoryViewModel: ObservableObject {
+    @Published var recommendations: [LabResultRecommendationHistory] = []
     @Published var isLoading: Bool = false
     
     private let firestoreManager: FirestoreManager
@@ -136,7 +165,7 @@ class DepartmentSuggestionHistoryViewModel: ObservableObject {
     }
     
     @MainActor
-    func loadSuggestions() async {
+    func loadRecommendations() async {
         isLoading = true
         
         guard let userId = authManager.currentUser?.uid else {
@@ -145,14 +174,14 @@ class DepartmentSuggestionHistoryViewModel: ObservableObject {
         }
         
         do {
-            suggestions = try await firestoreManager.queryDocuments(
-                from: "departmentSuggestions", 
+            recommendations = try await firestoreManager.queryDocuments(
+                from: "labResultRecommendations", 
                 where: "userId", 
                 isEqualTo: userId, 
-                as: DepartmentSuggestionHistory.self
+                as: LabResultRecommendationHistory.self
             )
         } catch {
-            print("Error loading department suggestion history: \(error)")
+            print("Error loading lab result recommendation history: \(error)")
         }
         
         isLoading = false
@@ -160,11 +189,11 @@ class DepartmentSuggestionHistoryViewModel: ObservableObject {
 }
 
 // MARK: - Data Model
-typealias DepartmentSuggestionHistory = DepartmentSuggestionModel
+typealias LabResultRecommendationHistory = LabResultRecommendationModel
 
 // MARK: - Preview
 #Preview {
-    DepartmentSuggestionHistoryView(
+    LabResultRecommendationHistoryView(
         firestoreManager: FirestoreManager(),
         authManager: FirebaseAuthManager()
     )
