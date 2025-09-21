@@ -32,7 +32,7 @@ struct ChatbotView: View {
                             }
                         }
                         .padding(ResponsivePadding.medium)
-                        .onChange(of: viewModel.messages.count) { _ in
+                        .onChange(of: viewModel.messages.count) {
                             if let lastMessage = viewModel.messages.last {
                                 withAnimation {
                                     proxy.scrollTo(lastMessage.id, anchor: .bottom)

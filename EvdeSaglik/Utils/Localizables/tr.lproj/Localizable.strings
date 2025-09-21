@@ -1,239 +1,422 @@
-// Common
-"Common.Loading" = "Yükleniyor...";
-"Loading.Initializing" = "Uygulama başlatılıyor...";
+/* 
+  Localizable.strings
+  EvdeSaglik
 
-// Validation Errors
-"Validation.Error.EmptyField" = "%@ alanı boş olamaz";
-"Validation.Error.InvalidFormat" = "Geçersiz %@ formatı";
-"Validation.Error.WeakPassword" = "Şifre en az 6 karakter olmalıdır";
-"Validation.Error.InvalidEmail" = "Geçerli bir e-posta adresi giriniz";
-"Validation.Error.InvalidAge" = "Geçerli bir yaş giriniz";
-"Validation.Error.NameTooShort" = "İsim en az 2 karakter olmalıdır";
-"Validation.Error.RequiredFieldMissing" = "%@ alanı zorunludur";
-
-// Network Errors
-"Network.Error.NoConnection" = "İnternet bağlantısı yok";
-"Network.Error.Timeout" = "İstek zaman aşımına uğradı";
-"Network.Error.ServerUnavailable" = "Sunucu şu anda kullanılamıyor";
-"Network.Error.InvalidResponse" = "Sunucudan geçersiz yanıt";
-"Network.Error.RequestFailed" = "İstek başarısız oldu. Durum kodu: %@";
-
-// Business Logic Errors
-"Business.Error.UserNotFound" = "Kullanıcı bulunamadı";
-"Business.Error.InsufficientPermissions" = "Yetersiz yetki";
-"Business.Error.OperationNotAllowed" = "İşlem izin verilmiyor";
-"Business.Error.DataCorrupted" = "Veri bozulmuş";
-"Business.Error.LimitExceeded" = "Limit aşıldı: %@";
-"Business.Error.DuplicateEntry" = "Tekrarlanan giriş: %@";
-
-// Recovery Suggestions
-"Recovery.CheckConnection" = "İnternet bağlantınızı kontrol edin";
-"Recovery.TryAgain" = "Tekrar deneyin";
-"Recovery.CheckEmailFormat" = "E-posta formatını kontrol edin";
-"Recovery.EnterValidEmail" = "Geçerli bir e-posta adresi girin";
-"Recovery.ContactSupport" = "Sorun devam ederse destek ile iletişime geçin";
-
-// Success Messages
-"Login.Success" = "Başarıyla giriş yapıldı";
-"Register.Success" = "Başarıyla kayıt olundu";
-"DrugFoodInteraction.SaveSuccess" = "Başarıyla geçmişe kaydedildi";
-
-// Department Suggestion
-"DepartmentSuggestion.Save" = "Geçmişe Kaydet";
-
-// Drug Food Interaction
-"DrugFoodInteraction.Title" = "İlaç-Gıda Etkileşimi";
-"DrugFoodInteraction.DrugName" = "İlaç Adı";
-"DrugFoodInteraction.DrugNamePlaceholder" = "İlaç adını giriniz";
-"DrugFoodInteraction.FoodName" = "Gıda Adı";
-"DrugFoodInteraction.FoodNamePlaceholder" = "Gıda adını giriniz";
-"DrugFoodInteraction.CheckButton" = "Etkileşimi Kontrol Et";
-"DrugFoodInteraction.SaveButton" = "Geçmişe Kaydet";
-"DrugFoodInteraction.EmptyFields" = "Lütfen hem ilaç hem de gıda adını giriniz.";
-"DrugFoodInteraction.SaveError" = "Kaydetme sırasında bir hata oluştu.";
-"DrugFoodInteraction.SaveSuccess" = "Başarıyla geçmişe kaydedildi";
-"DrugFoodInteraction.SystemPersona" = "Sen bir uzman eczacısın ve ilaç-gıda etkileşimleri konusunda uzmanlaşmışsın. Kullanıcıların sağlık durumlarını göz önünde bulundurarak, ilaç-gıda etkileşimlerini analiz ediyorsun.";
-"DrugFoodInteraction.SystemFormat" = "Yanıtını şu formatta ver:\n\n**Etkileşim Durumu:** [Yüksek/Orta/Düşük Risk veya Güvenli]\n\n**Açıklama:** [Etkileşimin detaylı açıklaması]\n\n**Öneriler:** [Kullanıcıya öneriler]\n\n**Dikkat Edilecekler:** [Önemli uyarılar]";
-"DrugFoodInteraction.UserPrompt" = "İlaç: %@\nGıda: %@\n\nKullanıcı Bilgileri:\n%@";
-
-// Drug Food Interaction History
-"DrugFoodInteractionHistory.Title" = "İlaç-Gıda Etkileşimi Geçmişi";
-"DrugFoodInteractionHistory.Empty" = "Henüz kayıtlı etkileşim analizi bulunmuyor.";
-"DrugFoodInteractionHistory.Delete" = "Sil";
-"DrugFoodInteractionHistory.DeleteConfirm" = "Bu kaydı silmek istediğinizden emin misiniz?";
-
-// Onboarding
-"Onboarding.Welcome.Title" = "Hoş geldin, %@!";
-"Onboarding.Welcome.Description" = "Bu uygulama günümüz hastanelerindeki yoğunluk problemlerini çözmek amacıyla evinde uygulayabileceğin sağlık çözümlerini sana verir. Ayrıca kafanda oluşan tüm sağlık problemlerini cevaplar.";
-"Onboarding.Welcome.Next" = "Devam Et";
+  Created by gkhkaya on 22.09.2025.
+  
+*/
 
 // Profile
 "Profile.Title" = "Profil";
-"Profile.UserName" = "Kullanıcı";
+"Profile.Alert.DeleteAccount" = "Hesabı Sil";
+"Profile.Alert.Cancel" = "İptal";
+"Profile.Alert.Delete" = "Sil";
+"Profile.Alert.DeleteAccountMessage" = "Hesabınızı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.";
+"Profile.UserName" = "Kullanıcı Adı";
 "Profile.Section.AccountSettings" = "Hesap Ayarları";
-"Profile.Section.Personalization" = "Kişiselleştirme";
-"Profile.Section.SavedData" = "Kaydedilen Veriler";
-"Profile.Section.DepartmentSuggestions" = "Bölüm Önerileri";
-"Profile.Section.DiseasePredictions" = "Hastalık Tahminleri";
-"Profile.Section.HomeSolutions" = "Ev Çözümleri";
-"Profile.Section.LabResults" = "Lab Sonuçları";
-"Profile.Section.NaturalSolutions" = "Doğal Çözümler";
-"Profile.Section.DrugFoodInteraction" = "İlaç-Gıda Etkileşimi";
-"Profile.Section.DangerZone" = "Tehlikeli Bölge";
-
-"Profile.Item.Email" = "E-posta";
-"Profile.Item.Password" = "Şifre";
-"Profile.Item.Personalize" = "Profili Kişiselleştir";
-"Profile.Item.ViewHistory" = "Geçmişi Görüntüle";
-"Profile.Item.ResetData" = "Tüm Verileri Sıfırla";
-"Profile.Item.DeleteAccount" = "Hesabı Sil";
-
 "Profile.Item.ChangeEmail" = "E-posta Değiştir";
+"Profile.Item.ChangeEmailValue" = "E-posta adresinizi güncelleyin";
 "Profile.Item.ChangePassword" = "Şifre Değiştir";
+"Profile.Item.ChangePasswordValue" = "Şifrenizi güncelleyin";
 "Profile.Item.Personalization" = "Kişiselleştirme";
-
-"Profile.Item.PasswordValue" = "Şifreyi değiştir";
-"Profile.Item.PersonalizeValue" = "Sağlık profilinizi güncelleyin";
-"Profile.Item.ViewHistoryValue" = "Kaydedilen sonuçları görüntüle";
-"Profile.Item.ResetDataValue" = "Tüm kaydedilen verileri sil";
-"Profile.Item.DeleteAccountValue" = "Hesabı kalıcı olarak sil";
-
-"Profile.Item.ChangeEmailValue" = "E-posta adresinizi değiştirin";
-"Profile.Item.ChangePasswordValue" = "Şifrenizi değiştirin";
-"Profile.Item.PersonalizationValue" = "Sağlık profilinizi güncelleyin";
-
+"Profile.Item.PersonalizationValue" = "Profilinizi özelleştirin";
+"Profile.Section.DangerZone" = "Tehlikeli Bölge";
+"Profile.Item.DeleteAccount" = "Hesabı Sil";
+"Profile.Item.DeleteAccountValue" = "Hesabınızı kalıcı olarak silin";
+"Profile.Section.DepartmentSuggestions" = "Bölüm Önerileri";
 "Profile.Item.DepartmentSuggestionHistory" = "Bölüm Önerisi Geçmişi";
-"Profile.Item.DiseasePredictionHistory" = "Hastalık Tahmini Geçmişi";
-"Profile.Item.HomeSolutionHistory" = "Ev Çözümü Geçmişi";
-"Profile.Item.LabResultHistory" = "Lab Sonucu Geçmişi";
-"Profile.Item.NaturalSolutionHistory" = "Doğal Çözüm Geçmişi";
-"Profile.Item.DrugFoodInteractionHistory" = "İlaç-Gıda Etkileşimi Geçmişi";
-
 "Profile.Item.DepartmentSuggestionHistoryValue" = "Bölüm önerilerinizi görüntüleyin";
+"Profile.Section.DiseasePredictions" = "Hastalık Tahminleri";
+"Profile.Item.DiseasePredictionHistory" = "Hastalık Tahmini Geçmişi";
 "Profile.Item.DiseasePredictionHistoryValue" = "Hastalık tahminlerinizi görüntüleyin";
+"Profile.Section.HomeSolutions" = "Ev Çözümleri";
+"Profile.Item.HomeSolutionHistory" = "Ev Çözümü Geçmişi";
 "Profile.Item.HomeSolutionHistoryValue" = "Ev çözümlerinizi görüntüleyin";
-"Profile.Item.LabResultHistoryValue" = "Lab sonuçlarınızı görüntüleyin";
+"Profile.Section.LabResults" = "Kan Tahlili Sonuçları";
+"Profile.Item.LabResultHistory" = "Kan Tahlili Geçmişi";
+"Profile.Item.LabResultHistoryValue" = "Kan tahlili sonuçlarınızı görüntüleyin";
+"Profile.Section.NaturalSolutions" = "Doğal Çözümler";
+"Profile.Item.NaturalSolutionHistory" = "Doğal Çözüm Geçmişi";
 "Profile.Item.NaturalSolutionHistoryValue" = "Doğal çözümlerinizi görüntüleyin";
+"Profile.Section.DrugFoodInteraction" = "İlaç-Gıda Etkileşimi";
+"Profile.Item.DrugFoodInteractionHistory" = "İlaç-Gıda Etkileşimi Geçmişi";
 "Profile.Item.DrugFoodInteractionHistoryValue" = "İlaç-gıda etkileşimlerinizi görüntüleyin";
 
+// Change Email
 "Profile.ChangeEmail.Title" = "E-posta Değiştir";
-"Profile.ChangeEmail.Description" = "E-posta adresinizi güncelleyin";
+"Profile.ChangeEmail.Description" = "Yeni e-posta adresinizi girin";
 "Profile.ChangeEmail.NewEmail" = "Yeni E-posta";
-"Profile.ChangeEmail.Placeholder" = "yeni@email.com";
-"Profile.ChangeEmail.Update" = "Güncelle";
+"Profile.ChangeEmail.Placeholder" = "Yeni e-posta adresi girin";
+"Profile.ChangeEmail.Update" = "E-postayı Güncelle";
+"Profile.Error.EmptyEmail" = "Lütfen bir e-posta adresi girin";
+"Profile.Error.InvalidEmail" = "Lütfen geçerli bir e-posta adresi girin";
+"Profile.Success.EmailChanged" = "E-posta başarıyla güncellendi";
+"Profile.Alert.Error" = "Hata";
+"Profile.Alert.Success" = "Başarılı";
 
+// Common
+"Common.OK" = "Tamam";
+
+// Change Password
 "Profile.ChangePassword.Title" = "Şifre Değiştir";
-"Profile.ChangePassword.Description" = "Şifrenizi güncelleyin";
+"Profile.ChangePassword.Description" = "Mevcut ve yeni şifrenizi girin";
 "Profile.ChangePassword.Current" = "Mevcut Şifre";
 "Profile.ChangePassword.CurrentPlaceholder" = "Mevcut şifrenizi girin";
 "Profile.ChangePassword.New" = "Yeni Şifre";
 "Profile.ChangePassword.NewPlaceholder" = "Yeni şifrenizi girin";
-"Profile.ChangePassword.Confirm" = "Şifre Onayı";
-"Profile.ChangePassword.ConfirmPlaceholder" = "Yeni şifrenizi tekrar girin";
-"Profile.ChangePassword.Update" = "Güncelle";
-
-"Profile.Error.EmptyEmail" = "E-posta alanı boş olamaz";
-"Profile.Error.InvalidEmail" = "Geçerli bir e-posta adresi giriniz";
-"Profile.Error.EmptyFields" = "Tüm alanları doldurunuz";
+"Profile.ChangePassword.Confirm" = "Şifreyi Onayla";
+"Profile.ChangePassword.ConfirmPlaceholder" = "Yeni şifreyi onaylayın";
+"Profile.ChangePassword.Update" = "Şifreyi Güncelle";
+"Profile.Error.EmptyFields" = "Lütfen tüm alanları doldurun";
 "Profile.Error.PasswordMismatch" = "Şifreler eşleşmiyor";
-"Profile.Error.WeakPassword" = "Şifre en az 6 karakter olmalıdır";
-"Profile.Success.EmailChanged" = "E-posta başarıyla değiştirildi";
-"Profile.Success.PasswordChanged" = "Şifre başarıyla değiştirildi";
+"Profile.Error.WeakPassword" = "Şifre en az 6 karakter olmalı";
+"Profile.Success.PasswordChanged" = "Şifre başarıyla güncellendi";
 
-"Profile.Alert.DeleteAccount" = "Hesabı Sil";
-"Profile.Alert.DeleteAccountMessage" = "Hesabınızı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.";
-"Profile.Alert.Cancel" = "İptal";
-"Profile.Alert.Delete" = "Sil";
+// Login
+"Login.Title" = "Tekrar Hoş Geldiniz";
+"Login.Subtitle" = "Hesabınıza giriş yapın";
+"Login.Email.Label" = "E-posta";
+"Login.Email.Placeholder" = "E-postanızı girin";
+"Login.Password.Label" = "Şifre";
+"Login.Password.Placeholder" = "Şifrenizi girin";
+"Login.RememberMe" = "Beni hatırla";
+"Login.ForgotPassword" = "Şifremi Unuttum?";
+"Login.SignIn" = "Giriş Yap";
+"Login.SignUp.Title" = "Hesabınız yok mu?";
+"Login.SignUp.Action" = "Kayıt Ol";
+
+// Register
+"Register.Title" = "Hesap Oluştur";
+"Register.Subtitle" = "Bugün bize katılın";
+"Register.Email" = "E-posta";
+"Register.EmailPlaceholder" = "E-postanızı girin";
+"Register.Password" = "Şifre";
+"Register.PasswordPlaceholder" = "Şifrenizi girin";
+"Register.ConfirmPassword" = "Şifreyi Onayla";
+"Register.ConfirmPasswordPlaceholder" = "Şifrenizi onaylayın";
+"Register.CreateAccount" = "Hesap Oluştur";
+"Register.AlreadyHaveAccount" = "Zaten hesabınız var mı?";
+"Register.SignIn" = "Giriş Yap";
 
 // Main App
 "MainApp.Title" = "Evde Sağlık";
 "MainApp.SearchBar.Title" = "Arama";
-"MainApp.SearchBar.Placeholder" = "Sağlık sorununuzu yazın...";
+"MainApp.SearchBar.Placeholder" = "Sağlığınız hakkında her şeyi sorun...";
 "MainApp.Card.Doctor" = "Hangi doktora gitmeliyim?";
 "MainApp.Card.Disease" = "Hastalığım ne olabilir?";
 "MainApp.Card.HomeRemedies" = "Evde ne yapabilirim?";
-"MainApp.Card.LabResults" = "Lab sonuçları";
+"MainApp.Card.LabResults" = "Kan Tahlili Sonuçları";
 "MainApp.Card.NaturalSolutions" = "Doğal çözümler";
 "MainApp.Card.DrugFoodInteraction" = "İlaç & Gıda Etkileşimi";
 
-// Login
-"Login.Title" = "Giriş Yap";
-"Login.Subtitle" = "Hesabınıza giriş yapın";
-"Login.Email" = "E-posta";
-"Login.EmailPlaceholder" = "ornek@email.com";
-"Login.Password" = "Şifre";
-"Login.PasswordPlaceholder" = "Şifrenizi girin";
-"Login.RememberMe" = "Beni hatırla";
-"Login.SignIn" = "Giriş Yap";
-"Login.ForgotPassword" = "Şifremi unuttum";
-"Login.NoAccount" = "Hesabınız yok mu?";
-"Login.Register" = "Kayıt ol";
-"Login.Validation.Invalid" = "Geçersiz giriş bilgileri";
-"Login.ForgotPassword.InvalidEmail" = "Şifre sıfırlama için geçerli e-posta girin";
-"Login.ForgotPassword.Success" = "Şifre sıfırlama e-postası gönderildi";
-"Login.Error.Generic" = "Giriş sırasında bir hata oluştu";
+// Onboarding
+"Onboarding.Back" = "Geri";
+"Onboarding.Next" = "İleri";
+"Onboarding.Finish" = "Bitir";
+"Onboarding.Update" = "Güncelle";
+"Onboarding.Skip" = "Atla";
+"Onboarding.Intro.Title" = "Evde Sağlık'a Hoş Geldiniz";
+"Onboarding.Intro.Description" = "Kişisel sağlık asistanınız";
+"Onboarding.BasicInfo.Title" = "Temel Bilgiler";
+"Onboarding.BasicInfo.Description" = "Kendiniz hakkında bilgi verin";
+"Onboarding.BasicInfo.Name" = "Ad Soyad";
+"Onboarding.BasicInfo.NamePlaceholder" = "Ad soyadınızı girin";
+"Onboarding.BasicInfo.Gender" = "Cinsiyet";
+"Onboarding.BasicInfo.Gender.Male" = "Erkek";
+"Onboarding.BasicInfo.Gender.Female" = "Kadın";
+"Onboarding.BasicInfo.Gender.Other" = "Diğer";
+"Onboarding.BasicInfo.Age" = "Yaş";
+"Onboarding.BasicInfo.AgeSelect" = "Yaşınızı seçin";
+"Onboarding.Welcome.Title" = "Hoş geldin %@!";
+"Onboarding.Welcome.Description" = "Bu uygulama günümüz hastanelerindeki yoğunluk problemlerini çözmek amacıyla evinde uygulayabileceğin sağlık çözümlerini sana verir. Ayrıca kafanda oluşan tüm sağlık problemlerini cevaplar.";
+"Onboarding.Welcome.Next" = "Devam Et";
 
-// Register
-"Register.Title" = "Kayıt Ol";
-"Register.Subtitle" = "Yeni hesap oluşturun";
-"Register.Email" = "E-posta";
-"Register.EmailPlaceholder" = "ornek@email.com";
-"Register.Password" = "Şifre";
-"Register.PasswordPlaceholder" = "Şifrenizi oluşturun";
-"Register.ConfirmPassword" = "Şifre Onayı";
-"Register.ConfirmPasswordPlaceholder" = "Şifrenizi tekrar girin";
-"Register.Register" = "Kayıt Ol";
-"Register.HaveAccount" = "Zaten hesabınız var mı?";
-"Register.Login" = "Giriş yap";
-"Register.EmailHint.Invalid" = "Geçersiz E-posta Formatı";
-"Register.PasswordHint.MinLength" = "En az 8 karakter";
-"Register.PasswordHint.Uppercase" = "Büyük harf";
-"Register.PasswordHint.Lowercase" = "Küçük harf";
-"Register.PasswordHint.Number" = "Rakam";
-"Register.PasswordHint.SpecialCharacter" = "Özel karakter";
-"Register.Error.InvalidForm" = "Geçersiz form";
-"Register.Error.EmailAlreadyInUse" = "Bu e-posta zaten kullanımda";
-"Register.Error.InvalidEmail" = "Geçersiz e-posta";
-"Register.Error.WeakPassword" = "Zayıf şifre";
-"Register.Error.Generic" = "Kayıt sırasında bir hata oluştu";
+// Health Info
+"Onboarding.HealthInfo.Title" = "Sağlık Bilgileri";
+"Onboarding.HealthInfo.Description" = "Sağlığınız hakkında bilgi verin";
+"Onboarding.HealthInfo.ChronicDiseases" = "Kronik Hastalıklar";
+"Onboarding.HealthInfo.ChronicDiseases.Diabetes" = "Diyabet";
+"Onboarding.HealthInfo.ChronicDiseases.Hypertension" = "Hipertansiyon";
+"Onboarding.HealthInfo.ChronicDiseases.Asthma" = "Astım";
+"Onboarding.HealthInfo.ChronicDiseases.HeartDisease" = "Kalp Hastalığı";
+"Onboarding.HealthInfo.ChronicDiseases.KidneyDisease" = "Böbrek Hastalığı";
+"Onboarding.HealthInfo.ChronicDiseases.LiverDisease" = "Karaciğer Hastalığı";
+"Onboarding.HealthInfo.ChronicDiseases.Thyroid" = "Tiroid";
+"Onboarding.HealthInfo.ChronicDiseases.None" = "Yok";
+"Onboarding.HealthInfo.Allergies" = "Alerjiler";
+"Onboarding.HealthInfo.Allergies.Medication" = "İlaç";
+"Onboarding.HealthInfo.Allergies.Food" = "Gıda";
+"Onboarding.HealthInfo.Allergies.Pollen" = "Polen";
+"Onboarding.HealthInfo.Allergies.Animal" = "Hayvan";
+"Onboarding.HealthInfo.Allergies.Dust" = "Toz";
+"Onboarding.HealthInfo.Allergies.Other" = "Diğer";
+"Onboarding.HealthInfo.Allergies.Unknown" = "Bilinmiyor";
+"Onboarding.HealthInfo.Allergies.None" = "Yok";
+"Onboarding.HealthInfo.Medications" = "İlaçlar";
+"Onboarding.HealthInfo.Medications.BloodPressure" = "Tansiyon";
+"Onboarding.HealthInfo.Medications.Diabetes" = "Diyabet";
+"Onboarding.HealthInfo.Medications.Heart" = "Kalp";
+"Onboarding.HealthInfo.Medications.Painkiller" = "Ağrı Kesici";
+"Onboarding.HealthInfo.Medications.Vitamin" = "Vitamin";
+"Onboarding.HealthInfo.Medications.Antidepressant" = "Antidepresan";
+"Onboarding.HealthInfo.Medications.Other" = "Diğer";
+"Onboarding.HealthInfo.Medications.None" = "Yok";
 
-// Auth Errors
+// Lifestyle
+"Onboarding.Lifestyle.Title" = "Yaşam Tarzı";
+"Onboarding.Lifestyle.Description" = "Yaşam tarzınız hakkında bilgi verin";
+"Onboarding.Lifestyle.Sleep" = "Uyku";
+"Onboarding.Lifestyle.SleepDescription" = "Uykunuz nasıl?";
+"Onboarding.Lifestyle.Sleep.Good" = "İyi";
+"Onboarding.Lifestyle.Sleep.GoodDescription" = "Düzenli iyi uyku";
+"Onboarding.Lifestyle.Sleep.GoodExample" = "7-8 saat, düzenli program";
+"Onboarding.Lifestyle.Sleep.Medium" = "Orta";
+"Onboarding.Lifestyle.Sleep.MediumDescription" = "Biraz düzenli uyku";
+"Onboarding.Lifestyle.Sleep.MediumExample" = "6-7 saat, biraz düzenli";
+"Onboarding.Lifestyle.Sleep.Bad" = "Kötü";
+"Onboarding.Lifestyle.Sleep.BadDescription" = "Düzensiz uyku düzeni";
+"Onboarding.Lifestyle.Sleep.BadExample" = "6 saatten az, düzensiz";
+"Onboarding.Lifestyle.Activity" = "Fiziksel Aktivite";
+"Onboarding.Lifestyle.ActivityDescription" = "Ne kadar aktifsiniz?";
+"Onboarding.Lifestyle.Activity.Low" = "Düşük";
+"Onboarding.Lifestyle.Activity.LowDescription" = "Az veya hiç egzersiz yok";
+"Onboarding.Lifestyle.Activity.LowExample" = "Masa başı iş, egzersiz yok";
+"Onboarding.Lifestyle.Activity.Medium" = "Orta";
+"Onboarding.Lifestyle.Activity.MediumDescription" = "Orta düzeyde egzersiz";
+"Onboarding.Lifestyle.Activity.MediumExample" = "Yürüyüş, hafif egzersiz";
+"Onboarding.Lifestyle.Activity.High" = "Yüksek";
+"Onboarding.Lifestyle.Activity.HighDescription" = "Düzenli yoğun egzersiz";
+"Onboarding.Lifestyle.Activity.HighExample" = "Spor salonu, spor, koşu";
+"Onboarding.Lifestyle.Nutrition" = "Beslenme";
+"Onboarding.Lifestyle.NutritionDescription" = "Beslenmeniz nasıl?";
+"Onboarding.Lifestyle.Nutrition.Bad" = "Kötü";
+"Onboarding.Lifestyle.Nutrition.BadDescription" = "Sağlıksız beslenme alışkanlıkları";
+"Onboarding.Lifestyle.Nutrition.BadExample" = "Fast food, işlenmiş gıdalar";
+"Onboarding.Lifestyle.Nutrition.Medium" = "Orta";
+"Onboarding.Lifestyle.Nutrition.MediumDescription" = "Karışık beslenme alışkanlıkları";
+"Onboarding.Lifestyle.Nutrition.MediumExample" = "Bazı sağlıklı, bazı sağlıksız";
+"Onboarding.Lifestyle.Nutrition.Good" = "İyi";
+"Onboarding.Lifestyle.Nutrition.GoodDescription" = "Sağlıklı beslenme alışkanlıkları";
+"Onboarding.Lifestyle.Nutrition.GoodExample" = "Meyve, sebze, dengeli beslenme";
+
+// Summary
+"Onboarding.Summary.Title" = "Özet";
+"Onboarding.Summary.Description" = "Bilgilerinizi gözden geçirin";
+"Onboarding.Summary.BasicInfo" = "Temel Bilgiler";
+"Onboarding.Summary.AgeUnit" = "yaşında";
+"Onboarding.Summary.HealthInfo" = "Sağlık Bilgileri";
+"Onboarding.Summary.ChronicDiseases" = "Kronik Hastalıklar";
+"Onboarding.Summary.Allergies" = "Alerjiler";
+"Onboarding.Summary.Lifestyle" = "Yaşam Tarzı";
+"Onboarding.Summary.Sleep" = "Uyku";
+"Onboarding.Summary.Activity" = "Aktivite";
+"Onboarding.Summary.Nutrition" = "Beslenme";
+
+// Chatbot
+"Chatbot.Input.Placeholder" = "Mesaj yazın...";
+"Chatbot.Title" = "AI Asistan";
+"Chatbot.Greeting" = "Merhaba! Bugün size nasıl yardımcı olabilirim?";
+
+// Drug Food Interaction
+"DrugFoodInteraction.Title" = "İlaç & Gıda Etkileşimi";
+"DrugFoodInteraction.Description" = "İlaç ve gıda arasındaki etkileşimleri kontrol edin";
+"DrugFoodInteraction.DrugName" = "İlaç Adı";
+"DrugFoodInteraction.DrugNamePlaceholder" = "İlaç adını girin";
+"DrugFoodInteraction.FoodName" = "Gıda Adı";
+"DrugFoodInteraction.FoodNamePlaceholder" = "Gıda adını girin";
+"DrugFoodInteraction.Check" = "Etkileşimi Kontrol Et";
+"DrugFoodInteraction.Checking" = "Kontrol ediliyor...";
+"DrugFoodInteraction.Reset" = "Sıfırla";
+"DrugFoodInteraction.Save" = "Geçmişe Kaydet";
+"DrugFoodInteraction.SaveSuccessMessage" = "Etkileşim analizi başarıyla kaydedildi";
+
+// Department Suggestion
+"DepartmentSuggestion.Title" = "Hangi Doktora Gitmeliyim?";
+"DepartmentSuggestion.Subtitle" = "Bölüm önerileri almak için semptomlarınızı seçin";
+"DepartmentSuggestion.Description" = "Bölüm önerileri almak için semptomlarınızı seçin";
+"DepartmentSuggestion.Other" = "Diğer";
+"DepartmentSuggestion.OtherPlaceholder" = "Diğer semptomlarınızı açıklayın";
+"DepartmentSuggestion.Submit" = "Önerileri Al";
+"DepartmentSuggestion.Submitting" = "Öneriler alınıyor...";
+"DepartmentSuggestion.Save" = "Geçmişe Kaydet";
+"DepartmentSuggestion.SaveSuccessMessage" = "Bölüm önerisi başarıyla kaydedildi";
+
+// Disease Prediction
+"DiseasePrediction.Title" = "Hastalığım Ne Olabilir?";
+"DiseasePrediction.Subtitle" = "Hastalık tahminleri almak için semptomlarınızı seçin";
+"DiseasePrediction.Other" = "Diğer";
+"DiseasePrediction.OtherTitle" = "Diğer Semptomlar";
+"DiseasePrediction.OtherPlaceholder" = "Diğer semptomlarınızı açıklayın";
+"DiseasePrediction.Submit" = "Tahminleri Al";
+"DiseasePrediction.Submitting" = "Tahminler alınıyor...";
+"DiseasePrediction.Save" = "Geçmişe Kaydet";
+"DiseasePrediction.SaveSuccessMessage" = "Hastalık tahmini başarıyla kaydedildi";
+
+// Home Solution
+"HomeSolution.Title" = "Evde Ne Yapabilirim?";
+"HomeSolution.Subtitle" = "Sağlık sorunlarınız için ev çözümleri ve ilaçları alın";
+"HomeSolution.InputTitle" = "Sorununuzu Açıklayın";
+"HomeSolution.InputPlaceholder" = "Sağlık sorununuzu veya semptomlarınızı açıklayın";
+"HomeSolution.Submit" = "Çözümleri Al";
+"HomeSolution.Submitting" = "Çözümler alınıyor...";
+"HomeSolution.Save" = "Geçmişe Kaydet";
+"HomeSolution.SaveSuccessMessage" = "Ev çözümü başarıyla kaydedildi";
+
+// Lab Result Recommendation
+"LabResult.Title" = "Kan Tahlili Sonuçları";
+"LabResult.Subtitle" = "Analiz ve öneriler için lab sonuçlarınızı yükleyin";
+"LabResult.Warning" = "Önemli Uyarı";
+"LabResult.WarningText" = "Bu analiz sadece bilgilendirme amaçlıdır. Tıbbi kararlar için mutlaka bir sağlık uzmanına danışın.";
+"LabResult.UploadPDF" = "PDF Yükle";
+"LabResult.Uploading" = "Yükleniyor...";
+"LabResult.Analyze" = "Sonuçları Analiz Et";
+"LabResult.Analyzing" = "Analiz ediliyor...";
+"LabResult.Save" = "Geçmişe Kaydet";
+"LabResult.SaveSuccessMessage" = "Kan tahlili analizi başarıyla kaydedildi";
+
+// Natural Solutions
+"NaturalSolutions.Title" = "Doğal Çözümler";
+"NaturalSolutions.Subtitle" = "Sağlık endişeleriniz için doğal ilaçlar ve çözümler alın";
+"NaturalSolutions.Other" = "Diğer";
+"NaturalSolutions.OtherTitle" = "Diğer Endişeler";
+"NaturalSolutions.OtherPlaceholder" = "Diğer sağlık endişelerinizi açıklayın";
+"NaturalSolutions.FeelingsTitle" = "Nasıl Hissediyorsunuz?";
+"NaturalSolutions.FeelingsPlaceholder" = "Mevcut hislerinizi ve semptomlarınızı açıklayın";
+"NaturalSolutions.Submit" = "Çözümleri Al";
+"NaturalSolutions.Submitting" = "Çözümler alınıyor...";
+"NaturalSolutions.Save" = "Geçmişe Kaydet";
+"NaturalSolutions.SaveSuccessMessage" = "Doğal çözüm başarıyla kaydedildi";
+
+// Error Messages
+"Error" = "Hata";
 "Auth.Error.RegistrationFailed" = "Kayıt başarısız: %@";
 "Auth.Error.LoginFailed" = "Giriş başarısız: %@";
 "Auth.Error.PasswordResetFailed" = "Şifre sıfırlama başarısız: %@";
 "Auth.Error.EmailUpdateFailed" = "E-posta güncelleme başarısız: %@";
 "Auth.Error.Unknown" = "Bilinmeyen bir kimlik doğrulama hatası oluştu.";
-
-// Firestore Errors
 "Firestore.Error.ReadFailed" = "Veri okuma başarısız: %@";
 "Firestore.Error.WriteFailed" = "Veri yazma başarısız: %@";
 "Firestore.Error.DocumentNotFound" = "Belge bulunamadı: %@";
 "Firestore.Error.NetworkError" = "Ağ hatası: %@";
 "Firestore.Error.Unknown" = "Bilinmeyen bir Firestore hatası oluştu.";
-
-// Deepseek Errors
-"Deepseek.Error.MissingAPIKey" = "Deepseek API Key bulunamadı.";
+"Deepseek.Error.MissingAPIKey" = "Deepseek API Key ortam değişkenlerinde bulunamadı.";
 "Deepseek.Error.InvalidURL" = "OpenRouter API için geçersiz URL.";
 "Deepseek.Error.EncodingFailed" = "İstek verisi kodlanamadı: %@";
 "Deepseek.Error.InvalidResponse" = "OpenRouter API'den geçersiz yanıt. Durum Kodu: %@, Gövde: %@";
 "Deepseek.Error.DecodingFailed" = "API yanıtı çözülemedi: %@";
 "Deepseek.Error.NoChoices" = "Deepseek API yanıtında seçenek bulunamadı.";
 "Deepseek.Error.Custom" = "%@";
+"Validation.Error.EmptyField" = "%@ alanı boş olamaz";
+"Validation.Error.InvalidFormat" = "Geçersiz %@ formatı";
+"Validation.Error.WeakPassword" = "Şifre en az 6 karakter olmalıdır";
+"Validation.Error.PasswordMismatch" = "Şifreler eşleşmiyor";
+"Validation.Error.InvalidEmail" = "Lütfen geçerli bir e-posta adresi girin";
+"Validation.Error.InvalidAge" = "Lütfen geçerli bir yaş girin";
+"Validation.Error.NameTooShort" = "İsim en az 2 karakter olmalıdır";
+"Validation.Error.RequiredFieldMissing" = "%@ gereklidir";
+"Network.Error.NoConnection" = "İnternet bağlantısı yok";
+"Network.Error.Timeout" = "İstek zaman aşımına uğradı";
+"Network.Error.ServerUnavailable" = "Sunucu şu anda kullanılamıyor";
+"Network.Error.InvalidResponse" = "Sunucudan geçersiz yanıt";
+"Network.Error.RequestFailed" = "İstek başarısız, durum kodu: %@";
+"Business.Error.UserNotFound" = "Kullanıcı bulunamadı";
+"Business.Error.InsufficientPermissions" = "Yetersiz izinler";
+"Business.Error.OperationNotAllowed" = "İşlem izin verilmiyor";
+"Business.Error.DataCorrupted" = "Veri bozulmuş";
+"Business.Error.LimitExceeded" = "Limit aşıldı: %@";
+"Business.Error.DuplicateEntry" = "Tekrarlanan giriş: %@";
+"Profile.Error.EmptyFields" = "Lütfen tüm alanları doldurun";
+"Profile.Error.EmptyEmail" = "Lütfen bir e-posta adresi girin";
+"Profile.Error.InvalidEmail" = "Lütfen geçerli bir e-posta adresi girin";
+"Profile.Error.PasswordMismatch" = "Şifreler eşleşmiyor";
+"Profile.Error.WeakPassword" = "Şifre en az 6 karakter olmalıdır";
+"Profile.Alert.Error" = "Hata";
 
-// Common
-"Error" = "Hata";
-"Success" = "Başarılı";
-"OK" = "Tamam";
-"Cancel" = "İptal";
-"Save" = "Kaydet";
-"Delete" = "Sil";
-"Edit" = "Düzenle";
-"Done" = "Tamam";
-"Back" = "Geri";
-"Next" = "İleri";
-"Previous" = "Önceki";
-"Continue" = "Devam Et";
-"Finish" = "Bitir";
-"Close" = "Kapat";
-"Retry" = "Tekrar Dene";
-"Refresh" = "Yenile";
+// Department Suggestion Symptoms
+"DepartmentSuggestion.Symptom.Headache" = "Baş Ağrısı";
+"DepartmentSuggestion.Symptom.Nausea" = "Mide Bulantısı";
+"DepartmentSuggestion.Symptom.ChestPain" = "Göğüs Ağrısı";
+"DepartmentSuggestion.Symptom.Cough" = "Öksürük";
+"DepartmentSuggestion.Symptom.SkinRash" = "Cilt Döküntüsü";
+"DepartmentSuggestion.Symptom.JointPain" = "Eklem Ağrısı";
+"DepartmentSuggestion.Symptom.Fatigue" = "Yorgunluk";
+"DepartmentSuggestion.Symptom.Fever" = "Ateş";
+"DepartmentSuggestion.FeelingsTitle" = "Nasıl Hissediyorsunuz?";
+"DepartmentSuggestion.FeelingsPlaceholder" = "Mevcut hislerinizi açıklayın";
+"DepartmentSuggestion.OtherTitle" = "Diğer Semptomlar";
+"DepartmentSuggestion.Confidence" = "Güven: %d%%";
+"DepartmentSuggestion.SystemPersona" = "Semptomlara dayalı uygun tıbbi bölümler öneren bir tıbbi AI asistanısınız.";
+"DepartmentSuggestion.SystemFormat" = "Lütfen sağlanan semptomlara dayalı en uygun tıbbi bölümleri önerin. Yanıtınızı bölüm adları ve güven yüzdeleri ile JSON dizisi olarak formatlayın.";
+
+// Disease Prediction Symptoms
+"DiseasePrediction.Symptom.Headache" = "Baş Ağrısı";
+"DiseasePrediction.Symptom.Fever" = "Ateş";
+"DiseasePrediction.Symptom.Cough" = "Öksürük";
+"DiseasePrediction.Symptom.Nausea" = "Mide Bulantısı";
+"DiseasePrediction.Symptom.Fatigue" = "Yorgunluk";
+"DiseasePrediction.Symptom.ChestPain" = "Göğüs Ağrısı";
+"DiseasePrediction.Symptom.AbdominalPain" = "Karın Ağrısı";
+"DiseasePrediction.Symptom.Dizziness" = "Baş Dönmesi";
+"DiseasePrediction.FeelingsTitle" = "Nasıl Hissediyorsunuz?";
+"DiseasePrediction.FeelingsPlaceholder" = "Mevcut hislerinizi açıklayın";
+"DiseasePrediction.DurationTitle" = "Süre";
+"DiseasePrediction.DurationPlaceholder" = "Bu semptomları ne kadar süredir yaşıyorsunuz?";
+"DiseasePrediction.Confidence" = "Güven: %d%%";
+"DiseasePrediction.SystemPersona" = "Semptomlara dayalı hastalık tahmini yapan bir tıbbi AI asistanısınız.";
+"DiseasePrediction.SystemFormat" = "Lütfen sağlanan semptomlara dayalı olası hastalıkları tahmin edin. Yanıtınızı hastalık adları, güven yüzdeleri ve kısa açıklamalar ile JSON dizisi olarak formatlayın.";
+
+// Natural Solutions Concerns
+"NaturalSolutions.Concern.Headache" = "Baş Ağrısı";
+"NaturalSolutions.Concern.Insomnia" = "Uykusuzluk";
+"NaturalSolutions.Concern.Digestive" = "Sindirim Sorunları";
+"NaturalSolutions.Concern.Stress" = "Stres";
+"NaturalSolutions.Concern.Cold" = "Soğuk Algınlığı";
+"NaturalSolutions.Concern.Fatigue" = "Yorgunluk";
+"NaturalSolutions.Concern.Skin" = "Cilt Sorunları";
+"NaturalSolutions.Concern.JointPain" = "Eklem Ağrısı";
+"NaturalSolutions.SystemPersona" = "Sağlık endişeleri için doğal ilaçlar ve çözümler sağlayan bir tıbbi AI asistanısınız.";
+"NaturalSolutions.SystemFormat" = "Lütfen bahsedilen sağlık endişeleri için doğal ilaçlar ve çözümler sağlayın. Güvenli, ev tabanlı tedavilere odaklanın.";
+"NaturalSolutions.UserConcerns" = "Sağlık endişeleri: %@";
+
+// History Views
+"Loading.Loading" = "Yükleniyor...";
+"DepartmentHistory.Title" = "Doktor Önerileri";
+"DepartmentHistory.Empty.Title" = "Henüz doktor önerisi yok";
+"DepartmentHistory.Empty.Description" = "Doktor önerileriniz burada görünecek";
+"Common.Close" = "Kapat";
+
+// Disease History
+"DiseaseHistory.Title" = "Hastalık Tahminleri";
+"DiseaseHistory.Empty.Title" = "Henüz hastalık tahmini yok";
+"DiseaseHistory.Empty.Description" = "Hastalık tahminleriniz burada görünecek";
+
+// Home History
+"HomeHistory.Title" = "Ev Çözümleri";
+"HomeHistory.Empty.Title" = "Henüz ev çözümü yok";
+"HomeHistory.Empty.Description" = "Ev çözümleriniz burada görünecek";
+
+// Lab History
+"LabHistory.Title" = "Kan Tahlili Sonuçları";
+"LabHistory.Empty.Title" = "Henüz kan tahlili sonucu yok";
+"LabHistory.Empty.Description" = "Kan tahlili sonuçlarınız burada görünecek";
+
+// Natural Solutions History
+"NaturalHistory.Title" = "Doğal Çözümler";
+"NaturalHistory.Empty.Title" = "Henüz doğal çözüm yok";
+"NaturalHistory.Empty.Description" = "Doğal çözümleriniz burada görünecek";
+
+// Drug Food Interaction History
+"DrugFoodHistory.Title" = "İlaç-Gıda Etkileşimleri";
+"DrugFoodHistory.Empty.Title" = "Henüz ilaç-gıda etkileşimi yok";
+"DrugFoodHistory.Empty.Description" = "İlaç-gıda etkileşimleriniz burada görünecek";
+
+// Drug Food Interaction History Details
+"DrugFoodInteractionHistory.Title" = "İlaç-Gıda Etkileşimleri";
+"DrugFoodInteractionHistory.Empty.Title" = "Henüz etkileşim yok";
+"DrugFoodInteractionHistory.Empty.Description" = "İlaç-gıda etkileşimleriniz burada görünecek";
+"DrugFoodInteractionHistory.Card.Date" = "Tarih:";
+"DrugFoodInteractionHistory.Card.Time" = "Saat:";
+"DrugFoodInteractionHistory.Card.Drug" = "İlaç:";
+"DrugFoodInteractionHistory.Card.Food" = "Gıda:";
+"DrugFoodInteractionHistory.Card.Interaction" = "Etkileşim:";
+"DrugFoodInteractionHistory.Card.Summary" = "Özet:";

@@ -2,7 +2,7 @@ import SwiftUI
 import FirebaseAuth
 
 // MARK: - String Extension for Identifiable
-extension String: Identifiable {
+extension String: @retroactive Identifiable {
     public var id: String { self }
 }
 

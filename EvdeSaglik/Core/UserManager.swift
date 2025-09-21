@@ -26,13 +26,18 @@ final class UserManager: ObservableObject {
             return
         }
         
-        firestoreManager.fetchDocument(collection: "users", documentId: userId) { [weak self] (result: Result<UserModel?, AppError>) in
-            switch result {
-            case .success(let userModel):
-                self?.currentUserModel = userModel
-            case .failure(let error):
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                let userModel: UserModel? = try await firestoreManager.fetchDocument(from: "users", documentId: userId, as: UserModel.self)
+                await MainActor.run {
+                    self.currentUserModel = userModel
+                }
+            } catch {
                 print("Error fetching user model: \(error.localizedDescription)")
-                self?.currentUserModel = nil
+                await MainActor.run {
+                    self.currentUserModel = nil
+                }
             }
         }
     }

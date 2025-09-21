@@ -39,7 +39,7 @@ class ChatbotViewModel: BaseViewModel {
         } else if self.messages.isEmpty { // Only add greeting if messages are truly empty
             // Add a default greeting if no initial message is provided
             print("Adding default greeting.")
-            self.addMessage(role: "assistant", content: NSLocalizedString("Chatbot.Greeting", comment: "Hello! How can I help you today?"))
+            _ = self.addMessage(role: "assistant", content: NSLocalizedString("Chatbot.Greeting", comment: "Hello! How can I help you today?"))
         }
     }
 
@@ -100,7 +100,7 @@ class ChatbotViewModel: BaseViewModel {
         }
         
         // Add user message to chat history
-        let userMessage = addMessage(role: "user", content: message)
+        _ = addMessage(role: "user", content: message)
         print("\(methodName): user message added.")
 
         // Add thinking message for the assistant
@@ -123,7 +123,7 @@ class ChatbotViewModel: BaseViewModel {
     
     /// Prepares messages for API request including user context and conversation history.
     private func prepareMessagesForAPI() async -> [DeepseekMessage] {
-        let userSummary = await userManager.generateUserSummaryPrompt()
+        let userSummary = userManager.generateUserSummaryPrompt()
         var messagesForAPI: [DeepseekMessage] = []
         
         // Add user summary as system message if available
@@ -149,7 +149,7 @@ class ChatbotViewModel: BaseViewModel {
             } else {
                 // Fallback if thinkingMessageID was not set (should not happen)
                 print("\(methodName): thinkingMessageID nil, adding new assistant message with AI response.")
-                self.addMessage(role: "assistant", content: aiResponse)
+                _ = self.addMessage(role: "assistant", content: aiResponse)
             }
             self.thinkingMessageID = nil
         }

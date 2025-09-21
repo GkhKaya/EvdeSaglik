@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct DiseasePredictionResult: Identifiable, Codable, Equatable {
-    let id: UUID = UUID()
+    var id: UUID = UUID()
     let diseaseName: String
     let confidence: Double // 0-100
     let description: String

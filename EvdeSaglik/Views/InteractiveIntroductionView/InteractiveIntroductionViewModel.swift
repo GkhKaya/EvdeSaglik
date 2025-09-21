@@ -9,11 +9,10 @@ import Foundation
 import Combine
 import SwiftUI
 
-final class InteractiveIntroductionViewModel: ObservableObject {
+final class InteractiveIntroductionViewModel: BaseViewModel {
     // MARK: - Published Properties
     @Published var currentStep: Int = 1
     @Published var userModel: UserModel = UserModel()
-    @Published var isLoading: Bool = false
     @Published var shouldNavigateToMain: Bool = false
     
     // Dependencies
@@ -37,6 +36,8 @@ final class InteractiveIntroductionViewModel: ObservableObject {
         self.firestoreManager = firestoreManager
         self.authManager = authManager
         
+        super.init()
+        
         // Start from step 2 if coming from profile (skip introduction)
         if isFromProfile {
             self.currentStep = 2
@@ -49,16 +50,17 @@ final class InteractiveIntroductionViewModel: ObservableObject {
     private func loadExistingUserData() {
         guard let userId = authManager.currentUser?.uid else { return }
         
-        firestoreManager.fetchDocument(collection: "users", documentId: userId) { [weak self] (result: Result<UserModel?, AppError>) in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let userModel):
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                let userModel: UserModel? = try await firestoreManager.fetchDocument(from: "users", documentId: userId, as: UserModel.self)
+                await MainActor.run {
                     if let userModel = userModel {
-                        self?.populateFieldsWithExistingData(userModel)
+                        self.populateFieldsWithExistingData(userModel)
                     }
-                case .failure(let error):
-                    print("Failed to load user data: \(error)")
                 }
+            } catch {
+                print("Failed to load user data: \(error)")
             }
         }
     }
@@ -139,15 +141,20 @@ final class InteractiveIntroductionViewModel: ObservableObject {
         userModel.id = userId // Ensure the userModel has the correct Firestore document ID
         userModel.email = userEmail // Set the email from the authenticated user
         
-        // Save user data to Firestore
-        firestoreManager.updateDocument(collection: "users", documentId: userId, object: userModel) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                
-                if error == nil {
-                    self?.shouldNavigateToMain = true
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                try await firestoreManager.updateDocument(in: "users", documentId: userId, object: userModel)
+                await MainActor.run {
+                    self.isLoading = false
+                    self.shouldNavigateToMain = true
                     // Reset didJustRegister flag after successful onboarding
-                    self?.authManager.didJustRegister = false
+                    self.authManager.didJustRegister = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.isLoading = false
+                    self.errorMessage = error.localizedDescription
                 }
             }
         }
@@ -168,13 +175,18 @@ final class InteractiveIntroductionViewModel: ObservableObject {
         userModel.id = userId
         userModel.email = userEmail
         
-        // Save updated user data to Firestore
-        firestoreManager.updateDocument(collection: "users", documentId: userId, object: userModel) { [weak self] error in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                
-                if error == nil {
-                    self?.shouldNavigateToMain = true
+        Task { [weak self] in
+            guard let self = self else { return }
+            do {
+                try await firestoreManager.updateDocument(in: "users", documentId: userId, object: userModel)
+                await MainActor.run {
+                    self.isLoading = false
+                    self.shouldNavigateToMain = true
+                }
+            } catch {
+                await MainActor.run {
+                    self.isLoading = false
+                    self.errorMessage = error.localizedDescription
                 }
             }
         }

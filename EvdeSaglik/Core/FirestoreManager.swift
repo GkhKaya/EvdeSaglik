@@ -59,7 +59,7 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     func addDocument<T: Codable>(to collection: String, object: T) async throws {
         do {
-            _ = try await db.collection(collection).addDocument(from: object, encoder: Firestore.Encoder())
+            _ = try db.collection(collection).addDocument(from: object, encoder: Firestore.Encoder())
         } catch let error as NSError {
             throw AppError.firestoreError(.writeFailed(error.localizedDescription))
         }
@@ -106,7 +106,7 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     func updateDocument<T: Codable>(in collection: String, documentId: String, object: T) async throws {
         do {
-            try await db.collection(collection).document(documentId).setData(from: object, merge: true)
+            try db.collection(collection).document(documentId).setData(from: object, merge: true)
         } catch let error as NSError {
             throw AppError.firestoreError(.writeFailed(error.localizedDescription))
         }

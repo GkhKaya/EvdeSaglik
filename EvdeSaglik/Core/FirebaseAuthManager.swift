@@ -238,9 +238,9 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
             throw AppError.authError(.unknown)
         }
         
-        try await user.updateEmail(to: newEmail)
-        DispatchQueue.main.async {
-            self.currentUser = Auth.auth().currentUser
+        try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
+        DispatchQueue.main.async { [weak self] in
+            self?.currentUser = Auth.auth().currentUser
         }
     }
     
