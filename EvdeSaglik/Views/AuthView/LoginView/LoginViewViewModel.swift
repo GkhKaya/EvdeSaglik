@@ -53,7 +53,8 @@ final class LoginViewViewModel: BaseViewModel {
         clearMessages()
         isLoading = true
         
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 try await authManager.login(email: email, password: password, rememberMe: rememberMe)
                 await MainActor.run {
@@ -76,7 +77,8 @@ final class LoginViewViewModel: BaseViewModel {
         
         clearMessages()
         
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 try await authManager.resetPassword(email: email)
                 await MainActor.run {

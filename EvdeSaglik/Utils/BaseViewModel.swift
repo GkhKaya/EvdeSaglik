@@ -143,7 +143,9 @@ class BaseViewModel: ObservableObject {
         context: String? = nil,
         onSuccess: ((T) -> Void)? = nil
     ) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
+            
             await MainActor.run {
                 self.isLoading = true
                 self.clearMessages()

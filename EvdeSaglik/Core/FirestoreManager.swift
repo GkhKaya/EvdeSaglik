@@ -82,9 +82,10 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     @available(*, deprecated, message: "Use async version instead")
     func addDocument<T: Codable>(to collection: String, object: T, completion: ((AppError?) -> Void)? = nil) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await addDocument(to: collection, object: object)
+                try await self.addDocument(to: collection, object: object)
                 completion?(nil)
             } catch {
                 completion?(error as? AppError)
@@ -122,9 +123,10 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     @available(*, deprecated, message: "Use async version instead")
     func updateDocument<T: Codable>(collection: String, documentId: String, object: T, completion: ((AppError?) -> Void)? = nil) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await updateDocument(in: collection, documentId: documentId, object: object)
+                try await self.updateDocument(in: collection, documentId: documentId, object: object)
                 completion?(nil)
             } catch {
                 completion?(error as? AppError)
@@ -160,9 +162,10 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     @available(*, deprecated, message: "Use async version instead")
     func deleteDocument(collection: String, documentId: String, completion: ((AppError?) -> Void)? = nil) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await deleteDocument(from: collection, documentId: documentId)
+                try await self.deleteDocument(from: collection, documentId: documentId)
                 completion?(nil)
             } catch {
                 completion?(error as? AppError)
@@ -228,7 +231,8 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     @available(*, deprecated, message: "Use async version instead")
     func fetchDocument<T: Codable>(collection: String, documentId: String, completion: @escaping (Result<T?, AppError>) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 let result: T? = try await fetchDocument(from: collection, documentId: documentId, as: T.self)
                 completion(.success(result))
@@ -310,7 +314,8 @@ final class FirestoreManager: ObservableObject, FirestoreServiceProtocol {
      */
     @available(*, deprecated, message: "Use async version instead")
     func queryDocuments<T: Codable>(collection: String, field: String, isEqualTo value: Any, completion: @escaping (Result<[T], AppError>) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 let result: [T] = try await queryDocuments(from: collection, where: field, isEqualTo: value, as: T.self)
                 completion(.success(result))

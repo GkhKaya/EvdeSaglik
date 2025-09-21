@@ -98,7 +98,8 @@ final class RegisterViewViewModel: BaseViewModel {
         isLoading = true
         clearMessages()
         
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 try await authManager.register(email: email, password: password)
                 await MainActor.run {

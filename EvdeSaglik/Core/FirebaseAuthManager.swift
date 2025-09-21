@@ -74,9 +74,10 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
      */
     @available(*, deprecated, message: "Use async version instead")
     func register(email: String, password: String, completion: @escaping (AppError?) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await register(email: email, password: password)
+                try await self.register(email: email, password: password)
                 completion(nil)
             } catch {
                 completion(error as? AppError)
@@ -122,9 +123,10 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
      */
     @available(*, deprecated, message: "Use async version instead")
     func login(email: String, password: String, rememberMe: Bool, completion: @escaping (AppError?) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await login(email: email, password: password, rememberMe: rememberMe)
+                try await self.login(email: email, password: password, rememberMe: rememberMe)
                 completion(nil)
             } catch {
                 completion(error as? AppError)
@@ -157,9 +159,10 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
      */
     @available(*, deprecated, message: "Use async version instead")
     func signOut(completion: @escaping (AppError?) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await signOut()
+                try await self.signOut()
                 completion(nil)
             } catch {
                 completion(error as? AppError)
@@ -192,9 +195,10 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
      */
     @available(*, deprecated, message: "Use async version instead")
     func resetPassword(email: String, completion: @escaping (AppError?) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await resetPassword(email: email)
+                try await self.resetPassword(email: email)
                 completion(nil)
             } catch {
                 completion(error as? AppError)
@@ -212,9 +216,10 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
      */
     @available(*, deprecated, message: "Use async version instead")
     func updateEmail(newEmail: String, completion: @escaping (AppError?) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await updateEmail(newEmail)
+                try await self.updateEmail(newEmail)
                 completion(nil)
             } catch {
                 completion(error as? AppError)
@@ -249,9 +254,10 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
      */
     @available(*, deprecated, message: "Use async version instead")
     func updatePassword(newPassword: String, completion: @escaping (AppError?) -> Void) {
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
-                try await updatePassword(newPassword)
+                try await self.updatePassword(newPassword)
                 completion(nil)
             } catch {
                 completion(error as? AppError)

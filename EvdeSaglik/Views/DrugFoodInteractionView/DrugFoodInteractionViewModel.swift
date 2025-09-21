@@ -29,7 +29,8 @@ final class DrugFoodInteractionViewModel: BaseViewModel {
         errorMessage = nil
         interactionResult = ""
         
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 let userSummary = userManager.generateUserSummaryPrompt()
                 let systemPersona = NSLocalizedString("DrugFoodInteraction.SystemPersona", comment: "")
@@ -75,7 +76,8 @@ final class DrugFoodInteractionViewModel: BaseViewModel {
         )
         
         // ✅ YENİ: Use async/await instead of completion handler
-        Task {
+        Task { [weak self] in
+            guard let self = self else { return }
             do {
                 try await firestoreManager.addDocument(to: "drugFoodInteractions", object: interactionModel)
                 await MainActor.run {
