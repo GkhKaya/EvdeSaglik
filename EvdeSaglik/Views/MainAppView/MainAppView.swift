@@ -27,18 +27,30 @@ struct MainAppView: View {
         NavigationView {
             ScrollView {
                 VStack(spacing: ResponsivePadding.medium) {
-                    // Search Bar (now triggers chatbot)
-                    CustomTextField(
-                        title: NSLocalizedString("MainApp.SearchBar.Title", comment: "Search bar title"),
-                        placeholder: NSLocalizedString("MainApp.SearchBar.Placeholder", comment: "Search bar placeholder"),
-                        icon: "magnifyingglass",
-                        text: $searchQuery,
-                        onIconTap: {
-                            showingChatbot = true
+                    // Search Bar as button (keeps field look)
+                    VStack(alignment: .leading, spacing: ResponsivePadding.xSmall) {
+                        Text(NSLocalizedString("MainApp.SearchBar.Title", comment: "Search bar title"))
+                            .font(.captionResponsive)
+                            .foregroundStyle(.secondary)
+                        Button(action: { showingChatbot = true }) {
+                            HStack(spacing: ResponsivePadding.small) {
+                                Image(systemName: "magnifyingglass")
+                                    .font(.bodyResponsive)
+                                    .foregroundStyle(.secondary)
+                                Text(NSLocalizedString("MainApp.SearchBar.Placeholder", comment: "Search bar placeholder"))
+                                    .font(.bodyResponsive)
+                                    .foregroundStyle(Color(.placeholderText))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .padding(.vertical, ResponsivePadding.medium)
+                            .padding(.horizontal, ResponsivePadding.medium)
+                            .background(
+                                RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
+                                    .fill(Color(.systemBackground))
+                                    .shadow(color: Color(.systemGray).opacity(0.1), radius: 4, x: 0, y: 2)
+                            )
                         }
-                    )
-                    .onTapGesture {
-                        showingChatbot = true // textfield'a dokununca da aç
+                        .buttonStyle(PlainButtonStyle())
                     }
                     .padding(.horizontal, ResponsivePadding.large)
                     
