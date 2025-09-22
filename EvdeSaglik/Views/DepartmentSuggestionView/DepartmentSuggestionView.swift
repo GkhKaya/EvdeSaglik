@@ -107,6 +107,13 @@ struct DepartmentSuggestionView: View {
             }
         }
         .messageDisplay(for: viewModel)
+        .alert(NSLocalizedString("DepartmentSuggestion.SaveSuccess", comment: ""), isPresented: $viewModel.showSuccessAlert) {
+            Button(NSLocalizedString("Common.OK", comment: "")) {
+                viewModel.showSuccessAlert = false
+            }
+        } message: {
+            Text(NSLocalizedString("DepartmentSuggestion.SaveSuccessMessage", comment: ""))
+        }
     }
     
     private func submit() {

@@ -60,6 +60,9 @@ class BaseViewModel: ObservableObject {
     /// Success message to display to the user (for operations like save, update, etc.)
     @Published var successMessage: String? = nil
     
+    /// Flag to show success alert dialog
+    @Published var showSuccessAlert: Bool = false
+    
     // MARK: - Error Handling
     
     /// Handles errors in a standardized way across all ViewModels
@@ -208,6 +211,7 @@ extension BaseViewModel {
             self.successMessage = message
             self.isLoading = false
             self.errorMessage = nil
+            self.showSuccessAlert = true
         }
     }
     

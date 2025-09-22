@@ -199,6 +199,13 @@ struct DiseasePredictionView: View {
                 }
             }
         }
+        .alert(NSLocalizedString("DiseasePrediction.SaveSuccess", comment: ""), isPresented: $viewModel.showSuccessAlert) {
+            Button(NSLocalizedString("Common.OK", comment: "")) {
+                viewModel.showSuccessAlert = false
+            }
+        } message: {
+            Text(NSLocalizedString("DiseasePrediction.SaveSuccessMessage", comment: ""))
+        }
     }
     
     private func submit() {

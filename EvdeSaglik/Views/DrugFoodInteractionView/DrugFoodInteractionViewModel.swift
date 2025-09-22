@@ -106,7 +106,7 @@ final class DrugFoodInteractionViewModel: BaseViewModel {
     private func cleanMarkdownText(_ text: String) -> String {
         var cleanedText = text
         
-        // Remove markdown headers (# ## ###)
+        // Remove markdown headers (# ## ### #### ##### ######)
         cleanedText = cleanedText.replacingOccurrences(of: #"^#{1,6}\s+"#, with: "", options: .regularExpression)
         
         // Remove bold/italic markdown (**text** or *text*)
@@ -115,7 +115,7 @@ final class DrugFoodInteractionViewModel: BaseViewModel {
         // Remove markdown links [text](url)
         cleanedText = cleanedText.replacingOccurrences(of: #"\[([^\]]+)\]\([^)]+\)"#, with: "$1", options: .regularExpression)
         
-        // Remove markdown lists (- item or * item)
+        // Remove markdown lists (- item or * item) and replace with bullet points
         cleanedText = cleanedText.replacingOccurrences(of: #"^[\s]*[-*]\s+"#, with: "• ", options: .regularExpression)
         
         // Remove markdown code blocks ```
@@ -124,7 +124,11 @@ final class DrugFoodInteractionViewModel: BaseViewModel {
         // Remove inline code `code`
         cleanedText = cleanedText.replacingOccurrences(of: #"`([^`]+)`"#, with: "$1", options: .regularExpression)
         
-        // Clean up extra whitespace
+        // Remove any remaining # symbols that might be standalone
+        cleanedText = cleanedText.replacingOccurrences(of: #"#+"#, with: "", options: .regularExpression)
+        
+        // Clean up extra whitespace and newlines
+        cleanedText = cleanedText.replacingOccurrences(of: #"\n\s*\n\s*\n"#, with: "\n\n", options: .regularExpression)
         cleanedText = cleanedText.replacingOccurrences(of: #"\n\s*\n"#, with: "\n\n", options: .regularExpression)
         cleanedText = cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
         

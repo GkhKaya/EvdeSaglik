@@ -21,6 +21,9 @@ struct ProfileView: View {
     @State private var showingNaturalSolutionHistory = false
     @State private var showingDrugFoodInteractionHistory = false
     
+    // About App state
+    @State private var showingAboutApp = false
+    
     init(authManager: FirebaseAuthManager, firestoreManager: FirestoreManager) {
         self._viewModel = StateObject(wrappedValue: ProfileViewModel(authManager: authManager, firestoreManager: firestoreManager))
     }
@@ -47,6 +50,9 @@ struct ProfileView: View {
                     
                     // Account Settings Section
                     AccountSettingsSection(viewModel: viewModel)
+                    
+                    // About App Section
+                    AboutAppSection(showingAboutApp: $showingAboutApp)
                     
                     // Danger Zone Section
                     DangerZoneSection(viewModel: viewModel)
@@ -89,9 +95,12 @@ struct ProfileView: View {
                 .sheet(isPresented: $showingNaturalSolutionHistory) {
                     NaturalSolutionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
                 }
-                .sheet(isPresented: $showingDrugFoodInteractionHistory) {
-                    DrugFoodInteractionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
-                }
+            .sheet(isPresented: $showingDrugFoodInteractionHistory) {
+                DrugFoodInteractionHistoryView(firestoreManager: firestoreManager, authManager: authManager)
+            }
+            .sheet(isPresented: $showingAboutApp) {
+                AboutAppView()
+            }
             .alert(NSLocalizedString("Profile.Alert.DeleteAccount", comment: ""), isPresented: $viewModel.showingDeleteAccount) {
                 Button(NSLocalizedString("Profile.Alert.Cancel", comment: ""), role: .cancel) { }
                 Button(NSLocalizedString("Profile.Alert.Delete", comment: ""), role: .destructive) {

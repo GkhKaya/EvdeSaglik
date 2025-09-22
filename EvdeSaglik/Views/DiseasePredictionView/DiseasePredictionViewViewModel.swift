@@ -91,30 +91,132 @@ final class DiseasePredictionViewViewModel: BaseViewModel {
     }
 
     private func parseResults(from response: String) -> [DiseasePredictionResult] {
+        print("🔍 Parsing DiseasePrediction response:")
+        print("Response: \(response)")
+        
         // Use generic parser first
         struct Item: Codable { let disease: String; let confidence: Double; let description: String }
         if let items: [Item] = AIResponseParser.decodeJSONArray(from: response, as: [Item].self) {
+            print("✅ JSON parsing successful: \(items)")
             return items.map { DiseasePredictionResult(diseaseName: $0.disease, confidence: max(0, min(100, $0.confidence)), description: $0.description) }
         }
+        
+        // Try alternative JSON structure
+        struct AltItem: Codable { let name: String; let confidence: Double; let description: String }
+        if let items: [AltItem] = AIResponseParser.decodeJSONArray(from: response, as: [AltItem].self) {
+            print("✅ Alternative JSON parsing successful: \(items)")
+            return items.map { DiseasePredictionResult(diseaseName: $0.name, confidence: max(0, min(100, $0.confidence)), description: $0.description) }
+        }
+        // Try Turkish field names with diacritics and percent strings
+        struct TrItem: Decodable {
+            let name: String?
+            let confidence: Double?
+            let description: String?
+            enum CodingKeys: String, CodingKey {
+                case hastalik
+                case ad
+                case isim
+                case guvenYuzdesi
+                case guven
+                case yuzde
+                case aciklama
+            }
+            init(from decoder: Decoder) throws {
+                let c = try decoder.container(keyedBy: CodingKeys.self)
+                self.name = (try? c.decode(String.self, forKey: .hastalik)) ??
+                            (try? c.decode(String.self, forKey: .ad)) ??
+                            (try? c.decode(String.self, forKey: .isim))
+                if let d = try? c.decode(Double.self, forKey: .guvenYuzdesi) {
+                    self.confidence = d
+                } else if let d = try? c.decode(Double.self, forKey: .guven) {
+                    self.confidence = d
+                } else if let d = try? c.decode(Double.self, forKey: .yuzde) {
+                    self.confidence = d
+                } else if let s = try? c.decode(String.self, forKey: .guvenYuzdesi) {
+                    self.confidence = Double(s.replacingOccurrences(of: "%", with: "").trimmingCharacters(in: .whitespaces))
+                } else if let s = try? c.decode(String.self, forKey: .guven) {
+                    self.confidence = Double(s.replacingOccurrences(of: "%", with: "").trimmingCharacters(in: .whitespaces))
+                } else if let s = try? c.decode(String.self, forKey: .yuzde) {
+                    self.confidence = Double(s.replacingOccurrences(of: "%", with: "").trimmingCharacters(in: .whitespaces))
+                } else {
+                    self.confidence = nil
+                }
+                self.description = (try? c.decode(String.self, forKey: .aciklama))
+            }
+        }
+        if let items: [TrItem] = AIResponseParser.decodeJSONArray(from: response, as: [TrItem].self) {
+            print("✅ Turkish JSON parsing successful: \(items)")
+            return items.compactMap {
+                guard let n = $0.name, let c = $0.confidence else { return nil }
+                return DiseasePredictionResult(diseaseName: n, confidence: max(0, min(100, c)), description: $0.description ?? "")
+            }
+        }
+        
         // Heuristic: lines like "Migraine - 72% - Severe headache condition"
         var results: [DiseasePredictionResult] = []
         let lines = response.components(separatedBy: "\n").map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        let pattern = #"^(.+?)\s*[-: ]\s*(\d{1,3})%\s*[-: ]\s*(.+)$"#
-        let regex = try? NSRegularExpression(pattern: pattern)
+        
+        // Multiple patterns to try (EN/TR, normal and reversed)
+        let patterns = [
+            #"^(.+?)\s*[-:]\s*(\d{1,3})%\s*[-:]\s*(.+)$"#,  // "Migraine - 72% - Description"
+            #"^(.+?)\s*[-:]\s*(\d{1,3})%\s*(.+)$"#,         // "Migraine - 72% Description"
+            #"^(.+?)\s*\((\d{1,3})%\)\s*[-:]\s*(.+)$"#,     // "Migraine (72%) - Description"
+            #"^(.+?)\s*\((\d{1,3})%\)\s*(.+)$"#,            // "Migraine (72%) Description"
+            #"(?i)^g[üu]ven\s*y[üu]zdesi\s*[:\-]?\s*(\d{1,3})%?.*?[:\-]\s*(.+)$"#, // "Güven yüzdesi: 72% - Migren"
+            #"(?i)^confidence\s*[:\-]?\s*(\d{1,3})%?.*?[:\-]\s*(.+)$"#             // "Confidence: 72% - Migraine"
+        ]
+        
         for line in lines {
-            guard let regex = regex else { continue }
-            let range = NSRange(location: 0, length: line.utf16.count)
-            if let match = regex.firstMatch(in: line, options: [], range: range), match.numberOfRanges == 4 {
-                if let diseaseRange = Range(match.range(at: 1), in: line), 
-                   let confRange = Range(match.range(at: 2), in: line),
-                   let descRange = Range(match.range(at: 3), in: line) {
-                    let name = String(line[diseaseRange]).trimmingCharacters(in: .whitespaces)
-                    let conf = Double(line[confRange]) ?? 0
-                    let desc = String(line[descRange]).trimmingCharacters(in: .whitespaces)
-                    results.append(DiseasePredictionResult(diseaseName: name, confidence: max(0, min(100, conf)), description: desc))
+            if line.isEmpty { continue }
+            
+            for (idx, pattern) in patterns.enumerated() {
+                if let regex = try? NSRegularExpression(pattern: pattern) {
+                    let range = NSRange(location: 0, length: line.utf16.count)
+                    if let match = regex.firstMatch(in: line, options: [], range: range) {
+                        var name: String?
+                        var confString: String?
+                        var desc: String?
+                        if idx <= 3 { // normal patterns (name, conf, desc)
+                            if match.numberOfRanges >= 4,
+                               let diseaseRange = Range(match.range(at: 1), in: line),
+                               let confRange = Range(match.range(at: 2), in: line),
+                               let descRange = Range(match.range(at: 3), in: line) {
+                                name = String(line[diseaseRange]).trimmingCharacters(in: .whitespaces)
+                                confString = String(line[confRange])
+                                desc = String(line[descRange]).trimmingCharacters(in: .whitespaces)
+                            }
+                        } else { // reversed patterns (conf, name) without explicit desc
+                            if match.numberOfRanges >= 3,
+                               let confRange = Range(match.range(at: 1), in: line),
+                               let diseaseRange = Range(match.range(at: 2), in: line) {
+                                name = String(line[diseaseRange]).trimmingCharacters(in: .whitespaces)
+                                confString = String(line[confRange])
+                                // Try to capture description after a second '-' or ':' if present
+                                if let range = line.range(of: " - ") ?? line.range(of: ": ") {
+                                    let after = line[range.upperBound...].trimmingCharacters(in: .whitespaces)
+                                    desc = after.isEmpty ? nil : after
+                                }
+                            }
+                        }
+                        if var n = name, let confStr = confString, let conf = Double(confStr) {
+                            let lower = n.lowercased()
+                            if lower.contains("güven yüzdesi") || lower.contains("guven yuzdesi") || lower.contains("confidence") {
+                                if let split = line.split(separator: "-").last ?? line.split(separator: ":").last {
+                                    n = String(split).trimmingCharacters(in: .whitespaces)
+                                }
+                            }
+                            let descriptionText = desc ?? ""
+                            if !n.isEmpty && !n.lowercased().contains("güven") {
+                                results.append(DiseasePredictionResult(diseaseName: n, confidence: max(0, min(100, conf)), description: descriptionText))
+                                break
+                            }
+                        }
+                    }
                 }
             }
         }
+        
+        print("✅ Heuristic parsing result: \(results)")
         return results
     }
 

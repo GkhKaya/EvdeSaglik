@@ -124,6 +124,13 @@ struct HomeSolutionView: View {
                 }
             }
         }
+        .alert(NSLocalizedString("HomeSolution.SaveSuccess", comment: ""), isPresented: $viewModel.showSuccessAlert) {
+            Button(NSLocalizedString("Common.OK", comment: "")) {
+                viewModel.showSuccessAlert = false
+            }
+        } message: {
+            Text(NSLocalizedString("HomeSolution.SaveSuccessMessage", comment: ""))
+        }
     }
 
     private func submit() {

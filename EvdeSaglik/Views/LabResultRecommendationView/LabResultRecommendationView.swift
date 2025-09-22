@@ -121,6 +121,103 @@ struct LabResultRecommendationView: View {
                         Text(error)
                             .foregroundStyle(.red)
                             .padding(.horizontal, ResponsivePadding.large)
+                    } else if !viewModel.abnormalItems.isEmpty {
+                        // Abnormal items pretty rendering
+                        VStack(alignment: .leading, spacing: ResponsivePadding.medium) {
+                            ForEach(viewModel.abnormalItems) { item in
+                                VStack(alignment: .leading, spacing: ResponsivePadding.small) {
+                                    // Test name
+                                    HStack(alignment: .firstTextBaseline) {
+                                        Image(systemName: "cross.case.fill")
+                                            .foregroundStyle(.red)
+                                        Text(item.test)
+                                            .font(.headlineResponsive)
+                                            .fontWeight(.semibold)
+                                    }
+                                    .padding(.bottom, ResponsivePadding.xSmall)
+
+                                    // Quick facts row
+                                    HStack(spacing: ResponsivePadding.small) {
+                                        Label("\(NSLocalizedString("LabResult.Label.Value", comment: "")): \(item.value)", systemImage: "number")
+                                            .font(.captionResponsive)
+                                            .padding(.horizontal, 10)
+                                            .padding(.vertical, 6)
+                                            .background(Capsule().fill(Color.blue.opacity(0.1)))
+                                        Label("\(NSLocalizedString("LabResult.Label.Unit", comment: "")): \(item.unit)", systemImage: "scalemass")
+                                            .font(.captionResponsive)
+                                            .padding(.horizontal, 10)
+                                            .padding(.vertical, 6)
+                                            .background(Capsule().fill(Color.teal.opacity(0.1)))
+                                        Label("\(NSLocalizedString("LabResult.Label.Reference", comment: "")): \(item.referenceRange)", systemImage: "scope")
+                                            .font(.captionResponsive)
+                                            .padding(.horizontal, 10)
+                                            .padding(.vertical, 6)
+                                            .background(Capsule().fill(Color.orange.opacity(0.1)))
+                                    }
+
+                                    Divider()
+
+                                    // Remedy
+                                    VStack(alignment: .leading, spacing: ResponsivePadding.xSmall) {
+                                        HStack(spacing: 6) {
+                                            Image(systemName: "leaf.fill").foregroundStyle(.green)
+                                            Text(NSLocalizedString("LabResult.Label.Remedy", comment: ""))
+                                                .font(.subheadlineResponsive)
+                                                .fontWeight(.semibold)
+                                        }
+                                        Text(item.remedy)
+                                            .font(.bodyResponsive)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+
+                                    // Doctor advice
+                                    VStack(alignment: .leading, spacing: ResponsivePadding.xSmall) {
+                                        HStack(spacing: 6) {
+                                            Image(systemName: "stethoscope").foregroundStyle(.purple)
+                                            Text(NSLocalizedString("LabResult.Label.Doctor", comment: ""))
+                                                .font(.subheadlineResponsive)
+                                                .fontWeight(.semibold)
+                                        }
+                                        Text(item.doctorAdvice)
+                                            .font(.bodyResponsive)
+                                            .fixedSize(horizontal: false, vertical: true)
+                                    }
+                                }
+                                .padding(ResponsivePadding.medium)
+                                .background(
+                                    RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
+                                        .fill(Color(.systemBackground))
+                                        .shadow(color: Color(.systemGray).opacity(0.08), radius: 8, x: 0, y: 4)
+                                )
+                            }
+
+                            // Save button
+                            Button(action: saveToHistory) {
+                                HStack {
+                                    if viewModel.isSaving { ProgressView().scaleEffect(0.8) }
+                                    Image(systemName: "square.and.arrow.down")
+                                    Text(NSLocalizedString("LabResult.Save", comment: ""))
+                                        .font(.bodyResponsive)
+                                        .fontWeight(.medium)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(ResponsivePadding.medium)
+                                .background(
+                                    RoundedRectangle(cornerRadius: ResponsiveRadius.medium)
+                                        .fill(Color(.systemGray6))
+                                )
+                                .foregroundStyle(.primary)
+                            }
+                            .disabled(viewModel.isSaving)
+
+                            if let saveMsg = viewModel.saveMessage {
+                                Text(saveMsg)
+                                    .font(.captionResponsive)
+                                    .foregroundStyle(saveMsg.contains("başarı") ? .green : .red)
+                                    .padding(.top, ResponsivePadding.small)
+                            }
+                        }
+                        .padding(.horizontal, ResponsivePadding.large)
                     } else if !viewModel.sections.isEmpty {
                         VStack(alignment: .leading, spacing: ResponsivePadding.small) {
                             ForEach(viewModel.sections) { section in
@@ -190,11 +287,13 @@ struct LabResultRecommendationView: View {
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                if selectedPDFDocument != nil && viewModel.extractedTables.isEmpty {
+                if selectedPDFDocument != nil {
                     Button(action: extractAndAnalyze) {
                         HStack {
                             if viewModel.isLoading { ProgressView() }
-                            Text(NSLocalizedString("LabResult.Analyze", comment: ""))
+                            Text(viewModel.extractedTables.isEmpty ? 
+                                 NSLocalizedString("LabResult.Analyze", comment: "") : 
+                                 NSLocalizedString("LabResult.Reanalyze", comment: ""))
                                 .font(.bodyResponsive)
                                 .fontWeight(.semibold)
                         }
@@ -220,8 +319,16 @@ struct LabResultRecommendationView: View {
             }
             .sheet(isPresented: $showingDocumentPicker) {
                 DocumentPicker { url in
+                    let accessed = url.startAccessingSecurityScopedResource()
+                    defer { if accessed { url.stopAccessingSecurityScopedResource() } }
                     if let pdfDoc = PDFDocument(url: url) {
+                        // Reset prior state
+                        viewModel.extractedTables = []
+                        viewModel.sections = []
+                        viewModel.analysisResult = ""
                         selectedPDFDocument = pdfDoc
+                    } else {
+                        viewModel.showError(NSLocalizedString("Deepseek.Error.InvalidResponse", comment: ""))
                     }
                 }
             }
@@ -231,6 +338,7 @@ struct LabResultRecommendationView: View {
     private func extractAndAnalyze() {
         guard let pdfDoc = selectedPDFDocument else { return }
         
+        viewModel.setLoading(true)
         Task {
             let tables = await viewModel.extractTablesFromPDF(pdfDoc)
             await MainActor.run {

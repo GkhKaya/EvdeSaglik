@@ -16,10 +16,21 @@ struct LabAnalysisSection: Identifiable, Equatable {
     let lines: [String]
 }
 
+struct LabAbnormalItem: Identifiable, Equatable {
+    let id = UUID()
+    let test: String
+    let value: Double
+    let unit: String
+    let referenceRange: String
+    let remedy: String
+    let doctorAdvice: String
+}
+
 final class LabResultRecommendationViewViewModel: BaseViewModel {
     @Published var extractedTables: [[String]] = []
     @Published var analysisResult: String = ""
     @Published var sections: [LabAnalysisSection] = []
+    @Published var abnormalItems: [LabAbnormalItem] = []
     @Published var isSaving: Bool = false
     @Published var saveMessage: String? = nil
     
@@ -165,15 +176,37 @@ final class LabResultRecommendationViewViewModel: BaseViewModel {
     
     @MainActor
     func analyzeLabResults(userSummary: String, tables: [[String]]) async {
+        print("🔍 Analyzing lab results with \(tables.count) table rows")
+        print("Tables: \(tables)")
+        
         performAsyncOperation(
             operation: {
                 let messages = self.buildPrompt(userSummary: userSummary, tables: tables)
+                print("📤 Sending prompt to AI: \(messages)")
                 let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
-                // Clean basic markdown emphasis but preserve numbered structure
-                let cleaned = response
+                print("📥 Received AI response: \(response)")
+                // Try to decode JSON array of abnormal items
+                struct AbnormalItemDTO: Decodable { let test: String; let value: Double; let unit: String; let referenceRange: String; let isAbnormal: Bool; let remedy: String; let doctorAdvice: String }
+                if let items: [AbnormalItemDTO] = AIResponseParser.decodeJSONArray(from: response, as: [AbnormalItemDTO].self) {
+                    let mapped = items.filter { $0.isAbnormal }.map {
+                        LabAbnormalItem(test: $0.test, value: $0.value, unit: $0.unit, referenceRange: $0.referenceRange, remedy: $0.remedy, doctorAdvice: $0.doctorAdvice)
+                    }
+                    self.abnormalItems = mapped
+                    // Also produce a plain text for share/copy if needed
+                    let lines: [String] = mapped.map { item in
+                        "\(item.test): \(item.value) \(item.unit) (\(item.referenceRange))"
+                    }
+                    let text = lines.joined(separator: "\n")
+                    let section = LabAnalysisSection(title: NSLocalizedString("LabResult.Title", comment: ""), lines: lines)
+                    return (text, [section])
+                }
+                // Fallback to previous parsing if JSON not returned
+                var cleaned = response
                     .replacingOccurrences(of: "**", with: "")
                     .replacingOccurrences(of: "*", with: "")
                     .trimmingCharacters(in: .whitespacesAndNewlines)
+                cleaned = cleaned.replacingOccurrences(of: #"^#{1,6}\s+"#, with: "", options: .regularExpression)
+                cleaned = cleaned.replacingOccurrences(of: #"#"#, with: "", options: .regularExpression)
                 let sections = Self.parseAnalysisIntoSections(cleaned)
                 return (cleaned, sections)
             },

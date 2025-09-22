@@ -37,14 +37,8 @@ final class HomeSolutionViewViewModel: BaseViewModel {
             operation: {
                 let messages = self.buildPrompt(userSummary: userSummary)
                 let response = try await OpenRouterDeepseekManager.shared.performChatRequest(messages: messages)
-                // Clean markdown formatting
-                let cleaned = response
-                    .replacingOccurrences(of: "**", with: "")
-                    .replacingOccurrences(of: "*", with: "")
-                    .replacingOccurrences(of: "###", with: "")
-                    .replacingOccurrences(of: "##", with: "")
-                    .replacingOccurrences(of: "#", with: "")
-                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                // Clean markdown formatting more thoroughly
+                let cleaned = self.cleanMarkdownText(response)
                 return cleaned
             },
             context: "HomeSolutionViewViewModel.requestHomeSolutions",
@@ -77,6 +71,38 @@ final class HomeSolutionViewViewModel: BaseViewModel {
                 self?.showSuccess(NSLocalizedString("HomeSolution.SaveSuccess", comment: ""))
             }
         )
+    }
+    
+    private func cleanMarkdownText(_ text: String) -> String {
+        var cleanedText = text
+        
+        // Remove markdown headers (# ## ### #### ##### ######)
+        cleanedText = cleanedText.replacingOccurrences(of: #"^#{1,6}\s+"#, with: "", options: .regularExpression)
+        
+        // Remove bold/italic markdown (**text** or *text*)
+        cleanedText = cleanedText.replacingOccurrences(of: #"\*{1,2}([^*]+)\*{1,2}"#, with: "$1", options: .regularExpression)
+        
+        // Remove markdown links [text](url)
+        cleanedText = cleanedText.replacingOccurrences(of: #"\[([^\]]+)\]\([^)]+\)"#, with: "$1", options: .regularExpression)
+        
+        // Remove markdown lists (- item or * item) and replace with bullet points
+        cleanedText = cleanedText.replacingOccurrences(of: #"^[\s]*[-*]\s+"#, with: "• ", options: .regularExpression)
+        
+        // Remove markdown code blocks ```
+        cleanedText = cleanedText.replacingOccurrences(of: #"```[^`]*```"#, with: "", options: .regularExpression)
+        
+        // Remove inline code `code`
+        cleanedText = cleanedText.replacingOccurrences(of: #"`([^`]+)`"#, with: "$1", options: .regularExpression)
+        
+        // Remove any remaining # symbols that might be standalone
+        cleanedText = cleanedText.replacingOccurrences(of: #"#+"#, with: "", options: .regularExpression)
+        
+        // Clean up extra whitespace and newlines
+        cleanedText = cleanedText.replacingOccurrences(of: #"\n\s*\n\s*\n"#, with: "\n\n", options: .regularExpression)
+        cleanedText = cleanedText.replacingOccurrences(of: #"\n\s*\n"#, with: "\n\n", options: .regularExpression)
+        cleanedText = cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        return cleanedText
     }
 }
 

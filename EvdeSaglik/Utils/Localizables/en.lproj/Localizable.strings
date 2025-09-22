@@ -6,7 +6,25 @@
   
 */
 
-// Profile
+// About App
+"AboutApp.Title" = "About App";
+"AboutApp.AppName" = "Evde Sağlık";
+"AboutApp.Version" = "Version 1.0.0";
+"AboutApp.Developer.Title" = "Developer Information";
+"AboutApp.Developer.Name" = "Gökhan Kaya";
+"AboutApp.Developer.Role" = "Developer";
+"AboutApp.Developer.Website" = "Website";
+"AboutApp.Purpose.Title" = "App Purpose";
+"AboutApp.Purpose.Description" = "This application is an AI-powered health app designed to reduce hospital overcrowding by providing natural and home-based solutions for people's illnesses, allowing them to record these solutions, and offering personalized answers to all kinds of health-related questions.";
+
+// Profile About App
+"Profile.Section.AboutApp" = "Application";
+"Profile.Item.AboutApp" = "About App";
+"Profile.Item.AboutAppValue" = "App information and developer details";
+
+// Common
+"Common.Close" = "Close";
+"Common.Loading" = "Loading...";
 "Profile.Title" = "Profile";
 "Profile.Alert.DeleteAccount" = "Delete Account";
 "Profile.Alert.Cancel" = "Cancel";
@@ -265,6 +283,7 @@
 "DepartmentSuggestion.Submit" = "Get Suggestions";
 "DepartmentSuggestion.Submitting" = "Getting suggestions...";
 "DepartmentSuggestion.Save" = "Save to History";
+"DepartmentSuggestion.SaveSuccess" = "Success";
 "DepartmentSuggestion.SaveSuccessMessage" = "Department suggestion saved successfully";
 
 // Disease Prediction
@@ -276,6 +295,7 @@
 "DiseasePrediction.Submit" = "Get Predictions";
 "DiseasePrediction.Submitting" = "Getting predictions...";
 "DiseasePrediction.Save" = "Save to History";
+"DiseasePrediction.SaveSuccess" = "Success";
 "DiseasePrediction.SaveSuccessMessage" = "Disease prediction saved successfully";
 
 // Home Solution
@@ -286,6 +306,7 @@
 "HomeSolution.Submit" = "Get Solutions";
 "HomeSolution.Submitting" = "Getting solutions...";
 "HomeSolution.Save" = "Save to History";
+"HomeSolution.SaveSuccess" = "Success";
 "HomeSolution.SaveSuccessMessage" = "Home solution saved successfully";
 
 // Lab Result Recommendation
@@ -299,6 +320,19 @@
 "LabResult.Analyzing" = "Analyzing...";
 "LabResult.Save" = "Save to History";
 "LabResult.SaveSuccessMessage" = "Blood test analysis saved successfully";
+"LabResult.UploadDescription" = "Select your PDF file";
+"LabResult.PDFSelected" = "PDF Selected";
+"LabResult.Pages" = "pages";
+"LabResult.TablesExtracted" = "Table data extracted";
+"LabResult.SystemPersona" = "You are a medical AI assistant specialized in analyzing blood test results.";
+"LabResult.SystemFormat" = "ONLY report values that are outside the normal reference range (abnormal). RETURN ONLY a JSON ARRAY with items of: {\n  \"test\": string,\n  \"value\": number,\n  \"unit\": string,\n  \"referenceRange\": string,\n  \"isAbnormal\": boolean,\n  \"remedy\": string,\n  \"doctorAdvice\": string\n}. Do not include normal values.";
+"LabResult.Label.Value" = "Value";
+"LabResult.Label.Unit" = "Unit";
+"LabResult.Label.Reference" = "Reference";
+"LabResult.Label.Remedy" = "Natural remedy";
+"LabResult.Label.Doctor" = "When to see a doctor";
+"LabResult.UserPrompt" = "Blood test data:\n%@";
+"LabResult.Reanalyze" = "Re-analyze";
 
 // Natural Solutions
 "NaturalSolutions.Title" = "Natural Solutions";
@@ -371,8 +405,13 @@
 "DepartmentSuggestion.FeelingsPlaceholder" = "Describe your current feelings";
 "DepartmentSuggestion.OtherTitle" = "Other Symptoms";
 "DepartmentSuggestion.Confidence" = "Confidence: %d%%";
+// Department Suggestion System Prompts
 "DepartmentSuggestion.SystemPersona" = "You are a medical AI assistant specialized in suggesting appropriate medical departments based on symptoms.";
-"DepartmentSuggestion.SystemFormat" = "Please suggest the most appropriate medical departments based on the symptoms provided. Format your response as a JSON array with department names and confidence percentages.";
+"DepartmentSuggestion.SystemFormat" = "Please suggest the most appropriate medical departments based on the symptoms provided. RETURN ONLY a JSON ARRAY in the following schema. Each item must include: {\n  \"department\": string,\n  \"confidence\": number (0-100)\n}. Do NOT include percent sign (%); \"confidence\" must be numeric.";
+"DepartmentSuggestion.UserSymptoms" = "Selected symptoms: %@";
+"DepartmentSuggestion.UserOtherSymptoms" = "Other symptoms: %@";
+"DepartmentSuggestion.UserFeelings" = "Current feelings: %@";
+"DepartmentSuggestion.DefaultUserPrompt" = "Please analyze the provided symptoms and suggest appropriate medical departments.";
 
 // Disease Prediction Symptoms
 "DiseasePrediction.Symptom.Headache" = "Headache";
@@ -388,8 +427,25 @@
 "DiseasePrediction.DurationTitle" = "Duration";
 "DiseasePrediction.DurationPlaceholder" = "How long have you had these symptoms?";
 "DiseasePrediction.Confidence" = "Confidence: %d%%";
+// Disease Prediction System Prompts
 "DiseasePrediction.SystemPersona" = "You are a medical AI assistant specialized in disease prediction based on symptoms.";
-"DiseasePrediction.SystemFormat" = "Please predict possible diseases based on the symptoms provided. Format your response as a JSON array with disease names, confidence percentages, and brief descriptions.";
+"DiseasePrediction.SystemFormat" = "Please predict possible diseases based on the symptoms provided. RETURN ONLY a JSON ARRAY in the following schema. Each item must include: {\n  \"disease\": string,\n  \"confidence\": number (0-100),\n  \"description\": string\n}. Do NOT include percent sign (%); \"confidence\" must be numeric.";
+"DiseasePrediction.UserSymptoms" = "Selected symptoms: %@";
+"DiseasePrediction.UserOtherSymptoms" = "Other symptoms: %@";
+"DiseasePrediction.UserFeelings" = "Current feelings: %@";
+"DiseasePrediction.UserDuration" = "Duration: %@";
+"DiseasePrediction.DefaultUserPrompt" = "Please analyze the provided symptoms and predict possible diseases.";
+
+// Home Solution System Prompts
+"HomeSolution.SystemPersona" = "You are a medical AI assistant specialized in providing home remedies and solutions for health issues.";
+"HomeSolution.SystemFormat" = "Please provide home remedies and solutions for the health problem described. Focus on safe, natural treatments that can be done at home.";
+"HomeSolution.UserPrompt" = "Health problem: %@";
+"HomeSolution.DefaultUserPrompt" = "Please provide home remedies for common health issues.";
+
+// Drug Food Interaction System Prompts
+"DrugFoodInteraction.SystemPersona" = "You are a medical AI assistant specialized in analyzing drug-food interactions.";
+"DrugFoodInteraction.SystemFormat" = "Please analyze the interaction between the drug and food provided. Explain any potential interactions, side effects, or recommendations.";
+"DrugFoodInteraction.UserPrompt" = "Drug: %@\nFood: %@\n\nUser profile: %@";
 
 // Natural Solutions Concerns
 "NaturalSolutions.Concern.Headache" = "Headache";
