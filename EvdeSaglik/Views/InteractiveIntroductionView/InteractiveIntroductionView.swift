@@ -162,7 +162,7 @@ struct IntroductionStep: View {
                 .frame(maxWidth: .infinity)
                 
                 CustomButton(
-                    title: NSLocalizedString("Onboarding.Next", comment: "Continue button"),
+                    title: NSLocalizedString("Onboarding.Next", comment: "Next button"),
                     action: viewModel.nextStep,
                     innerPadding: ResponsivePadding.small // Smaller padding
                 )
@@ -286,13 +286,7 @@ struct WelcomeStep: View {
             
             Spacer()
             
-            // Next button
-            CustomButton(
-                title: NSLocalizedString("Onboarding.Welcome.Next", comment: "Continue button"),
-                action: viewModel.nextStep,
-                innerPadding: ResponsivePadding.small
-            )
-            .frame(maxWidth: .infinity)
+           
         }
         .padding(.horizontal, ResponsivePadding.large)
     }
@@ -310,6 +304,7 @@ struct HealthInfoStep: View {
         NSLocalizedString("Onboarding.HealthInfo.ChronicDiseases.KidneyDisease", comment: ""),
         NSLocalizedString("Onboarding.HealthInfo.ChronicDiseases.LiverDisease", comment: ""),
         NSLocalizedString("Onboarding.HealthInfo.ChronicDiseases.Thyroid", comment: ""),
+        NSLocalizedString("Onboarding.HealthInfo.ChronicDiseases.Other", comment: ""),
         NSLocalizedString("Onboarding.HealthInfo.ChronicDiseases.None", comment: "")
     ]
     

@@ -32,16 +32,15 @@ struct MultiSelectionWithCustomView: View {
                     SelectionButton(
                         title: option,
                         isSelected: selectedOptions.contains(option),
-                        action: { toggleOption(option) }
+                        action: { 
+                            toggleOption(option)
+                            // If "Other" option is selected, show custom input
+                            if option.contains("Other") || option.contains("Diğer") {
+                                showCustomInput = true
+                            }
+                        }
                     )
                 }
-                
-                // Custom option button
-                SelectionButton(
-                    title: NSLocalizedString("Onboarding.CustomOption", comment: "Custom option"),
-                    isSelected: showCustomInput,
-                    action: { showCustomInput.toggle() }
-                )
             }
             
             // Custom input field

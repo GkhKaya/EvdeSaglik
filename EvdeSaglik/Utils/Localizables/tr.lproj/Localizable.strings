@@ -142,6 +142,7 @@
 "Onboarding.HealthInfo.ChronicDiseases.KidneyDisease" = "Böbrek Hastalığı";
 "Onboarding.HealthInfo.ChronicDiseases.LiverDisease" = "Karaciğer Hastalığı";
 "Onboarding.HealthInfo.ChronicDiseases.Thyroid" = "Tiroid";
+"Onboarding.HealthInfo.ChronicDiseases.Other" = "Diğer";
 "Onboarding.HealthInfo.ChronicDiseases.None" = "Yok";
 "Onboarding.HealthInfo.Allergies" = "Alerjiler";
 "Onboarding.HealthInfo.Allergies.Medication" = "İlaç";
@@ -211,6 +212,14 @@
 "Onboarding.Summary.Sleep" = "Uyku";
 "Onboarding.Summary.Activity" = "Aktivite";
 "Onboarding.Summary.Nutrition" = "Beslenme";
+
+// Onboarding Custom Options
+"Onboarding.CustomOption" = "Özel";
+"Onboarding.CustomOptionPlaceholder" = "Özel seçenek girin";
+
+// Onboarding Add/Cancel
+"Onboarding.Add" = "Ekle";
+"Onboarding.Cancel" = "İptal";
 
 // Chatbot
 "Chatbot.Input.Placeholder" = "Mesaj yazın...";

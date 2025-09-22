@@ -142,6 +142,7 @@
 "Onboarding.HealthInfo.ChronicDiseases.KidneyDisease" = "Kidney Disease";
 "Onboarding.HealthInfo.ChronicDiseases.LiverDisease" = "Liver Disease";
 "Onboarding.HealthInfo.ChronicDiseases.Thyroid" = "Thyroid";
+"Onboarding.HealthInfo.ChronicDiseases.Other" = "Other";
 "Onboarding.HealthInfo.ChronicDiseases.None" = "None";
 "Onboarding.HealthInfo.Allergies" = "Allergies";
 "Onboarding.HealthInfo.Allergies.Medication" = "Medication";
@@ -211,6 +212,14 @@
 "Onboarding.Summary.Sleep" = "Sleep";
 "Onboarding.Summary.Activity" = "Activity";
 "Onboarding.Summary.Nutrition" = "Nutrition";
+
+// Onboarding Custom Options
+"Onboarding.CustomOption" = "Custom";
+"Onboarding.CustomOptionPlaceholder" = "Enter custom option";
+
+// Onboarding Add/Cancel
+"Onboarding.Add" = "Add";
+"Onboarding.Cancel" = "Cancel";
 
 // Chatbot
 "Chatbot.Input.Placeholder" = "Type a message...";

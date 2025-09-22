@@ -174,6 +174,8 @@ struct ProfileItemView: View {
                     .foregroundStyle(.secondary)
             }
             .padding(ResponsivePadding.medium)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
         .overlay(
