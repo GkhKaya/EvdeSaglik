@@ -16,6 +16,15 @@ struct DangerZoneSection: View {
             title: NSLocalizedString("Profile.Section.DangerZone", comment: ""),
             items: [
                 ProfileItem(
+                    title: NSLocalizedString("Profile.Item.Logout", comment: ""),
+                    value: NSLocalizedString("Profile.Item.LogoutValue", comment: ""),
+                    icon: "rectangle.portrait.and.arrow.right",
+                    action: { 
+                        Task { await viewModel.logout() }
+                    },
+                    isDestructive: false
+                ),
+                ProfileItem(
                     title: NSLocalizedString("Profile.Item.DeleteAccount", comment: ""),
                     value: NSLocalizedString("Profile.Item.DeleteAccountValue", comment: ""),
                     icon: "trash",

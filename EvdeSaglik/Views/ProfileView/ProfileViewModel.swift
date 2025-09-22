@@ -102,6 +102,20 @@ final class ProfileViewModel: BaseViewModel {
     }
     
     @MainActor
+    func logout() async {
+        performAsyncOperation(
+            operation: {
+                try await self.authManager.signOut()
+                return true
+            },
+            context: "ProfileViewModel.logout",
+            onSuccess: { [weak self] _ in
+                self?.showSuccess(NSLocalizedString("Profile.Success.LoggedOut", comment: ""))
+            }
+        )
+    }
+    
+    @MainActor
     func deleteAccount() async {
         performAsyncOperation(
             operation: {

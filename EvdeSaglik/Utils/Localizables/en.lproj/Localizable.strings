@@ -21,6 +21,8 @@
 "Profile.Item.Personalization" = "Personalization";
 "Profile.Item.PersonalizationValue" = "Customize your profile";
 "Profile.Section.DangerZone" = "Danger Zone";
+"Profile.Item.Logout" = "Logout";
+"Profile.Item.LogoutValue" = "Sign out of your account";
 "Profile.Item.DeleteAccount" = "Delete Account";
 "Profile.Item.DeleteAccountValue" = "Permanently delete your account";
 "Profile.Section.DepartmentSuggestions" = "Department Suggestions";
@@ -51,6 +53,7 @@
 "Profile.Error.EmptyEmail" = "Please enter an email address";
 "Profile.Error.InvalidEmail" = "Please enter a valid email address";
 "Profile.Success.EmailChanged" = "Email updated successfully";
+"Profile.Success.LoggedOut" = "Successfully logged out";
 "Profile.Alert.Error" = "Error";
 "Profile.Alert.Success" = "Success";
 

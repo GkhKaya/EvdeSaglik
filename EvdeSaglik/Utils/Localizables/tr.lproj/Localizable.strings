@@ -21,6 +21,8 @@
 "Profile.Item.Personalization" = "Kişiselleştirme";
 "Profile.Item.PersonalizationValue" = "Profilinizi özelleştirin";
 "Profile.Section.DangerZone" = "Tehlikeli Bölge";
+"Profile.Item.Logout" = "Çıkış Yap";
+"Profile.Item.LogoutValue" = "Hesabınızdan çıkış yapın";
 "Profile.Item.DeleteAccount" = "Hesabı Sil";
 "Profile.Item.DeleteAccountValue" = "Hesabınızı kalıcı olarak silin";
 "Profile.Section.DepartmentSuggestions" = "Bölüm Önerileri";
@@ -51,6 +53,7 @@
 "Profile.Error.EmptyEmail" = "Lütfen bir e-posta adresi girin";
 "Profile.Error.InvalidEmail" = "Lütfen geçerli bir e-posta adresi girin";
 "Profile.Success.EmailChanged" = "E-posta başarıyla güncellendi";
+"Profile.Success.LoggedOut" = "Başarıyla çıkış yapıldı";
 "Profile.Alert.Error" = "Hata";
 "Profile.Alert.Success" = "Başarılı";
 
