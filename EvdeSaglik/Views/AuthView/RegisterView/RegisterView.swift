@@ -21,7 +21,7 @@ struct RegisterView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: ResponsivePadding.large) {
                     // Header
@@ -125,10 +125,8 @@ struct RegisterView: View {
                                 .font(.bodyResponsive)
                                 .foregroundStyle(.secondary)
                             
-                            Button(action: {
-                                viewModel.navigateToLogin()
-                            }) {
-                                Text(NSLocalizedString("Register.Login", comment: "Login"))
+                            NavigationLink(destination: LoginView()) {
+                                Text(NSLocalizedString("Register.SignIn", comment: "Sign In"))
                                     .font(.bodyResponsive)
                                     .fontWeight(.medium)
                                     .foregroundStyle(.blue)
@@ -150,9 +148,6 @@ struct RegisterView: View {
                         Image(systemName: "xmark")
                     }
                 }
-            }
-            .navigationDestination(isPresented: $viewModel.shouldNavigateToLogin) {
-                LoginView()
             }
             .alert(item: $viewModel.errorMessage) { error in
                 Alert(

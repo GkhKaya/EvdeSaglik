@@ -14,7 +14,6 @@ final class RegisterViewViewModel: BaseViewModel {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
-    @Published var shouldNavigateToLogin: Bool = false
     @Published var didRegisterSuccessfully: Bool = false
     @Published var passwordStrength: PasswordStrength = .none
     
@@ -112,10 +111,6 @@ final class RegisterViewViewModel: BaseViewModel {
                 }
             }
         }
-    }
-    
-    func navigateToLogin() {
-        shouldNavigateToLogin = true
     }
     
     // MARK: - Private Methods

@@ -98,6 +98,18 @@
 "Register.ConfirmPassword" = "Confirm Password";
 "Register.ConfirmPasswordPlaceholder" = "Confirm your password";
 "Register.CreateAccount" = "Create Account";
+"Register.Register" = "Register";
+"Register.EmailHint.Invalid" = "Please enter a valid email address";
+"Register.PasswordHint.MinLength" = "At least 8 characters";
+"Register.PasswordHint.Uppercase" = "One uppercase letter";
+"Register.PasswordHint.Lowercase" = "One lowercase letter";
+"Register.PasswordHint.Number" = "One number";
+"Register.PasswordHint.SpecialCharacter" = "One special character";
+"Register.PasswordStrength" = "Password Strength";
+"Register.PasswordStrength.Weak" = "Weak";
+"Register.PasswordStrength.Medium" = "Medium";
+"Register.PasswordStrength.Strong" = "Strong";
+"Register.PasswordStrength.VeryStrong" = "Very Strong";
 "Register.AlreadyHaveAccount" = "Already have an account?";
 "Register.SignIn" = "Sign In";
 
