@@ -51,6 +51,27 @@ struct SummaryStep: View {
                     )
                 }
                 
+                // Disclaimer
+                VStack(alignment: .leading, spacing: ResponsivePadding.xSmall) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange)
+                        Text(NSLocalizedString("Onboarding.Summary.Disclaimer", comment: "Legal/medical disclaimer"))
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(ResponsivePadding.medium)
+                    .background(
+                        RoundedRectangle(cornerRadius: ResponsiveRadius.small)
+                            .fill(Color.orange.opacity(0.08))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: ResponsiveRadius.small)
+                                    .stroke(Color.orange.opacity(0.2), lineWidth: 1)
+                            )
+                    )
+                }
+                
                 Spacer(minLength: ResponsivePadding.extraLarge)
             }
             .padding(.horizontal, ResponsivePadding.large)

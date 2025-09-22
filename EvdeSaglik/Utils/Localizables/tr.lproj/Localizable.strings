@@ -350,6 +350,7 @@
 "LabResult.Save" = "Geçmişe Kaydet";
 "LabResult.SaveSuccessMessage" = "Kan tahlili analizi başarıyla kaydedildi";
 "LabResult.SaveSuccess" = "Başarılı";
+"Onboarding.Summary.Disclaimer" = "Bu uygulama bir teşhis veya tedavi aracı değildir. Tüm karar ve sorumluluk kullanıcıya aittir. En doğru değerlendirme için aile hekiminize başvurunuz.";
 "LabResult.UploadDescription" = "PDF dosyanızı seçin";
 "LabResult.PDFSelected" = "PDF Seçildi";
 "LabResult.Pages" = "sayfa";

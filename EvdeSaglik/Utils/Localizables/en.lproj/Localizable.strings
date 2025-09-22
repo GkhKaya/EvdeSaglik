@@ -350,6 +350,7 @@
 "LabResult.Save" = "Save to History";
 "LabResult.SaveSuccessMessage" = "Blood test analysis saved successfully";
 "LabResult.SaveSuccess" = "Success";
+"Onboarding.Summary.Disclaimer" = "This app does not provide diagnosis or treatment. All decisions and responsibility rest with the user. For the most accurate advice, please consult your family physician.";
 "LabResult.UploadDescription" = "Select your PDF file";
 "LabResult.PDFSelected" = "PDF Selected";
 "LabResult.Pages" = "pages";
