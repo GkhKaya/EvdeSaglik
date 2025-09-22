@@ -106,6 +106,7 @@
 "Register.PasswordHint.Number" = "One number";
 "Register.PasswordHint.SpecialCharacter" = "One special character";
 "Register.PasswordStrength" = "Password Strength";
+"Register.PasswordStrength.None" = "None";
 "Register.PasswordStrength.Weak" = "Weak";
 "Register.PasswordStrength.Medium" = "Medium";
 "Register.PasswordStrength.Strong" = "Strong";
@@ -132,6 +133,7 @@
 "Onboarding.Skip" = "Skip";
 "Onboarding.Intro.Title" = "Welcome to Evde Sağlık";
 "Onboarding.Intro.Description" = "Your personal health assistant";
+"Onboarding.Intro.Personalization" = "We would like to get to know you a bit, so all answers will be personalized for you. You can also skip this step if you wish.";
 "Onboarding.BasicInfo.Title" = "Basic Information";
 "Onboarding.BasicInfo.Description" = "Tell us about yourself";
 "Onboarding.BasicInfo.Name" = "Full Name";

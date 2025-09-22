@@ -288,9 +288,9 @@ extension BaseViewModel {
     ///   - email: Email to validate
     ///   - password: Password to validate
     ///   - confirmPassword: Password confirmation to validate
-    ///   - name: Name to validate
+    ///   - name: Name to validate (optional)
     /// - Returns: True if validation passes
-    func validateRegistrationForm(email: String, password: String, confirmPassword: String, name: String) -> Bool {
+    func validateRegistrationForm(email: String, password: String, confirmPassword: String, name: String? = nil) -> Bool {
         if let error = ValidationHelper.validateRegistrationForm(email: email, password: password, confirmPassword: confirmPassword, name: name) {
             handleValidationError(error)
             return false

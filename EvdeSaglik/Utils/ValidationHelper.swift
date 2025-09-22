@@ -141,16 +141,21 @@ final class ValidationHelper {
     ///   - email: Email to validate
     ///   - password: Password to validate
     ///   - confirmPassword: Password confirmation to validate
-    ///   - name: Name to validate
+    ///   - name: Name to validate (optional)
     /// - Returns: ValidationError if invalid, nil if valid
-    static func validateRegistrationForm(email: String, password: String, confirmPassword: String, name: String) -> ValidationError? {
-        return validateMultiple([
+    static func validateRegistrationForm(email: String, password: String, confirmPassword: String, name: String? = nil) -> ValidationError? {
+        var validations: [() -> ValidationError?] = [
             { validateEmail(email) },
             { validatePassword(password) },
             { validatePassword(confirmPassword) },
-            { validateName(name) },
             { password == confirmPassword ? nil : .invalidFormat("Password confirmation") }
-        ])
+        ]
+        
+        if let name = name, !name.isEmpty {
+            validations.append { validateName(name) }
+        }
+        
+        return validateMultiple(validations)
     }
     
     /// Validates drug-food interaction form fields

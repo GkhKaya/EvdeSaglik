@@ -29,6 +29,13 @@ struct IntroductionStep: View {
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
+                
+                Text(NSLocalizedString("Onboarding.Intro.Personalization", comment: "Personalization message"))
+                    .font(.bodyResponsive)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, ResponsivePadding.small)
             }
             
             Spacer()

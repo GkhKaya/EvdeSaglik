@@ -99,6 +99,18 @@
 "Register.ConfirmPasswordPlaceholder" = "Şifrenizi onaylayın";
 "Register.CreateAccount" = "Hesap Oluştur";
 "Register.Register" = "Kayıt Ol";
+"Register.EmailHint.Invalid" = "Lütfen geçerli bir e-posta adresi girin";
+"Register.PasswordHint.MinLength" = "En az 8 karakter";
+"Register.PasswordHint.Uppercase" = "Bir büyük harf";
+"Register.PasswordHint.Lowercase" = "Bir küçük harf";
+"Register.PasswordHint.Number" = "Bir rakam";
+"Register.PasswordHint.SpecialCharacter" = "Bir özel karakter";
+"Register.PasswordStrength" = "Şifre Gücü";
+"Register.PasswordStrength.None" = "Yok";
+"Register.PasswordStrength.Weak" = "Zayıf";
+"Register.PasswordStrength.Medium" = "Orta";
+"Register.PasswordStrength.Strong" = "Güçlü";
+"Register.PasswordStrength.VeryStrong" = "Çok Güçlü";
 "Register.AlreadyHaveAccount" = "Zaten hesabınız var mı?";
 "Register.SignIn" = "Giriş Yap";
 
@@ -121,6 +133,7 @@
 "Onboarding.Skip" = "Atla";
 "Onboarding.Intro.Title" = "Evde Sağlık'a Hoş Geldiniz";
 "Onboarding.Intro.Description" = "Kişisel sağlık asistanınız";
+"Onboarding.Intro.Personalization" = "Sizi biraz tanımak istiyoruz, bu sayede tüm cevaplar size özel olacak. İsterseniz bu aşamayı atlayabilirsiniz de.";
 "Onboarding.BasicInfo.Title" = "Temel Bilgiler";
 "Onboarding.BasicInfo.Description" = "Kendiniz hakkında bilgi verin";
 "Onboarding.BasicInfo.Name" = "Ad Soyad";

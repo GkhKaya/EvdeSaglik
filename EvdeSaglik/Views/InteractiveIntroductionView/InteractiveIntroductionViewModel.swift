@@ -101,6 +101,7 @@ final class InteractiveIntroductionViewModel: BaseViewModel {
     
     // MARK: - Public Methods
     func nextStep() {
+        // Always update user model before proceeding
         updateUserModel()
         
         if currentStep < totalSteps {
@@ -126,6 +127,7 @@ final class InteractiveIntroductionViewModel: BaseViewModel {
     }
     
     func finishOnboarding(firestoreManager: FirestoreManager, authManager: FirebaseAuthManager) {
+        // Ensure all data is updated before saving
         updateUserModel()
         userModel.isOnboardingCompleted = true
         userModel.isInformationHas = true // Set the new flag here
@@ -144,7 +146,17 @@ final class InteractiveIntroductionViewModel: BaseViewModel {
         Task { [weak self] in
             guard let self = self else { return }
             do {
+                print("💾 Saving user data to Firestore:")
+                print("   - User ID: \(userId)")
+                print("   - Email: \(userEmail)")
+                print("   - Full Name: \(userModel.fullName)")
+                print("   - Gender: \(userModel.gender)")
+                print("   - Age: \(userModel.age)")
+                
                 try await firestoreManager.updateDocument(in: "users", documentId: userId, object: userModel)
+                
+                print("✅ User data saved successfully to Firestore!")
+                
                 await MainActor.run {
                     self.isLoading = false
                     self.shouldNavigateToMain = true
@@ -152,6 +164,7 @@ final class InteractiveIntroductionViewModel: BaseViewModel {
                     self.authManager.didJustRegister = false
                 }
             } catch {
+                print("❌ Error saving user data to Firestore: \(error)")
                 await MainActor.run {
                     self.isLoading = false
                     self.errorMessage = error.localizedDescription
@@ -162,6 +175,7 @@ final class InteractiveIntroductionViewModel: BaseViewModel {
     
     // MARK: - Update Profile Data
     func updateProfileData() {
+        // Ensure all data is updated before saving
         updateUserModel()
         
         isLoading = true
@@ -194,22 +208,32 @@ final class InteractiveIntroductionViewModel: BaseViewModel {
     
     // MARK: - Private Methods
     private func updateUserModel() {
-        switch currentStep {
-        case 2:
-            userModel.gender = selectedGender
-            if let age = Int(selectedAge) {
-                userModel.age = age
-            }
-        case 3:
-            userModel.chronicDiseases = selectedChronicDiseases
-            userModel.allergies = selectedAllergies
-            userModel.medications = selectedMedications
-        case 4:
-            userModel.sleepPattern = selectedSleepPattern
-            userModel.physicalActivity = selectedPhysicalActivity
-            userModel.nutritionHabits = selectedNutritionHabits
-        default:
-            break
+        // Always update basic info (step 2)
+        userModel.gender = selectedGender
+        if let age = Int(selectedAge) {
+            userModel.age = age
         }
+        
+        // Update health info (step 4)
+        userModel.chronicDiseases = selectedChronicDiseases
+        userModel.allergies = selectedAllergies
+        userModel.medications = selectedMedications
+        
+        // Update lifestyle info (step 5)
+        userModel.sleepPattern = selectedSleepPattern
+        userModel.physicalActivity = selectedPhysicalActivity
+        userModel.nutritionHabits = selectedNutritionHabits
+        
+        // Debug: Print current user model data
+        print("🔍 UserModel updated:")
+        print("   - Full Name: \(userModel.fullName)")
+        print("   - Gender: \(userModel.gender)")
+        print("   - Age: \(userModel.age)")
+        print("   - Chronic Diseases: \(userModel.chronicDiseases)")
+        print("   - Allergies: \(userModel.allergies)")
+        print("   - Medications: \(userModel.medications)")
+        print("   - Sleep Pattern: \(userModel.sleepPattern)")
+        print("   - Physical Activity: \(userModel.physicalActivity)")
+        print("   - Nutrition Habits: \(userModel.nutritionHabits)")
     }
 }

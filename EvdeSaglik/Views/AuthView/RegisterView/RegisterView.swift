@@ -78,6 +78,8 @@ struct RegisterView: View {
                                 placeholder: NSLocalizedString("Register.PasswordPlaceholder", comment: "Enter your password"),
                                 icon: "key",
                                 text: $viewModel.password,
+                                isSecure: true,
+                                showPasswordToggle: true,
                                 isMultiline: false
                             )
                             .focused($isPasswordFocused)
@@ -107,6 +109,8 @@ struct RegisterView: View {
                                 placeholder: NSLocalizedString("Register.ConfirmPasswordPlaceholder", comment: "Confirm your password"),
                                 icon: "key.fill",
                                 text: $viewModel.confirmPassword,
+                                isSecure: true,
+                                showPasswordToggle: true,
                                 isMultiline: false
                             )
                             .focused($isConfirmPasswordFocused)

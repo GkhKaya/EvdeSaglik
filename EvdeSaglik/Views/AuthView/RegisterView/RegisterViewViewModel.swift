@@ -16,6 +16,8 @@ final class RegisterViewViewModel: BaseViewModel {
     @Published var confirmPassword: String = ""
     @Published var didRegisterSuccessfully: Bool = false
     @Published var passwordStrength: PasswordStrength = .none
+    @Published var isPasswordVisible: Bool = false
+    @Published var isConfirmPasswordVisible: Bool = false
     
     // MARK: - Private Properties
     private var cancellables = Set<AnyCancellable>()
@@ -85,7 +87,7 @@ final class RegisterViewViewModel: BaseViewModel {
     // MARK: - Public Methods
     func register(authManager: FirebaseAuthManager) {
         // ✅ YENİ: Use standardized validation
-        guard validateRegistrationForm(email: email, password: password, confirmPassword: confirmPassword, name: "") else {
+        guard validateRegistrationForm(email: email, password: password, confirmPassword: confirmPassword) else {
             return // Error already handled by BaseViewModel
         }
         
@@ -135,10 +137,10 @@ final class RegisterViewViewModel: BaseViewModel {
         
         switch strengthScore {
         case 0: self.passwordStrength = .none
-        case 1...2: self.passwordStrength = .weak
-        case 3: self.passwordStrength = .medium
-        case 4: self.passwordStrength = .strong
-        case 5: self.passwordStrength = .veryStrong
+        case 1: self.passwordStrength = .weak
+        case 2: self.passwordStrength = .medium
+        case 3: self.passwordStrength = .strong
+        case 4...5: self.passwordStrength = .veryStrong
         default: self.passwordStrength = .none
         }
     }
