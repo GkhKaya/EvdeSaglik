@@ -140,7 +140,7 @@ struct HomeSolutionView: View {
     
     private func saveToHistory() {
         if let userId = userManager.authManager?.currentUser?.uid {
-            Task { await viewModel.saveSolution(userId: userId, firestoreManager: userManager.firestoreManager) }
+            Task { viewModel.saveSolution(userId: userId, firestoreManager: userManager.firestoreManager) }
         }
     }
 }

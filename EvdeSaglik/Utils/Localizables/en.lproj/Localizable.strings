@@ -1,3 +1,32 @@
+// History - Natural Solutions
+"NaturalHistory.Card.Date" = "Date";
+"NaturalHistory.Card.Time" = "Time";
+"NaturalHistory.Card.Condition" = "Condition";
+"NaturalHistory.Card.Solutions" = "Natural Solutions";
+
+// History - Disease Predictions
+"DiseaseHistory.Card.Date" = "Date";
+"DiseaseHistory.Card.Time" = "Time";
+"DiseaseHistory.Card.Symptoms" = "Symptoms";
+"DiseaseHistory.Card.Predictions" = "Predictions";
+
+// History - Lab Results
+"LabHistory.Card.Date" = "Date";
+"LabHistory.Card.Time" = "Time";
+"LabHistory.Card.LabResults" = "Abnormal Values";
+"LabHistory.Card.Medications" = "Suggested Medications";
+"LabHistory.Card.NaturalSolutions" = "Natural Solutions";
+// History - Home Solutions
+"HomeHistory.Card.Date" = "Date";
+"HomeHistory.Card.Time" = "Time";
+"HomeHistory.Card.Problem" = "Problem";
+"HomeHistory.Card.Solutions" = "Solutions";
+
+// History - Department Suggestions
+"DepartmentHistory.Card.Date" = "Date";
+"DepartmentHistory.Card.Time" = "Time";
+"DepartmentHistory.Card.Symptoms" = "Symptoms";
+"DepartmentHistory.Card.Suggestions" = "Recommended Departments";
 /* 
   Localizable.strings
   EvdeSaglik
@@ -320,6 +349,7 @@
 "LabResult.Analyzing" = "Analyzing...";
 "LabResult.Save" = "Save to History";
 "LabResult.SaveSuccessMessage" = "Blood test analysis saved successfully";
+"LabResult.SaveSuccess" = "Success";
 "LabResult.UploadDescription" = "Select your PDF file";
 "LabResult.PDFSelected" = "PDF Selected";
 "LabResult.Pages" = "pages";

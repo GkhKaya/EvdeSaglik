@@ -215,7 +215,7 @@ struct DiseasePredictionView: View {
     
     private func saveToHistory() {
         if let userId = userManager.authManager?.currentUser?.uid {
-            Task { await viewModel.savePredictions(userId: userId, firestoreManager: userManager.firestoreManager) }
+            Task { viewModel.savePredictions(userId: userId, firestoreManager: userManager.firestoreManager) }
         }
     }
 }

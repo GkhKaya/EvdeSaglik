@@ -1,3 +1,32 @@
+// History - Natural Solutions
+"NaturalHistory.Card.Date" = "Tarih";
+"NaturalHistory.Card.Time" = "Saat";
+"NaturalHistory.Card.Condition" = "Durum";
+"NaturalHistory.Card.Solutions" = "Doğal Çözümler";
+
+// History - Disease Predictions
+"DiseaseHistory.Card.Date" = "Tarih";
+"DiseaseHistory.Card.Time" = "Saat";
+"DiseaseHistory.Card.Symptoms" = "Semptomlar";
+"DiseaseHistory.Card.Predictions" = "Tahminler";
+
+// History - Lab Results
+"LabHistory.Card.Date" = "Tarih";
+"LabHistory.Card.Time" = "Saat";
+"LabHistory.Card.LabResults" = "Anormal Değerler";
+"LabHistory.Card.Medications" = "Önerilen İlaçlar";
+"LabHistory.Card.NaturalSolutions" = "Doğal Çözümler";
+// History - Home Solutions
+"HomeHistory.Card.Date" = "Tarih";
+"HomeHistory.Card.Time" = "Saat";
+"HomeHistory.Card.Problem" = "Sorun";
+"HomeHistory.Card.Solutions" = "Çözümler";
+
+// History - Department Suggestions
+"DepartmentHistory.Card.Date" = "Tarih";
+"DepartmentHistory.Card.Time" = "Saat";
+"DepartmentHistory.Card.Symptoms" = "Semptomlar";
+"DepartmentHistory.Card.Suggestions" = "Önerilen Bölümler";
 /* 
   Localizable.strings
   EvdeSaglik
@@ -320,6 +349,7 @@
 "LabResult.Analyzing" = "Analiz ediliyor...";
 "LabResult.Save" = "Geçmişe Kaydet";
 "LabResult.SaveSuccessMessage" = "Kan tahlili analizi başarıyla kaydedildi";
+"LabResult.SaveSuccess" = "Başarılı";
 "LabResult.UploadDescription" = "PDF dosyanızı seçin";
 "LabResult.PDFSelected" = "PDF Seçildi";
 "LabResult.Pages" = "sayfa";

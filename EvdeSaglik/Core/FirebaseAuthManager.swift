@@ -239,7 +239,7 @@ final class FirebaseAuthManager: ObservableObject, AuthenticationServiceProtocol
         }
         
         try await user.sendEmailVerification(beforeUpdatingEmail: newEmail)
-        DispatchQueue.main.async { [weak self] in
+        await MainActor.run { [weak self] in
             self?.currentUser = Auth.auth().currentUser
         }
     }

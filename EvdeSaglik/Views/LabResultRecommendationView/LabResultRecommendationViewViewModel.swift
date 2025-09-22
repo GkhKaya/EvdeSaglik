@@ -265,34 +265,31 @@ final class LabResultRecommendationViewViewModel: BaseViewModel {
     // MARK: - Persist
     @MainActor
     func saveLabResults(userId: String, firestoreManager: FirestoreManager) {
-        guard !analysisResult.isEmpty else { return }
+        // Only save if we have parsed abnormal items
+        guard !abnormalItems.isEmpty else { return }
         
         performAsyncOperation(
             operation: {
-                // Convert table rows to map (Test -> value) with a simple heuristic: first token = name, first numeric = value
+                // Save only abnormal values (already filtered into abnormalItems)
                 var labResults: [String: Double] = [:]
-                let numberRegex = try? NSRegularExpression(pattern: "[-+]?[0-9]*[\\.,]?[0-9]+")
-                for row in self.extractedTables {
-                    guard let first = row.first else { continue }
-                    var value: Double?
-                    for cell in row.dropFirst() {
-                        if let regex = numberRegex {
-                            let range = NSRange(location: 0, length: cell.utf16.count)
-                            if let match = regex.firstMatch(in: cell, options: [], range: range), let r = Range(match.range, in: cell) {
-                                let numStr = String(cell[r]).replacingOccurrences(of: ",", with: ".")
-                                if let v = Double(numStr) { value = v; break }
-                            }
-                        }
-                    }
-                    if let v = value { labResults[first] = v }
+                for item in self.abnormalItems {
+                    labResults[item.test] = item.value
                 }
+                
+                // Natural solutions from parsed items' remedies
+                let naturalSolutions: [String] = self.abnormalItems
+                    .map { $0.remedy.trimmingCharacters(in: .whitespacesAndNewlines) }
+                    .filter { !$0.isEmpty }
+                
+                // Try to extract medications from the full analysis text as a fallback
+                let medications: [String] = self.extractSuggestedMedications(from: self.analysisResult)
                 
                 let model = LabResultRecommendationModel(
                     id: nil,
                     userId: userId,
                     labResults: labResults,
-                    suggestedMedications: self.extractSuggestedMedications(from: self.analysisResult),
-                    suggestedNaturalSolutions: self.extractSuggestedNaturalSolutions(from: self.analysisResult),
+                    suggestedMedications: medications,
+                    suggestedNaturalSolutions: naturalSolutions,
                     createdAt: Date()
                 )
                 

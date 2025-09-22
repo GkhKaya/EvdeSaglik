@@ -30,19 +30,17 @@ class ChangeEmailViewModel: BaseViewModel {
         
         isLoading = true
         errorMessage = nil
-        
-        await withCheckedContinuation { continuation in
-            authManager.updateEmail(newEmail: newEmail) { [weak self] error in
-                DispatchQueue.main.async {
-                    if let error = error {
-                        self?.errorMessage = error.localizedDescription
-                    } else {
-                        self?.successMessage = NSLocalizedString("Profile.Success.EmailChanged", comment: "")
-                        self?.newEmail = ""
-                    }
-                    self?.isLoading = false
-                    continuation.resume()
-                }
+        do {
+            try await authManager.updateEmail(newEmail)
+            await MainActor.run {
+                self.successMessage = NSLocalizedString("Profile.Success.EmailChanged", comment: "")
+                self.newEmail = ""
+                self.isLoading = false
+            }
+        } catch {
+            await MainActor.run {
+                self.errorMessage = error.localizedDescription
+                self.isLoading = false
             }
         }
     }

@@ -164,7 +164,7 @@ struct NaturalSolitionsView: View {
     
     private func saveToHistory() {
         if let userId = userManager.authManager?.currentUser?.uid {
-            Task { await viewModel.saveNaturalSolutions(userId: userId, firestoreManager: userManager.firestoreManager) }
+            Task { viewModel.saveNaturalSolutions(userId: userId, firestoreManager: userManager.firestoreManager) }
         }
     }
 }

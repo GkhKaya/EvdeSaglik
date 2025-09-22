@@ -123,7 +123,7 @@ struct DepartmentSuggestionView: View {
     
     private func saveToHistory() {
         if let userId = userManager.authManager?.currentUser?.uid {
-            Task { await viewModel.saveSuggestions(userId: userId, firestoreManager: userManager.firestoreManager) }
+            Task { viewModel.saveSuggestions(userId: userId, firestoreManager: userManager.firestoreManager) }
         }
     }
 }

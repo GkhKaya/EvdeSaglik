@@ -101,11 +101,13 @@ class AppStateHolder: ObservableObject {
                 fetchOnboardingStatus(userID: user.uid)
             } else {
                 // Not remembered, sign out and go to login
-                authManager?.signOut(completion: { [weak self] _ in
-                    DispatchQueue.main.async {
-                        self?.appState = .unauthenticated
+                Task { [weak self] in
+                    do {
+                        try await self?.authManager?.signOut()
+                    } catch {
+                        // ignore error; auth sink will handle state
                     }
-                })
+                }
             }
         } else {
             // No user is signed in, go to unauthenticated state
@@ -116,29 +118,26 @@ class AppStateHolder: ObservableObject {
     }
     
     private func fetchOnboardingStatus(userID: String) {
-        firestoreManager?.fetchDocument(collection: "users", documentId: userID, completion: { [weak self] (result: Result<UserModel?, AppError>) in // Add [weak self] here
-            DispatchQueue.main.async {
-                guard let self = self else { return } // Explicitly unwrap self
-                switch result {
-                case .success(let userModel):
+        Task { [weak self] in
+            guard let self = self, let firestoreManager = self.firestoreManager else { return }
+            do {
+                let userModel: UserModel? = try await firestoreManager.fetchDocument(from: "users", documentId: userID, as: UserModel.self)
+                await MainActor.run {
                     if let userModel = userModel {
-                        // If the user has a profile and has completed onboarding
                         if userModel.isOnboardingCompleted && userModel.isInformationHas {
-                            self.appState = .mainApp // Use self.appState
+                            self.appState = .mainApp
                         } else {
-                            self.appState = .onboardingRequired // Use self.appState
+                            self.appState = .onboardingRequired
                         }
                     } else {
-                        // User exists in Firebase Auth but no profile in Firestore
-                        self.appState = .onboardingRequired // Use self.appState
+                        self.appState = .onboardingRequired
                     }
-                case .failure(let error):
-                    print("Error fetching user profile: \(error.localizedDescription)")
-                    // If there's an error (e.g., document not found), assume onboarding is required.
-                    self.appState = .onboardingRequired // Use self.appState
                 }
+            } catch {
+                print("Error fetching user profile: \(error)")
+                await MainActor.run { self.appState = .onboardingRequired }
             }
-        })
+        }
     }
 }
 

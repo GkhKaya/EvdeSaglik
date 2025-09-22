@@ -352,7 +352,7 @@ struct LabResultRecommendationView: View {
     
     private func saveToHistory() {
         if let userId = userManager.authManager?.currentUser?.uid {
-            Task { await viewModel.saveLabResults(userId: userId, firestoreManager: userManager.firestoreManager) }
+            Task { viewModel.saveLabResults(userId: userId, firestoreManager: userManager.firestoreManager) }
         }
     }
 }
